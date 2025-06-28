@@ -5,6 +5,8 @@ This github repository is for a project for final year students at AUT, our proj
 
 We are creating this project for a client within AUT who has given us this as a project and gave us a list of features and an idea of what he wants, from there we went and created the AUT gamestore platform.
 
+## Contributors
+![GitHub commit count](https://badgen.net/github/commits/kiwiicam/AUT-Game-Store-Platform)
 
 
 ## 🛠 Skills
