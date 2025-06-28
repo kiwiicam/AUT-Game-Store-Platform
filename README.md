@@ -7,6 +7,7 @@ We are creating this project for a client within AUT who has given us this as a 
 
 ## Contributions
 This will show the total number of commits on the main branch.
+
 ![GitHub commit count](https://badgen.net/github/commits/kiwiicam/AUT-Game-Store-Platform)
 
 
