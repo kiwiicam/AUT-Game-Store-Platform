@@ -1,0 +1,133 @@
+.outer-background{
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom, #3E4C71, #191D31);
+}
+.inner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 40%;
+  height: 90%;
+  background-color: #14141499;
+  opacity: 1;
+  border-radius: 50px;
+  padding: 10px;
+}
+
+.inner-container .inputs {
+    width: 500px;
+    height: 40px;
+    margin: 10px 0;
+    padding: 0 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: #D9D9D966;
+    color: white;
+}
+.inner-container .inputs::placeholder{
+    color: #0000006B;
+} 
+.divider{
+    width: 80%;
+    height: 1px;
+    background-color: #ccc;
+    margin: 10px 0;
+}
+button{
+    border: none;
+    border-radius: 50px;
+    background-color: #413E71;
+    color: white;
+    width: 350px;
+    height: 50px;
+}
+.username{
+    display: flex;
+    flex-direction: column;
+    color: white;
+    position: relative;
+}
+.password{
+    display: flex;
+    flex-direction: column;
+    color: white;
+    position: relative;
+}
+.email{
+    display: flex;
+    flex-direction: column;
+    color: white;
+}
+.checkbox{
+    padding-left: 17%;
+    display: flex;
+    width: 100%;
+    justify-content: start;
+}
+.form-check-label{
+    color: white;
+}
+img{
+    max-width: 150px;
+    max-height: 150px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+.title{
+    color: white;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.but-acc{
+    margin-top: 10px;
+}
+
+.but-log{
+    width: 200px;
+}
+.account{
+    color: white;
+}
+.user-icon {
+  position: absolute;
+  right: 10px;
+  top: 60%;
+  transform: translateY(-50%);
+  color: #aaa;
+  font-size: 30px; 
+  cursor: pointer;
+  z-index: 5;
+}
+
+.hover-message {
+  position: absolute;
+  top: 10px;
+  left: 35px;
+
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+
+  width: 180px;
+}
+
+.forgot-password {
+    display: flex;
+    justify-content: space-between;
+}
+
+.forgot-password a{
+    text-decoration: underline;
+    cursor: pointer;
+    color: #007bff;
+}

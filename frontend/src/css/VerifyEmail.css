@@ -1,0 +1,22 @@
+.otp-container {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin: 20px;
+}
+
+.otp-container input {
+  width: 40px;
+  height: 50px;
+  font-size: 24px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+h2, p{
+    color: white;
+}
+.resend{
+    cursor: pointer;
+    text-decoration: underline;
+}
