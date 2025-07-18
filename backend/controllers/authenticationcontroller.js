@@ -1,4 +1,4 @@
-import { CognitoIdentityProviderClient, SignUpCommand, VerifyUserAttributeCommand, InitiateAuthCommand, ConfirmSignUpCommand } from '@aws-sdk/client-cognito-identity-provider';
+import { CognitoIdentityProviderClient, SignUpCommand, ResendConfirmationCodeCommand, VerifyUserAttributeCommand, InitiateAuthCommand, ConfirmSignUpCommand } from '@aws-sdk/client-cognito-identity-provider';
 import 'dotenv/config';
 import crypto from 'crypto';
 
@@ -65,6 +65,33 @@ export async function verifyEmail(req, res) {
             error: "Failed to verify",
             message: err.message
         });
-        console.log(err.message);
+    }
+}
+
+export async function resendConfirmationCode(req, res) {
+    try {
+        const { email } = req.body;
+        const clientId = process.env.CLIENT_ID;
+        const secret = getSecretHash(email, clientId, process.env.CLIENT_SECRET);
+        const client = new CognitoIdentityProviderClient({ region: process.env.AWS_REGION });
+
+        const command = new ResendConfirmationCodeCommand({
+            ClientId: clientId,
+            Username: email,
+            SecretHash: secret,
+        });
+
+        const response = await client.send(command);
+
+        res.status(200).json({
+            message: "Confirmation code resent successfully",
+            deliveryDetails: response.CodeDeliveryDetails,
+        });
+    } catch (err) {
+        res.status(500).json({
+            error: "Failed to resend confirmation code",
+            message: err.message,
+        });
+        console.error(err.message);
     }
 }

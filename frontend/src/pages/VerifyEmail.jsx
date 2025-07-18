@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router';
 
 const VerifyEmail = () => {
+    const [timeLeft, setTimeLeft] = useState(30);
     const [otp, setOtp] = useState(Array(6).fill(''));
     const inputsRef = useRef([]);
     const navigate = useNavigate();
@@ -29,8 +30,30 @@ const VerifyEmail = () => {
 
     const value = otp.join('');
 
-    async function resendCode() {
+    useEffect(() => {
+        if (timeLeft === 0) return;
 
+        const interval = setInterval(() => {
+            setTimeLeft(prev => prev - 1);
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [timeLeft]);
+
+
+    async function resendCode() {
+        //check if there is still time left before allowing code resend
+        if (timeLeft > 0) return;
+        try {
+            const email = localStorage.getItem('email');
+            const response = await axios.post('http://localhost:8000/api/auth/resend', { email });
+            alert(response.data.message);
+            setTimeLeft(30);
+            setOtp(Array(6).fill(''));
+            inputsRef.current[0].focus();
+        } catch (error) {
+            alert(error.message);
+        }
     }
     async function verifyEm() {
         if (value.length < 6) {
@@ -44,7 +67,7 @@ const VerifyEmail = () => {
                 email: email
             })
             alert(reponse.data.message);
-            navigate("/")            
+            navigate("/")
         }
         catch (error) {
             alert(error.message);
@@ -69,7 +92,8 @@ const VerifyEmail = () => {
                         />
                     ))}
                 </div>
-                <p className='resend'>Resend Code</p>
+                <p>{timeLeft === 0 ? timeLeft : <></>}</p>
+                <p className='resend' onClick={() => resendCode()}>Resend Code</p>
                 <button onClick={() => verifyEm()}>Verify Email</button>
             </div>
         </div>

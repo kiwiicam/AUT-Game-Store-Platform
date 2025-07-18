@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 //css
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/App.css';
+import './css/Global.css'
 //jsx pages
 import Homepage from './pages/Homepage.jsx';
 import Aboutpage from './pages/Aboutpage.jsx';
@@ -11,19 +12,26 @@ import Signup from './pages/Signup.jsx';
 import Signin from './pages/Signin.jsx';
 import Forgotpw from './pages/Forgotpw.jsx';
 import VerifyEmail from './pages/VerifyEmail.jsx';
+import Header from './components/Header.jsx';
+import HeaderLayout from './components/HeaderLayout.jsx';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Homepage />} />
-        <Route path="/about" element={<Aboutpage />} />
-        <Route path="/account" element={<Accountpage />} />
+        {/*Routes with header*/}
+        <Route element={<HeaderLayout />}>
+          <Route path="/" element={<Homepage />} />
+          <Route path="/about" element={<Aboutpage />} />
+          <Route path="/account" element={<Accountpage />} />
+          <Route path="*" element={<h1>404 Not Found</h1>} />
+        </Route>
+        {/*Routes without header (all auth routes)*/}
         <Route path="/signup" element={<Signup />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="/forgotpw" element={<Forgotpw />} />
         <Route path="/verify" element={<VerifyEmail />} />
-        <Route path="*" element={<h1>404 Not Found</h1>} />
+
       </Routes>
     </BrowserRouter>
   );
