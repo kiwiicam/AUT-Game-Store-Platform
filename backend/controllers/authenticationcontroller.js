@@ -2,6 +2,8 @@ import { CognitoIdentityProviderClient, SignUpCommand, ResendConfirmationCodeCom
 import 'dotenv/config';
 import crypto from 'crypto';
 import { jwtDecode } from 'jwt-decode';
+import e from 'express';
+import { env } from 'process';
 
 
 function getSecretHash(username, clientId, clientSecret) {
@@ -67,8 +69,16 @@ export async function login(req, res) {
         });
     }
     catch (err) {
-        console.error("Login failed:", err);
-        res.status(401).json({ error: err.message });
+        if (err.name === "UserNotConfirmedException") {
+            res.status(403).json({
+                error: "UserNotConfirmed",
+                message: "You haven't confirmed your email. Please confirm your account.",
+            });
+        }
+        else {
+            console.error("Login failed:", err);
+            res.status(401).json({ error: err.message });
+        }
     }
 }
 
@@ -127,3 +137,6 @@ export async function resendConfirmationCode(req, res) {
         console.error(err.message);
     }
 }
+
+
+
