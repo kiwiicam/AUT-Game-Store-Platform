@@ -7,7 +7,7 @@ import multer from 'multer';
 //route imports
 import example from './routes/exampleroute.js';
 import authentication from './routes/authenticationroutes.js';
-
+import database from './routes/databaseroutes.js';
 const app = express();
 
 app.use(express.json());
@@ -20,7 +20,9 @@ app.use(cors({
 
 app.use('/', example)
 app.use('/api/auth', authentication);
-const PORT =  8000;
+app.use('/api/database', database);
+
+const PORT = 8000;
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

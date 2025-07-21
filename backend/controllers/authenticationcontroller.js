@@ -1,6 +1,8 @@
 import { CognitoIdentityProviderClient, SignUpCommand, ResendConfirmationCodeCommand, VerifyUserAttributeCommand, InitiateAuthCommand, ConfirmSignUpCommand } from '@aws-sdk/client-cognito-identity-provider';
 import 'dotenv/config';
 import crypto from 'crypto';
+import { jwtDecode } from 'jwt-decode';
+
 
 function getSecretHash(username, clientId, clientSecret) {
     return crypto.createHmac('SHA256', clientSecret)
@@ -30,13 +32,43 @@ export async function signUp(req, res) {
         });
         console.log("Signing up user:", email);
         const response = await client.send(command);
-
+        const token = response.UserSub;
         res.status(200).json({
             message: "sign up successful",
-            item: response,
+            item: token,
         });
     } catch (err) {
         res.status(200).json({ error: err });
+    }
+}
+
+export async function login(req, res) {
+    try {
+        const { email, password } = req.body;
+        const clientId = process.env.CLIENT_ID;
+        const secret = getSecretHash(email, clientId, process.env.CLIENT_SECRET);
+        const client = new CognitoIdentityProviderClient({ region: process.env.AWS_REGION });
+
+        const command = new InitiateAuthCommand({
+            AuthFlow: 'USER_PASSWORD_AUTH',
+            ClientId: clientId,
+            AuthParameters: {
+                USERNAME: email,
+                PASSWORD: password,
+                SECRET_HASH: secret,
+            },
+        });
+        const response = await client.send(command);
+        const idToken = response.AuthenticationResult.IdToken;
+        const token = jwtDecode(idToken);
+        res.status(200).json({
+            message: "Login successful",
+            item: token.sub,
+        });
+    }
+    catch (err) {
+        console.error("Login failed:", err);
+        res.status(401).json({ error: err.message });
     }
 }
 

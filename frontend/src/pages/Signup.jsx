@@ -41,11 +41,21 @@ function Signup() {
         password: password
       })
       localStorage.setItem('email', email);
+
+      const uid = response.data.item;
+      localStorage.setItem('uid', uid);
+      const dbResponse = await axios.post('http://localhost:8000/api/database/adduser', {
+        uid: uid,
+        username: username
+      });
+
+      alert(response.data.error || response.data.message);
+      alert(dbResponse.data.error || dbResponse.data.message);
+
       setUsername('');
       setEmail('');
       setPassword('');
       setConfirmPassword('');
-      alert(response.data.message)
       navigate("/verify");
       return
     }

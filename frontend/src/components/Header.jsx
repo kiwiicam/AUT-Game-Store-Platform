@@ -1,7 +1,7 @@
 import React from 'react'
 import '../css/Header.css'
 function Header() {
-  const loggedIn = localStorage.getItem('token') ? true : false;
+  const loggedIn = localStorage.getItem('uid') ? true : false;
   return (
     <>
       <div className="header-banner" />

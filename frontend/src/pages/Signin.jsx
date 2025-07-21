@@ -1,11 +1,49 @@
 import React from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
+import axios from 'axios';
+import '../css/Signin.css';
 
 function Signin() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+
+  async function login() {
+    if (email === '' || password === '') {
+      //display error message
+      return;
+    }
+    try {
+      const response = await axios.post('http://localhost:8000/api/auth/login', {
+        email: email,
+        password: password
+      })
+      alert(response.data.error || response.data.item)
+      localStorage.setItem('uid', response.data.item);
+      retrieveUserInfo();
+      //navigate("/")
+      return;
+    }
+    catch (error) {
+      alert(error)
+      return;
+    }
+  }
+
+  async function retrieveUserInfo() {
+    const uid = localStorage.getItem('uid');
+    try {
+      const response = await axios.post('http://localhost:8000/api/database/getuserinfo', {
+        uid: uid
+      });
+      alert(response.data.error || response.data.item);
+    }
+    catch (error) {
+      alert("Error retrieving user info: " + error);
+    }
+  }
+
 
   return (
     <div className='outer-background'>
@@ -19,7 +57,7 @@ function Signin() {
         <div className='password'>
           <div className='forgot-password'>
             <label>Password</label>
-            <a onClick={() => {navigate("/forgotpw")}}>Forgot password?</a>
+            <a onClick={() => { navigate("/forgotpw") }}>Forgot password?</a>
           </div>
           <input className='inputs' type="password" placeholder='••••••••' onChange={(e) => setPassword(e.target.value)} />
         </div>
@@ -29,10 +67,10 @@ function Signin() {
             <label class="form-check-label" for="flexSwitchCheckDefault">Keep me logged in</label>
           </div>
         </div>
-        <button className='but-acc'>Login</button>
+        <button className='but-acc' onClick={() => login()}>Login</button>
         <div className='divider'></div>
         <label className='account'>Don't have an account?</label>
-        <button className='but-log'>Create Account</button>
+        <button className='but-log' onClick={() => { navigate("/signup") }} >Create Account</button>
       </div>
     </div>
   )
