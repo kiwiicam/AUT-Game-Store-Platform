@@ -67,6 +67,11 @@ const VerifyEmail = () => {
                 email: email
             })
             alert(reponse.data.message);
+            if (localStorage.getItem('uid') === null) {
+                alert("email verified please sign in now")
+                navigate("/signin");
+                return;
+            }
             navigate("/")
         }
         catch (error) {

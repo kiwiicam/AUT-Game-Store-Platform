@@ -1,0 +1,84 @@
+.account-main {
+    height: 100vh;
+    width: 100%;
+    background: linear-gradient(to bottom, #3E4C71, #191D31);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.account-center {
+    display: flex;
+    width: 55%;
+    height: 95%;
+}
+
+.left-options {
+    display: flex;
+    justify-content: center;
+    width: 35%;
+    height: 100%;
+    background-color: #14141499;
+    border-radius: 15px;
+}
+
+.left-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 85%;
+    justify-content: space-evenly;
+    height: 80%;
+}
+
+.left-content h2 {
+    color: lightgray;
+    font-size: 0.8rem;
+}
+
+.split {
+    height: 1px;
+    width: 100%;
+    background-color: white;
+}
+
+.left-content h1 {
+    margin-top: 10px;
+    color: white;
+    font-size: 1rem;
+}
+
+.setting {
+    width: 100%;
+    cursor: pointer;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    height: 30px;
+}
+
+.setting h2 {
+    margin: 0;
+    margin-left: 10px;
+}
+
+#first {
+    margin-top: 10px;
+}
+
+.setting:hover {
+
+    background-color: #41414199;
+}
+
+.right-content {
+    width: 65%;
+    height: 100%;
+    display: flex;
+    justify-content: end;
+}
+
+.right-inner {
+    width: 95%;
+    height: 100%;
+}

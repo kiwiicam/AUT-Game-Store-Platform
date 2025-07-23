@@ -2,8 +2,6 @@ import { CognitoIdentityProviderClient, SignUpCommand, ResendConfirmationCodeCom
 import 'dotenv/config';
 import crypto from 'crypto';
 import { jwtDecode } from 'jwt-decode';
-import e from 'express';
-import { env } from 'process';
 
 
 function getSecretHash(username, clientId, clientSecret) {
@@ -40,7 +38,18 @@ export async function signUp(req, res) {
             item: token,
         });
     } catch (err) {
-        res.status(200).json({ error: err });
+        if (err.name === "UsernameExistsException") {
+            res.status(200).json({
+                message: "An account with this email already exists. Please Log in",
+                error: "UsernameExists",
+                navigate: "/signin"
+            })
+            console.error("Sign up failed: Username already exists");
+        }
+        else {
+            res.status(200).json({ error: err.name });
+            console.error("Sign up failed:", err.message);
+        }
     }
 }
 
@@ -67,16 +76,19 @@ export async function login(req, res) {
             message: "Login successful",
             item: token.sub,
         });
+        console.log("Login successful for user:", email);
     }
     catch (err) {
         if (err.name === "UserNotConfirmedException") {
-            res.status(403).json({
+            console.error("Login failed:", err.message);
+            res.status(200).json({
                 error: "UserNotConfirmed",
                 message: "You haven't confirmed your email. Please confirm your account.",
+                navigate: "/verify"
             });
         }
         else {
-            console.error("Login failed:", err);
+            console.error("Login failed:", err.message);
             res.status(401).json({ error: err.message });
         }
     }
@@ -103,6 +115,7 @@ export async function verifyEmail(req, res) {
         });
     }
     catch (err) {
+        console.error("Verification failed:", err.message);
         res.status(500).json({
             error: "Failed to verify",
             message: err.message

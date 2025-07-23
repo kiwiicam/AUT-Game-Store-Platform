@@ -8,6 +8,8 @@ import multer from 'multer';
 import example from './routes/exampleroute.js';
 import authentication from './routes/authenticationroutes.js';
 import database from './routes/databaseroutes.js';
+import storage from './routes/storageroutes.js';
+
 const app = express();
 
 app.use(express.json());
@@ -21,7 +23,7 @@ app.use(cors({
 app.use('/', example)
 app.use('/api/auth', authentication);
 app.use('/api/database', database);
-
+app.use('/api/storage', storage);
 const PORT = 8000;
 
 app.listen(PORT, () => {

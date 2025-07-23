@@ -1,4 +1,4 @@
-.outer-background{
+.outer-background {
     display: flex;
     height: 100vh;
     width: 100%;
@@ -6,17 +6,18 @@
     align-items: center;
     background: linear-gradient(to bottom, #3E4C71, #191D31);
 }
+
 .inner-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 40%;
-  height: 90%;
-  background-color: #14141499;
-  opacity: 1;
-  border-radius: 50px;
-  padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 40%;
+    height: 90%;
+    background-color: #14141499;
+    opacity: 1;
+    border-radius: 50px;
+    padding: 10px;
 }
 
 .inner-container .inputs {
@@ -29,16 +30,19 @@
     background-color: #D9D9D966;
     color: white;
 }
-.inner-container .inputs::placeholder{
+
+.inner-container .inputs::placeholder {
     color: #0000006B;
-} 
-.divider{
+}
+
+.divider {
     width: 80%;
     height: 1px;
     background-color: #ccc;
     margin: 10px 0;
 }
-button{
+
+button {
     border: none;
     border-radius: 50px;
     background-color: #413E71;
@@ -46,79 +50,89 @@ button{
     width: 350px;
     height: 50px;
 }
-.username{
+
+.username {
     display: flex;
     flex-direction: column;
     color: white;
     position: relative;
 }
-.password{
+
+.password {
     display: flex;
     flex-direction: column;
     color: white;
     position: relative;
 }
-.email{
+
+.email {
     display: flex;
     flex-direction: column;
     color: white;
 }
-.checkbox{
+
+.checkbox {
     padding-left: 17%;
     display: flex;
     width: 100%;
     justify-content: start;
 }
-.form-check-label{
+
+.form-check-label {
     color: white;
 }
-img{
+
+img {
     max-width: 150px;
     max-height: 150px;
     border-radius: 10px;
     margin-bottom: 20px;
 }
-.title{
+
+.title {
     color: white;
     font-size: 2rem;
     margin-bottom: 20px;
     text-align: center;
 }
-.but-acc{
+
+.but-acc {
     margin-top: 10px;
 }
 
-.but-log{
+.but-log {
     width: 200px;
 }
-.account{
+
+.account {
     color: white;
 }
+
 .user-icon {
-  position: absolute;
-  right: 10px;
-  top: 60%;
-  transform: translateY(-50%);
-  color: #aaa;
-  font-size: 30px; 
-  cursor: pointer;
-  z-index: 5;
+    position: absolute;
+    right: 10px;
+    top: 60%;
+    transform: translateY(-50%);
+    color: #aaa;
+    font-size: 30px;
+    cursor: pointer;
+    z-index: 5;
 }
 
 .hover-message {
-  position: absolute;
-  top: 10px;
-  left: 35px;
+    position: absolute;
+    top: 10px;
+    left: 35px;
 
-  background-color: #f8d7da;
-  color: #721c24;
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-size: 14px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 10;
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 10;
 
-  width: 180px;
+    width: 180px;
 }
 
 .forgot-password {
@@ -126,8 +140,45 @@ img{
     justify-content: space-between;
 }
 
-.forgot-password a{
+.forgot-password a {
     text-decoration: underline;
     cursor: pointer;
     color: #007bff;
+}
+
+@media screen and (max-width: 1308px) {
+    .inner-container {
+        margin-top: 0%;
+        width: 50%;
+        height: 700px;
+        height: auto;
+        padding: 20px;
+    }
+
+    .outer-background {
+        height: 140vh;
+    }
+
+    .inputs {
+        width: 100%;
+    }
+
+    .but-acc {
+        width: 55%;
+        height: 40px;
+        margin: 10px;
+    }
+
+    .but-log {
+        margin-top: 10px;
+        width: 200px;
+        height: 40px;
+    }
+
+
+    .user-icon {
+        right: 5px;
+        top: 58%;
+    }
+
 }

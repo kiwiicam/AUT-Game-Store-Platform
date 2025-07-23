@@ -19,10 +19,18 @@ function Signin() {
         email: email,
         password: password
       })
-      alert(response.data.error || response.data.item)
+      localStorage.setItem('email', email);
+      if (response.data.error === "UserNotConfirmed") {
+        alert(response.data.error);
+        const verify = await axios.post('http://localhost:8000/api/auth/resend', {
+          email: email,
+        });
+        navigate(response.data.navigate);
+        return;
+      }
       localStorage.setItem('uid', response.data.item);
       retrieveUserInfo();
-      //navigate("/")
+      navigate("/")
       return;
     }
     catch (error) {
@@ -38,6 +46,7 @@ function Signin() {
         uid: uid
       });
       alert(response.data.error || response.data.item);
+      localStorage.setItem('accountType', response.data.accountType);
     }
     catch (error) {
       alert("Error retrieving user info: " + error);

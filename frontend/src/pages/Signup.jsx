@@ -41,16 +41,26 @@ function Signup() {
         password: password
       })
       localStorage.setItem('email', email);
-
+      alert(response.data.error || response.data.message);
+      if (response.data.error === "UsernameExists") {
+        navigate(response.data.navigate);
+        return;
+      }
       const uid = response.data.item;
       localStorage.setItem('uid', uid);
       const dbResponse = await axios.post('http://localhost:8000/api/database/adduser', {
         uid: uid,
-        username: username
+        username: username,
+        accountType: "user",
+        email: email
       });
-
-      alert(response.data.error || response.data.message);
+      if (dbResponse.data.error) {
+        alert(dbResponse.data.error);
+        return;
+      }
       alert(dbResponse.data.error || dbResponse.data.message);
+
+
 
       setUsername('');
       setEmail('');

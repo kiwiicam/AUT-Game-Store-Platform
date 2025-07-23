@@ -3,12 +3,14 @@ import { PutItemCommand, GetItemCommand } from '@aws-sdk/client-dynamodb';
 import { unmarshall } from '@aws-sdk/util-dynamodb';
 
 export async function addUser(req, res) {
-    const { uid, username } = req.body;
+    const { uid, username, accountType, email } = req.body;
     const params = {
         TableName: "userTable",
         Item: {
             uid: { S: uid },
-            username: { S: username }
+            username: { S: username },
+            accountType: { S: accountType },
+            email: { S: email }
         }
     };
     try {
@@ -34,7 +36,8 @@ export async function getUserInfo(req, res) {
         const plainItem = unmarshall(response.Item);
         res.status(200).json({
             message: "User info fetched successfully",
-            item: plainItem.username || "No username found"
+            item: plainItem.accountType,
+            username: plainItem.username,
         });
 
     }
