@@ -1,6 +1,49 @@
-.game-card{
-    width: 200px;
-    height: 250px;
+.game-card {
+    cursor: pointer;
+    width: 295px;
+    height: 255px;
     border-radius: 15px;
     background-color: #14141499;
+    display: flex;
+    padding: 5px;
+    flex-direction: column;
+    transition: 0.2s ease-in-out;    
+}
+
+.game-card:hover {
+    background-color: #141413;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+
+}
+
+.game-info {
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 30%;
+    color: #fff;
+}
+
+.game-img {
+    height: 70%;
+    width: 100%;
+    background-color: beige;
+    border-radius: 15px;
+}
+
+.game-img img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    max-width: none !important;
+    max-height: none !important;
+}
+
+
+h3 {
+    font-size: 1.2rem;
+    color: #fff;
+    margin-top: -5px;
 }

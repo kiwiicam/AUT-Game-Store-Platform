@@ -150,6 +150,3 @@ export async function resendConfirmationCode(req, res) {
         console.error(err.message);
     }
 }
-
-
-

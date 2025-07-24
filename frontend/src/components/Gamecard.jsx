@@ -7,8 +7,8 @@ function Gamecard({ image, title, creator }) {
         <img src={image} alt="Game Cover" />
       </div>
       <div className='game-info'>
-        <h3>{creator}</h3>
-        <h2>{title}</h2>
+        <h2>{creator}</h2>
+        <h3>{title}</h3>
       </div>
     </div>
   )
