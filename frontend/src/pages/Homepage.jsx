@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import '../css/Homepage.css'
+import Gamecard from '../components/Gamecard'
 
 function Homepage() {
     useEffect(() => {
@@ -10,6 +11,7 @@ function Homepage() {
         <div className='homepage-background'>
             <div className='homepage-content'>
                 <h1>Featured</h1>
+                <Gamecard />
                 <div className='split-line'></div>
             </div>
         </div>

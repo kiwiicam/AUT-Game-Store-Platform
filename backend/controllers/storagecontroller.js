@@ -13,7 +13,7 @@ export async function uploadGame(req, res) {
             Body: fileStream,
             ContentType: file.mimetype,
         };
-        console.log("Starting S3 upload for:", file.originalname);
+        
         const result = await S3.send(new PutObjectCommand(uploadParams));
         res.status(200).json({
             message: "file recieved successful",

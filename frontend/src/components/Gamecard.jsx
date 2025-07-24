@@ -1,5 +1,5 @@
 import React from 'react'
-
+import '../css/Gamecard.css'
 function Gamecard({ image, title, creator }) {
   return (
     <div className='game-card'>

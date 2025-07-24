@@ -1,6 +1,7 @@
 import react, { useEffect, useState } from "react"
 import '../../css/AccountInformation.css'
 import { MdOutlineModeEditOutline } from "react-icons/md";
+import axios from "axios";
 function AccountInformation() {
     const [username, setUsername] = useState('');
     const [firstName, setFirstName] = useState('');
@@ -16,10 +17,28 @@ function AccountInformation() {
     const [editFieldValue, setEditFieldValue] = useState('');
     const [newInputValue, setNewInputValue] = useState('');
     useEffect(() => {
-        // Fetch the current username and user details
-        setCurrentUsername("PlaceholderUsername");
-        setCurrentFirstName("PlaceholderFirstName");
-        setCurrentLastName("PlaceholderLastName");
+        const fetchUserData = async () => {
+            try {
+                const uid = localStorage.getItem('uid');
+                if (!uid) {
+                    alert("User not logged in");
+                    return;
+                }
+                const response = await axios.post('http://localhost:8000/api/database/getuserinfo', {
+                    uid
+                });
+
+                setCurrentUsername((response.data.username ?? "").trim() === "" ? "No username set" : response.data.username);
+                setCurrentFirstName((response.data.firstname ?? "").trim() === "" ? "No firstname set" : response.data.firstname);
+                setCurrentLastName((response.data.lastname ?? "").trim() === "" ? "No lastname set" : response.data.lastname);
+
+            }
+            catch (error) {
+                alert(error.message);
+                return;
+            }
+        }
+        fetchUserData();
     }, []);
 
     function handleChange(field) {
@@ -29,28 +48,67 @@ function AccountInformation() {
         }
         else if (field === 'Username') {
             setUsername(newInputValue.trim());
-            handleUsernameChange();
+            handleUsernameChange(newInputValue.trim());
         } else if (field === 'First Name') {
             setFirstName(newInputValue.trim());
-            handleFirstNameChange();
+            handleFirstNameChange(newInputValue.trim());
         } else if (field === 'Last Name') {
             setLastName(newInputValue.trim());
-            handleLastNameChange();
+            handleLastNameChange(newInputValue.trim());
         }
     }
 
-    function handleUsernameChange() {
-
+    async function handleUsernameChange(newInputValue) {
+        const uid = localStorage.getItem('uid');
+        try {
+            const response = await axios.post('http://localhost:8000/api/database/changename', {
+                uid: uid,
+                newName: newInputValue,
+                type: 'username'
+            });
+            setCurrentUsername(newInputValue);
+        }
+        catch (error) {
+            alert(error.message);
+            return;
+        }
     }
 
     function handleProfilePicChange() {
     }
 
-    function handleFirstNameChange() {
+    async function handleFirstNameChange(newInputValue) {
+        const uid = localStorage.getItem('uid');
+        try {
+            const response = await axios.post('http://localhost:8000/api/database/changename', {
+                uid: uid,
+                newName: newInputValue,
+                type: 'firstname'
+            });
+            setCurrentFirstName(newInputValue);
+        }
+        catch (error) {
+            alert(error.message);
+            return;
+        }
 
     }
 
-    function handleLastNameChange() {
+    async function handleLastNameChange(newInputValue) {
+        const uid = localStorage.getItem('uid');
+        alert(newInputValue)
+        try {
+            const response = await axios.post('http://localhost:8000/api/database/changename', {
+                uid: uid,
+                newName: newInputValue,
+                type: 'lastname'
+            });
+            setCurrentLastName(newInputValue);
+        }
+        catch (error) {
+            alert(error.message);
+            return;
+        }
 
     }
 

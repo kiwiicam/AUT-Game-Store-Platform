@@ -1,5 +1,5 @@
 import { client } from '../dynamoClient.js';
-import { PutItemCommand, GetItemCommand } from '@aws-sdk/client-dynamodb';
+import { PutItemCommand, GetItemCommand, UpdateItemCommand } from '@aws-sdk/client-dynamodb';
 import { unmarshall } from '@aws-sdk/util-dynamodb';
 
 export async function addUser(req, res) {
@@ -10,7 +10,9 @@ export async function addUser(req, res) {
             uid: { S: uid },
             username: { S: username },
             accountType: { S: accountType },
-            email: { S: email }
+            email: { S: email },
+            firstname: { S: "" },
+            lastname: { S: "" },
         }
     };
     try {
@@ -38,12 +40,42 @@ export async function getUserInfo(req, res) {
             message: "User info fetched successfully",
             item: plainItem.accountType,
             username: plainItem.username,
+            firstname: plainItem.firstname,
+            lastname: plainItem.lastname,
         });
+        console.log(plainItem.username, plainItem.firstname, plainItem.lastname);
 
     }
     catch (err) {
         console.log("Error fetching user info:", err);
         res.status(500).json({ error: "Failed to fetch user info" });
     }
+}
+
+export async function changeName(req, res) {
+    try {
+        const { uid, newName, type } = req.body;
+        const params = {
+            TableName: "userTable",
+            Key: {
+                uid: { S: uid },
+            },
+            UpdateExpression: `SET ${type} = :newValue`,
+            ExpressionAttributeValues: {
+                ":newValue": { S: newName },
+            },
+            ReturnValues: "UPDATED_NEW",
+        };
+        const response = await client.send(new UpdateItemCommand(params));
+        res.status(200).json({ message: "User info fetched successfully" });
+        console.log("successfully changed name:");
+
+    }
+    catch (err) {
+        res.status(500).json({ error: "Failed to change name" });
+        console.log("Error changing name:", err.message);
+
+    }
+
 }
 
