@@ -5,7 +5,8 @@ import axios from 'axios';
 function UploadAssignment() {
 
     const [isDragging, setIsDragging] = useState(false);
-    const [files, setFiles] = useState([]);
+    const [file, setFile] = useState(null);
+    const [imageArray, setImageArray] = useState([]);
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -16,25 +17,14 @@ function UploadAssignment() {
 
 
 
-    const handleDragOver = (e) => {
-        e.preventDefault(); // Necessary
-        setIsDragging(true);
-    };
-
-    const handleDragLeave = () => {
-        setIsDragging(false);
-    };
-
-    const handleDrop = (e) => {
+    const handleImageDrop = (e) => {
         e.preventDefault();
-        setIsDragging(false);
         const droppedFiles = Array.from(e.dataTransfer.files);
-        setFiles(droppedFiles);
-        console.log("Dropped files:", droppedFiles);
-    };
+        setImageArray(prev => [...prev, ...droppedFiles]);
+    }
 
-    async function UploadAssignment() {
-        if (files.length === 0) {
+    async function HandleAssignmentUpload() {
+        if (!file) {
             alert("Please select a file to upload.");
             return;
         }
@@ -42,30 +32,47 @@ function UploadAssignment() {
             try {
                 setLoading(true);
                 const formData = new FormData();
-                formData.append('file', files[0]);
+                formData.append('file', file);
                 const response = await axios.post('http://localhost:8000/api/storage/uploadgame', formData, {
                     headers: { 'Content-Type': 'multipart/form-data' },
                     onUploadProgress: (progressEvent) => {
                         const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
                         console.log(`Upload: ${percentCompleted}%`);
-                        setData("Upload progress: " + percentCompleted + "%")
+                        setData("Uploading game files progress: " + percentCompleted + "%")
                     },
                     timeout: 0,
                 });
-                setFiles([]);
-                setData("Complete!")
-                setLoading(false);
                 console.log("Upload successful:", response.data);
+                uploadImage();
 
             }
             catch (error) {
                 alert(error.message);
                 setLoading(false);
-                setFiles([]);
+                setFile(null);
                 return;
             }
         }
     }
+
+    async function uploadImage() {
+        const formData = new FormData();
+        imageArray.forEach((image) => {
+            formData.append('images', image);
+        });
+        try {
+            setData("Uploading images...");
+            const response = await axios.post('http://localhost:8000/api/storage/uploadimages', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            });
+            setData("Images uploaded successfully: " + response.data.message);
+            setFile(null);
+            setLoading(false);
+        } catch (error) {
+            alert(error.message);
+        }
+    }
+
 
     return (
         <div className="upload-div">
@@ -74,33 +81,25 @@ function UploadAssignment() {
             <h2>Even if someone else uploads the assignment, aslong as they include you as a developer it will still show up on your profile.</h2>
             <div id="split-gap" className="split"></div>
             <h2>Please drag and drop your game file into the box below</h2>
-            <div
-                className={`upload-box ${isDragging ? 'dragover' : ''}`}
-                onDragOver={handleDragOver}
-                onDragLeave={handleDragLeave}
-                onDrop={handleDrop}
+            <input type="file" onChange={(e) => setFile(e.target.files[0])} required />
+            <div className="image-upload-box"
+                onDrop={(e) => handleImageDrop(e)}
+                onDragOver={(e) => e.preventDefault() /*Important to do as without it will open the file in a new tab*/ }
             >
-                {files.length === 0 ? (
-                    <div className="upload-instructions">
-                        <h2>Drag & drop your game file into this box</h2>
-                    </div>
-                ) : (
-                    <div className="file-list">
-
-                        {files.map((file, index) => (
-                            <h2 key={index}>{file.name}</h2>
+                {imageArray.length === 0 ? <h2>Drag & drop your images here</h2> :
+                    <div className="image-list">
+                        {imageArray.map((image, index) => (
+                            <h2 key={index}>{image.name}</h2>
                         ))}
-
-                        <div className="clear-files-center"><button onClick={() => setFiles([])} className="clear-files">Clear files</button></div>
-                    </div>
-                )}
+                    </div>}
             </div>
+            <button onClick={() => setImageArray([])}>Clear images</button>
             <h2>Please keep in mind this upload must be checked and accepted by an admin before it is visibile, this may take some time.</h2>
-            <div className="upload-actions"> <button>Cancel Upload</button><button onClick={() => UploadAssignment()}>Upload Assignment</button></div>
-                {data}
-            {loading ? <div class="spinner-border text-primary" role="status">
+            <div className="upload-actions"> <button>Cancel Upload</button><button onClick={() => HandleAssignmentUpload()}>Upload Assignment</button></div>
+            {data}
+            {loading ? <><div class="spinner-border text-primary" role="status">
                 <span class="visually-hidden">Loading...</span>
-            </div> : <></>}
+            </div><h2></h2></> : <></>}
         </div>
     );
 }
