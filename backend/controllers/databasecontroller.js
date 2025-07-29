@@ -79,3 +79,23 @@ export async function changeName(req, res) {
 
 }
 
+export async function uploadGameInformation(req, res) {
+    const { gameName, description, developers } = req.body;
+    const params = {
+        TableName: "gameInformation",
+        Item: {
+            gameName: { S: gameName },
+            description: { S: description },
+            developers: { S: developers },
+        }
+    };
+    try {
+        const data = await client.send(new PutItemCommand(params));
+        res.status(200).json({ message: "Game information uploaded successfully", data });
+        console.log("Game information uploaded successfully:", data);
+    } catch (err) {
+        console.log("Error uploading game information:", err);
+        res.status(500).json({ error: "Failed to upload game information" });
+    }
+}
+

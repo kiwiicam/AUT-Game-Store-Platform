@@ -1,13 +1,14 @@
 .game-card {
     cursor: pointer;
-    width: 295px;
-    height: 255px;
+    min-width: 275px;
+    height: 225px;
     border-radius: 15px;
     background-color: #14141499;
     display: flex;
     padding: 5px;
     flex-direction: column;
     transition: 0.2s ease-in-out;    
+    margin-right: 15px;
 }
 
 .game-card:hover {

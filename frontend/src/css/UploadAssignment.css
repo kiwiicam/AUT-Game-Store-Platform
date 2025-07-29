@@ -1,9 +1,17 @@
 .upload-div {
     width: 100%;
-    height: 400px;
+    height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
     padding: 10px;
+}
+
+.inner-upload-div {
+    width: 100%;
+    height: 1000px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
 }
 
 .upload-box {
