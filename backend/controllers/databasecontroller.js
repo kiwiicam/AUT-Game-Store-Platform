@@ -1,5 +1,6 @@
 import { client } from '../dynamoClient.js';
-import { PutItemCommand, GetItemCommand, UpdateItemCommand } from '@aws-sdk/client-dynamodb';
+import { PutItemCommand, GetItemCommand, UpdateItemCommand, ScanCommand } from '@aws-sdk/client-dynamodb';
+import { retrieveGameImages } from './storagecontroller.js';
 import { unmarshall } from '@aws-sdk/util-dynamodb';
 
 export async function addUser(req, res) {
@@ -96,6 +97,50 @@ export async function uploadGameInformation(req, res) {
     } catch (err) {
         console.log("Error uploading game information:", err);
         res.status(500).json({ error: "Failed to upload game information" });
+    }
+}
+
+export async function retrieveFeaturedGames(req, res) {
+    try {
+        const params = {
+            TableName: "gameInformation",
+        };
+        const data = await client.send(new ScanCommand(params));
+        const games = data.Items.map(item => unmarshall(item));
+
+        const topThree = games.reduce((acc, game) => {
+            acc.push(game);
+            acc.sort((a, b) => b.likes - a.likes);
+
+            if (acc.length > 3) acc.pop();
+            return acc;
+        }, []);
+
+        const gameNameArray = [topThree[0].gameName, topThree[1].gameName, topThree[2].gameName];
+        const gameImages = await retrieveGameImages(gameNameArray);
+
+        const featuredGames = []
+        gameImages.forEach(element => {
+            const name = element.gameName;
+            topThree.forEach(game => {
+                if (game.gameName === name) {
+                    featuredGames.push({
+                        src: element.imageUrl,
+                        title: game.gameName,
+                        desc: game.description,
+                        creator: game.developers,
+                        likes: game.likes
+                    });
+                }
+            });
+        });
+
+        console.log(featuredGames);
+
+        res.status(200).json({ message: "Featured games retrieved successfully", featuredGames });
+    } catch (err) {
+        console.log("Error retrieving featured games:", err);
+        res.status(500).json({ error: "Failed to retrieve featured games" });
     }
 }
 

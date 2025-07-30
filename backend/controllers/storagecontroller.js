@@ -1,7 +1,8 @@
 import express from 'express';
 import { S3 } from '../s3Client.js';
 import fs from 'fs';
-import { PutObjectCommand } from '@aws-sdk/client-s3';
+import { PutObjectCommand, GetObjectCommand, ListObjectsV2Command } from '@aws-sdk/client-s3';
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import stream from 'stream';
 
 
@@ -64,4 +65,32 @@ export async function uploadGameImages(req, res) {
         });
         console.log(err.message);
     }
+}
+
+export async function retrieveGameImages(gameNameArray) {
+    try {
+        const gameImages = [];
+        for (const gameName of gameNameArray) {
+            const params = {
+                Bucket: process.env.AWS_BUCKET_NAME,
+                Prefix: `Games/${gameName}/Images/`
+            };
+            const data = await S3.send(new ListObjectsV2Command(params));
+
+            if (data.Contents && data.Contents.length > 0) {
+                const item = data.Contents[0];
+                const command = new GetObjectCommand({
+                    Bucket: process.env.AWS_BUCKET_NAME,
+                    Key: item.Key
+                });
+                const imageUrl = await getSignedUrl(S3, command, { expiresIn: 3600 });
+                gameImages.push({ gameName, imageUrl });
+            }
+        }
+        return gameImages;
+    } catch (err) {
+        console.error("Error retrieving game images:", err);
+        throw err;
+    }
+
 }

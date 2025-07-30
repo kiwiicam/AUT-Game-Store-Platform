@@ -14,6 +14,7 @@ import Forgotpw from './pages/Forgotpw.jsx';
 import VerifyEmail from './pages/VerifyEmail.jsx';
 import Header from './components/Header.jsx';
 import HeaderLayout from './components/HeaderLayout.jsx';
+import Gamepage from './pages/Gamepage.jsx';
 
 function App() {
   return (
@@ -24,7 +25,8 @@ function App() {
           <Route path="/" element={<Homepage />} />
           <Route path="/about" element={<Aboutpage />} />
           <Route path="/account" element={<Accountpage />} />
-          <Route path="*" element={<h1>404 Not Found</h1>} />
+          <Route path="*" element={<h1 style={{ color: 'red', marginTop: '100px' }}>404 Not Found</h1>} />
+          <Route path="/games/:slug" element={<Gamepage />} />
         </Route>
         {/*Routes without header (all auth routes)*/}
         <Route path="/signup" element={<Signup />} />

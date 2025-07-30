@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import '../css/Homepage.css'
 import Gamecard from '../components/Gamecard'
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { useNavigate } from 'react-router';
+import axios from 'axios'
 function Homepage() {
 
     const [featuredGames, setFeaturedGames] = useState([]);
@@ -9,13 +11,46 @@ function Homepage() {
     const [index, setIndex] = useState(0);
     const [recentIndex, setRecentIndex] = useState(0);
 
+    const navigate = useNavigate();
     useEffect(() => {
         // This is where you can fetch data for the homepage, like featured games
-        setFeaturedGames([
-            { src: "https://i.redd.it/q4fjauk2ebc31.png", title: "Mincecraft", desc: "This will be a blurb description of the game based on what the user has written in their documents. It should provide a brief overview of the story, the game play, and additional features that make the game unique and interesting to play.", creator: "Mojang" },
-            { src: "https://media.rockstargames.com/rockstargames/img/global/news/upload/1_gtavpc_03272015.jpg", title: "Grand Theft Auto 5", desc: "This is a description for Slideshow two.", creator: "Rockstar Games" },
-            { src: "http://localhost:3000/joshgame.png", title: "Slideshow three", desc: "This is a description for Slideshow three.", creator: "Joshua Knight" },
-        ]);
+        const fetchFeaturedGames = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/api/database/featuredgames')
+                const featuredGamesReturn = response.data.featuredGames;
+                setFeaturedGames(
+                    [
+                        {
+                            src: featuredGamesReturn[0].src,
+                            title: featuredGamesReturn[0].title,
+                            desc: featuredGamesReturn[0].desc,
+                            creator: featuredGamesReturn[0].creator
+                        }
+                        ,
+                        {
+                            src: featuredGamesReturn[1].src,
+                            title: featuredGamesReturn[1].title,
+                            desc: featuredGamesReturn[1].desc,
+                            creator: featuredGamesReturn[1].creator
+                        }
+                        ,
+                        {
+                            src: featuredGamesReturn[2].src,
+                            title: featuredGamesReturn[2].title,
+                            desc: featuredGamesReturn[2].desc,
+                            creator: featuredGamesReturn[2].creator
+                        }
+                    ]
+                );
+            }
+            catch (error) {
+                console.error("Error fetching featured games:", error);
+            }
+        }
+        fetchFeaturedGames();
+
+
+
         setRecentReleases([
             { image: "https://i.redd.it/q4fjauk2ebc31.png", title: "Mincecraft LOL", creator: "Mojang" },
             { image: "https://media.rockstargames.com/rockstargames/img/global/news/upload/1_gtavpc_03272015.jpg", title: "GTA 5", creator: "Rockstar Games" },
@@ -48,7 +83,7 @@ function Homepage() {
                                 style={{ transform: `translateX(-${index * (1 / 3) * 100}%)`, transition: 'transform 0.5s ease-in-out' }}
                             >
                                 {featuredGames.map((game, i) => (
-                                    <div key={i} className="slideshow-slide">
+                                    <div key={i} className="slideshow-slide" onClick={() => {navigate(`/games/${game.title}`)}}>
                                         <div className='slideshow-text-container'>
                                             <div className="vertical-line">
                                             </div>
@@ -74,9 +109,9 @@ function Homepage() {
                     <h1>Recent student releases</h1>
                     <div className='split-line'></div>
                     <div className='recent-releases-slider'>
-                        <div className='game-card-button-left' onClick={() => setRecentIndex(recentIndex === 0 ? 6 : recentIndex - 1)}><IoIosArrowBack /></div>                        <div className='game-cards'>
+                        <div className='game-card-button-left' onClick={() => setRecentIndex(recentIndex === 0 ? 5 : recentIndex - 1)}><IoIosArrowBack /></div>                        <div className='game-cards'>
                             <div className='game-card-track'
-                                style={{ transform: `translateX(-${recentIndex * (1 / 8) * 100}%)`, transition: 'transform 0.5s ease-in-out' }}
+                                style={{ transform: `translateX(-${recentIndex * 300.09}px)`, transition: 'transform 0.5s ease-in-out' }}
 
                             >
                                 {recentReleases.map((game, i) => (
@@ -84,8 +119,8 @@ function Homepage() {
                                 ))}
                             </div>
                         </div>
-                        {/*GONNA NEED SOME MAD CALCULATIONS FOR GETTING THIS TO WORK EVENLY */}
-                        <div className='game-card-button-right' onClick={() => setRecentIndex(recentIndex === 6 ? 0 : recentIndex + 1)}><IoIosArrowForward /></div>
+                        {/*GONNA NEED SOME MAD CALCULATIONS FOR GETTING THIS TO WORK EVENLY CAN MAYBE DO TOTAL OF LENGTH OF ALL THE GAMECARDS / SOME NUMBER TO GET HOW MUCH YOU NEED TO SCROLL EACH TIME AND HOW MANY TIMES */}
+                        <div className='game-card-button-right' onClick={() => setRecentIndex(recentIndex === 5 ? 0 : recentIndex + 1)}><IoIosArrowForward /></div>
                     </div>
                 </div>
             </div>
