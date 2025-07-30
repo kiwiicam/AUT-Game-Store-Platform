@@ -1,0 +1,13 @@
+.genrebox{
+    width: 80px;
+    height: 35px;
+    display: flex;
+    background-color: #5D5D5D;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+}
+.genrebox p {
+    margin: 0;
+    font-size: 0.9rem;
+}

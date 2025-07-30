@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { SlLike } from "react-icons/sl";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
+import Genrebox from '../components/Genrebox.jsx';
+import { useNavigate } from 'react-router-dom';
 
 import '../css/Gamepage.css'
 
@@ -9,7 +11,8 @@ import '../css/Gamepage.css'
 function Gamepage() {
     const [index, setIndex] = useState(0);
     const [gameImages, setGameImages] = useState([]);
-
+    const [gameInfo, setGameInfo] = useState({});
+    const navigate = useNavigate();
     const { slug } = useParams();
     useEffect(() => {
         setGameImages([
@@ -17,17 +20,30 @@ function Gamepage() {
             { src: 'https://static0.gamerantimages.com/wordpress/wp-content/uploads/2025/02/minecraft-key-art-feature.jpg' },
             { src: 'https://www.azcentral.com/gcdn/authoring/authoring-images/2024/11/19/USAT/76424170007-merlin-minecraft-image-2.jpg?crop=2149,1208,x0,y0&width=660&height=371&format=pjpg&auto=webps' }
         ]);
+
+        setGameInfo({
+            title: 'Minecraft',
+            description: 'Minecraft is a sandbox video game developed by Mojang Studios. It allows players to build and explore virtual worlds made up of blocks. It is a game of creativity and survival, where players can gather resources, craft items, and build structures. The game features different modes, including survival mode, where players must manage their health and hunger, and creative mode, where they have unlimited resources to build freely.',
+            likes: 462,
+            releaseDate: 'November 18, 2011',
+            developer: 'Mojang Studios',
+            timeframe: 'Ongoing',
+            releaseDate: 'November 18, 2011',
+            fileSize: '1.5 GB',
+            projectType: 'Team Group Project',
+            genre: ['Adventure', 'Sandbox', 'Survival']
+        });
     }, []);
     return (
         <div className='gamepage-container'>
             <div className='gamepage-inner'>
                 <div className='gamepage-header-container'>
                     <div className='gamepage-header'>
-                        <h1>Minecraft</h1>
-                        <h2>This is the page where the game information will be displayed</h2>
+                        <h1>{gameInfo.title}</h1>
+                        <h2>{gameInfo.developer}</h2>
                     </div>
                     <div className='gamepage-likes'>
-                        <p>462</p>
+                        <p>{gameInfo.likes}</p>
                         <div className='gamepage-like-icon'><SlLike /></div>
                     </div>
                 </div>
@@ -56,9 +72,52 @@ function Gamepage() {
 
                     </div>
                     <div className='gamepage-sidebar'>
+                        <div className='gamepage-sidebar-inner'>
+                            <h2>About</h2>
+                            <div id="top" className="skinny-white-bar">
+                            </div>
+                            <p>{gameInfo.description}</p>
+                            <div className='genre-box'>
+                                {gameInfo?.genre?.map((g, idx) => (
+                                    <Genrebox key={idx} genre={g} onClick={() => navigate("/")} />
+                                ))}
+                            </div>
+                            <div className='gamepage-details'>
+                                <div className='gamepage-details-item'>
+                                    <h2>Game</h2>
+                                    <h2>{gameInfo.title}</h2>
+                                </div>
+                                <div className="skinny-white-bar"></div>
+                                <div className='gamepage-details-item'>
+                                    <h2>Project</h2>
+                                    <h2>{gameInfo.projectType}</h2>
+                                </div>
+                                <div className="skinny-white-bar"></div>
+                                <div className='gamepage-details-item'>
+                                    <h2>Timeframe</h2>
+                                    <h2>{gameInfo.timeframe}</h2>
+                                </div>
+                                <div className="skinny-white-bar"></div>
+                                <div className='gamepage-details-item'>
+                                    <h2>Release Date</h2>
+                                    <h2>{gameInfo.releaseDate}</h2>
+                                </div>
+                                <div className="skinny-white-bar"></div>
+                                <div className='gamepage-details-item'>
+                                    <h2>Developers</h2>
+                                    <h2>{gameInfo.developer}</h2>
+                                </div>
+                                <div className="skinny-white-bar"></div>
+                                <div className='gamepage-details-item'>
+                                    <h2>File Size</h2>
+                                    <h2>{gameInfo.fileSize}</h2>
+                                </div>
+                                <div className="skinny-white-bar"></div>
+                                <button>Download</button>
+                            </div>
+                        </div>
 
                     </div>
-
                 </div>
             </div>
         </div>
