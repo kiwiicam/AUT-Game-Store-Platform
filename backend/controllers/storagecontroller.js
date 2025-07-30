@@ -35,6 +35,7 @@ export async function uploadGame(req, res) {
     }
 }
 
+
 export async function uploadGameImages(req, res) {
     try {
         const { gamename } = req.body;
