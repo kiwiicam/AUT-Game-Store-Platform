@@ -1,7 +1,7 @@
 .gamepage-container {
     background: linear-gradient(to bottom, #3E4C71, #191D31);
     width: 100%;
-    height: 200vh;
+    height: 2000px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -161,8 +161,12 @@ img {
     align-items: center;
 }
 
+.gamepage-sidebar-inner p {
+    font-size: 0.8rem;
+}
+
 .gamepage-sidebar-inner h2 {
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
 
 .gamepage-sidebar-inner {
@@ -203,19 +207,58 @@ img {
     justify-content: space-between;
     align-items: center;
 }
-.gamepage-details-button-div{
+
+.gamepage-details-button-div {
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.gamepage-details-button-div button{
+
+.gamepage-details-button-div button {
     width: 200px;
     height: 45px;
 }
 
-.developer-cards{
+.developer-cards {
     width: 100%;
     display: flex;
     justify-content: space-between;
+}
+
+
+.dev-info-container {
+    overflow-x: scroll;
+    width: 100%;
+    border: 1px solid yellow;
+    height: auto;
+}
+
+.developer-info {
+    width: 2025px;
+}
+
+
+
+/* Chrome, Edge, Safari */
+.dev-info-container::-webkit-scrollbar {
+    width: 10px;
+}
+
+.dev-info-container::-webkit-scrollbar-track {
+    background: lavender;
+    /* Scrollbar track */
+    border-radius: 10px;
+}
+
+.dev-info-container::-webkit-scrollbar-thumb {
+    background-color: rebeccapurple;
+    /* Scrollbar thumb */
+    border-radius: 10px;
+    border: 2px solid lavender;
+}
+
+.dev-info-container::-webkit-scrollbar-thumb:hover {
+    background-color: #6a0dad;
+    /* Lighter on hover */
 }

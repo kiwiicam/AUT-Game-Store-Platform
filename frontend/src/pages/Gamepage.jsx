@@ -71,7 +71,41 @@ function Gamepage() {
                         { src: 'https://movingstory-prod.imgix.net/movies/headers/minecraft.jpg?w=1440&h=602&auto=compress,format&fit=crop', name: 'minecraft' },
                         { src: 'https://www.minecraft.net/content/dam/minecraftnet/games/dungeons/key-art/Downloads_Box-Art_Dungeons_600x337.jpg', name: 'Minecraft Dungeons' }
                     ]
-            },{
+            }, {
+                name: 'Campbell',
+                age: '21',
+                email: 'cam@gmail.com',
+                phone: '022 044 3212',
+                picture: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+                about: 'This is just a little paragraph about ya boy and you know im a guy and this is just me typing random crap hopefully this turns out okay what should the word limit be for this?',
+                skills:
+                    [
+                        "C++", "Teamwork", "Java", "Data structures"
+                    ],
+                projects:
+                    [
+                        { src: 'https://movingstory-prod.imgix.net/movies/headers/minecraft.jpg?w=1440&h=602&auto=compress,format&fit=crop', name: 'minecraft' },
+                        { src: 'https://www.minecraft.net/content/dam/minecraftnet/games/dungeons/key-art/Downloads_Box-Art_Dungeons_600x337.jpg', name: 'Minecraft Dungeons' }
+                    ]
+            },
+            {
+                name: 'Campbell',
+                age: '21',
+                email: 'cam@gmail.com',
+                phone: '022 044 3212',
+                picture: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+                about: 'This is just a little paragraph about ya boy and you know im a guy and this is just me typing random crap hopefully this turns out okay what should the word limit be for this?',
+                skills:
+                    [
+                        "C++", "Teamwork", "Java", "Data structures"
+                    ],
+                projects:
+                    [
+                        { src: 'https://movingstory-prod.imgix.net/movies/headers/minecraft.jpg?w=1440&h=602&auto=compress,format&fit=crop', name: 'minecraft' },
+                        { src: 'https://www.minecraft.net/content/dam/minecraftnet/games/dungeons/key-art/Downloads_Box-Art_Dungeons_600x337.jpg', name: 'Minecraft Dungeons' }
+                    ]
+            },
+            {
                 name: 'Campbell',
                 age: '21',
                 email: 'cam@gmail.com',
@@ -178,12 +212,15 @@ function Gamepage() {
 
                     </div>
                 </div>
-                <div className='developer-info'>
-                    <h1>{gameInfo.developer}</h1>
-                    <div className='developer-cards'>
-                        {developerCard.map((card, i) => (
-                            <Developercard key={i} name={card.name} age={card.age} picture={card.picture} about={card.about} projects={card.projects} email={card.email} phone={card.phone} skills={card.skills} />
-                        ))}
+                <h1>{gameInfo.developer}</h1>
+                <div className='dev-info-container'>
+                    <div className='developer-info'>
+
+                        <div className='developer-cards'>
+                            {developerCard.map((card, i) => (
+                                <Developercard key={i} name={card.name} age={card.age} picture={card.picture} about={card.about} projects={card.projects} email={card.email} phone={card.phone} skills={card.skills} />
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
