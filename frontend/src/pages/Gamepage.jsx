@@ -6,17 +6,19 @@ import Genrebox from '../components/Genrebox.jsx';
 import { useNavigate } from 'react-router-dom';
 
 import '../css/Gamepage.css'
+import Developercard from '../components/Developercard.jsx';
 
 
 function Gamepage() {
     const [index, setIndex] = useState(0);
     const [gameImages, setGameImages] = useState([]);
     const [gameInfo, setGameInfo] = useState({});
+    const [developerCard, setDeveloperCard] = useState([])
     const navigate = useNavigate();
     const { slug } = useParams();
     useEffect(() => {
         setGameImages([
-            { src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRG3XnK_SdDy6_T6EgnjEQvoI7koGkpP-R0g&s' },
+            { src: 'https://staticg.sportskeeda.com/editor/2025/01/8827f-17376979472538-1920.jpg' },
             { src: 'https://static0.gamerantimages.com/wordpress/wp-content/uploads/2025/02/minecraft-key-art-feature.jpg' },
             { src: 'https://www.azcentral.com/gcdn/authoring/authoring-images/2024/11/19/USAT/76424170007-merlin-minecraft-image-2.jpg?crop=2149,1208,x0,y0&width=660&height=371&format=pjpg&auto=webps' }
         ]);
@@ -31,8 +33,62 @@ function Gamepage() {
             releaseDate: 'November 18, 2011',
             fileSize: '1.5 GB',
             projectType: 'Team Group Project',
-            genre: ['Adventure', 'Sandbox', 'Survival']
+            genre: ['Adventure', 'Sandbox', 'Survival'],
+            developmentTeam: ['Campbell', 'Blaine', 'Joshua', 'Karlos']
         });
+
+        setDeveloperCard([
+            {
+                name: 'Campbell',
+                age: '21',
+                email: 'cam@gmail.com',
+                phone: '022 044 3212',
+                picture: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+                about: 'This is just a little paragraph about ya boy and you know im a guy and this is just me typing random crap hopefully this turns out okay what should the word limit be for this?',
+                skills:
+                    [
+                        "C++", "Teamwork", "Java", "Data structures"
+                    ],
+                projects:
+                    [
+                        { src: 'https://movingstory-prod.imgix.net/movies/headers/minecraft.jpg?w=1440&h=602&auto=compress,format&fit=crop', name: 'minecraft' },
+                        { src: 'https://www.minecraft.net/content/dam/minecraftnet/games/dungeons/key-art/Downloads_Box-Art_Dungeons_600x337.jpg', name: 'Minecraft Dungeons' }
+                    ]
+            },
+            {
+                name: 'Campbell',
+                age: '21',
+                email: 'cam@gmail.com',
+                phone: '022 044 3212',
+                picture: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+                about: 'This is just a little paragraph about ya boy and you know im a guy and this is just me typing random crap hopefully this turns out okay what should the word limit be for this?',
+                skills:
+                    [
+                        "C++", "Teamwork", "Java", "Data structures"
+                    ],
+                projects:
+                    [
+                        { src: 'https://movingstory-prod.imgix.net/movies/headers/minecraft.jpg?w=1440&h=602&auto=compress,format&fit=crop', name: 'minecraft' },
+                        { src: 'https://www.minecraft.net/content/dam/minecraftnet/games/dungeons/key-art/Downloads_Box-Art_Dungeons_600x337.jpg', name: 'Minecraft Dungeons' }
+                    ]
+            },{
+                name: 'Campbell',
+                age: '21',
+                email: 'cam@gmail.com',
+                phone: '022 044 3212',
+                picture: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+                about: 'This is just a little paragraph about ya boy and you know im a guy and this is just me typing random crap hopefully this turns out okay what should the word limit be for this?',
+                skills:
+                    [
+                        "C++", "Teamwork", "Java", "Data structures"
+                    ],
+                projects:
+                    [
+                        { src: 'https://movingstory-prod.imgix.net/movies/headers/minecraft.jpg?w=1440&h=602&auto=compress,format&fit=crop', name: 'minecraft' },
+                        { src: 'https://www.minecraft.net/content/dam/minecraftnet/games/dungeons/key-art/Downloads_Box-Art_Dungeons_600x337.jpg', name: 'Minecraft Dungeons' }
+                    ]
+            }
+        ])
     }, []);
     return (
         <div className='gamepage-container'>
@@ -113,10 +169,21 @@ function Gamepage() {
                                     <h2>{gameInfo.fileSize}</h2>
                                 </div>
                                 <div className="skinny-white-bar"></div>
+
+                            </div>
+                            <div className='gamepage-details-button-div'>
                                 <button>Download</button>
                             </div>
                         </div>
 
+                    </div>
+                </div>
+                <div className='developer-info'>
+                    <h1>{gameInfo.developer}</h1>
+                    <div className='developer-cards'>
+                        {developerCard.map((card, i) => (
+                            <Developercard key={i} name={card.name} age={card.age} picture={card.picture} about={card.about} projects={card.projects} email={card.email} phone={card.phone} skills={card.skills} />
+                        ))}
                     </div>
                 </div>
             </div>

@@ -1,0 +1,71 @@
+.developer-card{
+    width: 380px;
+    height: 670px;
+    border-radius: 15px;
+    background-color: #14141499;
+    padding: 15px;
+}
+h2{
+    margin-top: 5px;
+    font-size: 1.1rem;
+}
+
+.upper-card{
+    display: flex;
+    justify-content: space-between;
+}
+
+.skinny-grey-line{
+    margin-top: 8px;
+    margin-bottom: 8px;
+    width: 100%;
+    height: 1px;
+    background-color: lightgrey;
+}
+.student-pic{
+    max-width: 65px;
+    max-height: 65px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid blanchedalmond;
+}
+
+.student-pic img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.dev-project{
+    display: flex; 
+    justify-content: space-evenly;
+}
+.project{
+    width: 150px;
+    height: 90px;
+    border-radius: 15px;
+}
+
+.project img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.email-div{
+    display: flex;
+    justify-content: space-between;
+}
+
+.upper-skills,.lower-skills{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.port-button{
+    width: 250px;
+}
+
+.button-con{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}

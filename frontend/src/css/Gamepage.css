@@ -1,11 +1,12 @@
 .gamepage-container {
     background: linear-gradient(to bottom, #3E4C71, #191D31);
     width: 100%;
-    height: 150vh;
+    height: 200vh;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
+
 
 img {
     user-select: none;
@@ -161,7 +162,7 @@ img {
 }
 
 .gamepage-sidebar-inner h2 {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
 }
 
 .gamepage-sidebar-inner {
@@ -201,4 +202,20 @@ img {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+.gamepage-details-button-div{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.gamepage-details-button-div button{
+    width: 200px;
+    height: 45px;
+}
+
+.developer-cards{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
 }

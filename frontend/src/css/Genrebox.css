@@ -6,6 +6,7 @@
     justify-content: center;
     align-items: center;
     border-radius: 8px;
+    cursor: pointer;
 }
 .genrebox p {
     margin: 0;
