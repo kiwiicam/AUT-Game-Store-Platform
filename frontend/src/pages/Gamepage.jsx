@@ -223,6 +223,15 @@ function Gamepage() {
                         </div>
                     </div>
                 </div>
+                <div className='comment-section'>
+                    <h1>Comments</h1>
+                    <div className='comment-section-main'>
+
+                    </div>
+                    <div className='comment-section-filters'>
+
+                    </div>
+                </div>
             </div>
         </div>
     )
