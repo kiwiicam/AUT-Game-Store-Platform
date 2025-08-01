@@ -24,6 +24,7 @@
     "fs": "^0.0.1-security",
     "jwt-decode": "^4.0.0",
     "multer": "^2.0.2",
+    "nodemon": "^3.1.10",
     "stream": "^0.0.3"
   }
 }
