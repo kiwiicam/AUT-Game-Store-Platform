@@ -4,7 +4,8 @@ import { SlLike } from "react-icons/sl";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import Genrebox from '../components/Genrebox.jsx';
 import { useNavigate } from 'react-router-dom';
-
+import { FaArrowDown } from "react-icons/fa";
+import Commentcard from "../components/Commentcard.jsx"
 import '../css/Gamepage.css'
 import Developercard from '../components/Developercard.jsx';
 
@@ -14,6 +15,7 @@ function Gamepage() {
     const [gameImages, setGameImages] = useState([]);
     const [gameInfo, setGameInfo] = useState({});
     const [developerCard, setDeveloperCard] = useState([])
+    const [loggedIn, setLoggedIn] = useState(true);
     const navigate = useNavigate();
     const { slug } = useParams();
     useEffect(() => {
@@ -225,11 +227,31 @@ function Gamepage() {
                 </div>
                 <div className='comment-section'>
                     <h1>Comments</h1>
-                    <div className='comment-section-main'>
+                    <div className='inner-comment'>
+                        <div className='comment-section-main'>
+                            {loggedIn ?
+                                <div className='logged-in-comment'>
+                                    <div className='comment-pfp'>
+                                        <img src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'>
 
-                    </div>
-                    <div className='comment-section-filters'>
+                                        </img>
+                                    </div>
+                                    <div className='comment-input'>
+                                        <input className='comment-input-field' type='text' placeholder='Add a comment...' />
+                                        <div className='comment-submit'>
+                                            <FaArrowDown />
+                                        </div>
+                                    </div>
+                                </div>
+                                : <div> </div>}
 
+                            <div className='comments-container'>
+                                <Commentcard text="yaydaydaydayda this is my comment it is long what should be word limit be im unsure yk?" name="Campbell Boulton" picsrc="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" date="20/08/2025"/>
+                            </div>
+                        </div>
+                        <div className='comment-section-filters'>
+
+                        </div>
                     </div>
                 </div>
             </div>
