@@ -111,30 +111,43 @@ function UploadAssignment() {
                 <div>
                     <h2>This page is where you can upload assignments to be displayed on your student profile, please ensure only one student uploads the assignment per group.</h2>
                     <h2>Even if someone else uploads the assignment, aslong as they include you as a developer it will still show up on your profile.</h2>
-                    <div id="split-gap" className="split"></div>
                 </div>
-                <h2>Please enter the name of your game</h2>
-                <input value={gameName} type="text" onChange={(e) => setGameName(e.target.value)} />
-                <h2>Please drag and drop your game file into the box below</h2>
-                <input type="file" accept=".zip" onChange={(e) => setFile(e.target.files[0])} required />
-                <div className="image-upload-box"
-                    onDrop={(e) => handleImageDrop(e)}
-                    onDragOver={(e) => e.preventDefault() /*Important to do as without it will open the file in a new tab*/}
-                >
-                    {imageArray.length === 0 ? <h2>Drag & drop your images here</h2> :
-                        <div className="image-list">
-                            {imageArray.map((image, index) => (
-                                <h2 key={index}>{image.name}</h2>
-                            ))}
-                        </div>}
+                <h3>Instructions</h3>
+                <h2>Please enter any relevant details about your project into sections below. Please ensure you fill out all the sections and keep your answers appropriate as this will be shown publicy once approved by an admin.</h2>
+                <h3>Folder Format</h3>
+                <h2>Please use the folder format provided, this will keep it consistent and allow users to download and play the game easier. If your file format does not follow this format it is likely to be declinded by an admin.</h2>
+                <div className="folder-format"></div>
+                <div className="upload-inputs">
+                    <h3>Upload Game Projects</h3>
+                    <h2>Upload your group/individual game project here.</h2>
+                    <div className="game-team-name">
+                        <div>
+                            <h2>Game Title</h2>
+                            <input type="text" onChange={(e) => setGameName(e.target.value)} />
+                        </div>
+                        <div>
+                            <h2>Game Title</h2>
+                            <input type="text" onChange={(e) => setGameName(e.target.value)} />
+                        </div>
+                    </div>
+                    <h2>Please drag and drop your game file into the box below</h2>
+                    <input type="file" accept=".zip" onChange={(e) => setFile(e.target.files[0])} required />
+                    
+                    <div className="image-upload-box"
+                        onDrop={(e) => handleImageDrop(e)}
+                        onDragOver={(e) => e.preventDefault() /*Important to do as without it will open the file in a new tab*/}
+                    >
+                        {imageArray.length === 0 ? <h2>Drag & drop your images here</h2> :
+                            <div className="image-list">
+                                {imageArray.map((image, index) => (
+                                    <h2 key={index}>{image.name}</h2>
+                                ))}
+                            </div>}
+                    </div>
+                    <button onClick={() => setImageArray([])}>Clear images</button>
+                    <h2>Please keep in mind this upload must be checked and accepted by an admin before it is visibile, this may take some time.</h2>
+                    <div className="upload-actions"> <button>Cancel Upload</button><button onClick={() => HandleAssignmentUpload()}>Upload Assignment</button></div>
                 </div>
-                <button onClick={() => setImageArray([])}>Clear images</button>
-                <h2>Please keep in mind this upload must be checked and accepted by an admin before it is visibile, this may take some time.</h2>
-                <div className="upload-actions"> <button>Cancel Upload</button><button onClick={() => HandleAssignmentUpload()}>Upload Assignment</button></div>
-                {data}
-                {loading ? <><div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div><h2></h2></> : <></>}
             </div>
         </div>
     );
