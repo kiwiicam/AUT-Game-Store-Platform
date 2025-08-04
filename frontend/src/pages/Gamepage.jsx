@@ -14,8 +14,16 @@ function Gamepage() {
     const [index, setIndex] = useState(0);
     const [gameImages, setGameImages] = useState([]);
     const [gameInfo, setGameInfo] = useState({});
-    const [developerCard, setDeveloperCard] = useState([])
+    const [developerCard, setDeveloperCard] = useState([]);
     const [loggedIn, setLoggedIn] = useState(true);
+    const [commentCards, setCommentCards] = useState([]);
+    const [visibleCount, setVisibleCount] = useState(5);
+
+    //filter states
+    const [withinMonth, setWithinMonth] = useState(false);
+    const [mostRecent, setMostRecent] = useState(true);
+    const [leastRecent, setLeastRecent] = useState(false);
+
     const navigate = useNavigate();
     const { slug } = useParams();
     useEffect(() => {
@@ -125,6 +133,12 @@ function Gamepage() {
                     ]
             }
         ])
+        setCommentCards([
+            {
+                text: "This game is really good, I enjoyed playing it and the quality is super good would recomend 10/10", name: "Campbell Boulton", picsrc: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png", date: "20/08/2025"
+            },
+
+        ])
     }, []);
     return (
         <div className='gamepage-container'>
@@ -228,7 +242,11 @@ function Gamepage() {
                 <div className='comment-section'>
                     <h1>Comments</h1>
                     <div className='inner-comment'>
-                        <div className='comment-section-main'>
+                        <div className='comment-section-main'
+                            style={{
+                                overflowY: commentCards.length > 2 ? "scroll" : "auto"
+                            }}
+                        >
                             {loggedIn ?
                                 <div className='logged-in-comment'>
                                     <div className='comment-pfp'>
@@ -243,14 +261,41 @@ function Gamepage() {
                                         </div>
                                     </div>
                                 </div>
-                                : <div> </div>}
+                                : <div><h2>Please login to comment</h2></div>}
 
                             <div className='comments-container'>
-                                <Commentcard text="yaydaydaydayda this is my comment it is long what should be word limit be im unsure yk?" name="Campbell Boulton" picsrc="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" date="20/08/2025"/>
+                                {commentCards.slice(0, visibleCount).map((comment, index) => (
+                                    <Commentcard key={index} text={comment.text} name={comment.name} picsrc={comment.picsrc} date={comment.date} />
+                                ))}
+                                {commentCards.length > 0 ?
+                                    commentCards.length > 5 ?
+                                        visibleCount < commentCards.length ?
+                                            <button onClick={() => { setVisibleCount(prevCount => prevCount + 5) }}>Show more Comments</button>
+                                            :
+                                            <button onClick={() => { setVisibleCount(5) }}>Show less comments</button>
+                                        : <></>
+                                    : <></>
+                                }
                             </div>
                         </div>
                         <div className='comment-section-filters'>
-
+                            <h3>Filter by</h3>
+                            <div className='skinny-white-line'></div>
+                            <h4>Date added</h4>
+                            <div className='within-month'>
+                                <input type='checkbox' onChange={(e) => { setWithinMonth(e.target.checked) }} />
+                                <h2>Within 30 days</h2>
+                            </div>
+                            <div className='skinny-white-line'></div>
+                            <h4>Order by</h4>
+                            <div className='within-month'>
+                                <input type='checkbox' style={{ cursor: leastRecent ? "not-allowed" : "pointer" }} onChange={(e) => { setMostRecent(e.target.checked) }} />
+                                <h2>Most Recent</h2>
+                            </div>
+                            <div className='within-month'>
+                                <input type='checkbox' style={{ cursor: mostRecent ? "not-allowed" : "pointer" }} onChange={(e) => { setLeastRecent(e.target.checked) }} />
+                                <h2>Least Recent</h2>
+                            </div>
                         </div>
                     </div>
                 </div>
