@@ -140,6 +140,21 @@ function Gamepage() {
 
         ])
     }, []);
+
+    useEffect(() => {
+        if (!mostRecent && !leastRecent) {
+            setMostRecent(true);
+        }
+    }, [mostRecent, leastRecent]);
+    
+    const handleMostRecentChange = (checked) => {
+        setMostRecent(checked);
+        if (checked) setLeastRecent(false);
+    };
+    const handleLeastRecentChange = (checked) => {
+        setLeastRecent(checked);
+        if (checked) setMostRecent(false);
+    };
     return (
         <div className='gamepage-container'>
             <div className='gamepage-inner'>
@@ -277,9 +292,6 @@ function Gamepage() {
                                         : <></>
                                     : <></>
                                 }
-
-                                <Commentcard text="yaydaydaydayda this is my comment it is long what should be word limit be im unsure yk?" name="Campbell Boulton" picsrc="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" date="20/08/2025" />
-
                             </div>
                         </div>
                         <div className='comment-section-filters'>
@@ -293,11 +305,16 @@ function Gamepage() {
                             <div className='skinny-white-line'></div>
                             <h4>Order by</h4>
                             <div className='within-month'>
-                                <input type='checkbox' style={{ cursor: leastRecent ? "not-allowed" : "pointer" }} onChange={(e) => { setMostRecent(e.target.checked) }} />
+                                <input type='checkbox'
+                                    checked={mostRecent}
+                                    onChange={(e) => handleMostRecentChange(e.target.checked)}
+                                />
                                 <h2>Most Recent</h2>
                             </div>
                             <div className='within-month'>
-                                <input type='checkbox' style={{ cursor: mostRecent ? "not-allowed" : "pointer" }} onChange={(e) => { setLeastRecent(e.target.checked) }} />
+                                <input type='checkbox'
+                                    checked={leastRecent}
+                                    onChange={(e) => handleLeastRecentChange(e.target.checked)} />
                                 <h2>Least Recent</h2>
                             </div>
                         </div>
