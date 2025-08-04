@@ -246,7 +246,7 @@ function Gamepage() {
                                 : <div> </div>}
 
                             <div className='comments-container'>
-                                <Commentcard text="yaydaydaydayda this is my comment it is long what should be word limit be im unsure yk?" name="Campbell Boulton" picsrc="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" date="20/08/2025"/>
+                                <Commentcard text="yaydaydaydayda this is my comment it is long what should be word limit be im unsure yk?" name="Campbell Boulton" picsrc="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" date="20/08/2025" />
                             </div>
                         </div>
                         <div className='comment-section-filters'>

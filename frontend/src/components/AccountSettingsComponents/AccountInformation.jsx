@@ -124,7 +124,7 @@ function AccountInformation() {
             <h1 className="subheading">Profile details</h1>
             <h2>Change your profile details that others can view</h2>
 
-            <div className="profile-pic">{/*<img src="" alt="Profile picture" />*/}<div className="icon-container"><MdOutlineModeEditOutline className="edit-icon" /></div></div>
+            <div className="profile-pics">{/*<img src="" alt="Profile picture" />*/}<div className="icon-containers"><MdOutlineModeEditOutline className="edit-icon" /></div></div>
             <div className="username">
                 <h2>Username</h2>
                 <div className="username-input">

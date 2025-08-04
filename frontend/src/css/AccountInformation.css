@@ -22,7 +22,7 @@ h2 {
     justify-content: space-evenly;
 }
 
-.profile-pic {
+.profile-pics {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -39,7 +39,7 @@ h2 {
     color: white;
 }
 
-.icon-container {
+.icon-containers {
     cursor: pointer;
     position: absolute;
     bottom: 0;
