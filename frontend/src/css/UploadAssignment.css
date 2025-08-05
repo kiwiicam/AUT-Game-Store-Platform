@@ -9,10 +9,10 @@
 
 .inner-upload-div {
     width: 100%;
-    height: 2200px;
+    height: 2800px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    gap: 40px;
 }
 
 .upload-box {
@@ -125,6 +125,19 @@ select {
     justify-content: space-between;
 }
 
+.container-left-div {
+    display: flex;
+}
+
+.number-div {
+    display: flex;
+    gap: 10px;
+}
+
+.number-div input {
+    max-width: 12%;
+}
+
 .left-div,
 .right-div {
     width: 50%;
@@ -137,6 +150,8 @@ select {
 
 }
 
+
+
 select:focus {
     border-color: #007BFF;
     outline: none;
@@ -147,8 +162,9 @@ select:focus {
     color: #0000006B;
 }
 
+
 .game-team-name {
-    height: 500px;
+    height: 700px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -303,4 +319,40 @@ select:focus {
     width: 100%;
     height: 50%;
     justify-content: space-evenly;
+}
+
+.genre-selection {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    width: 100%;
+    height: 155px;
+}
+
+.genre-item {
+    cursor: pointer;
+    width: fit-content;
+    padding: 5px !important;
+    height: 35px;
+    border-radius: 8px;
+    background-color: #D9D9D966;
+}
+
+.genre-item h5 {
+    color: lightgrey;
+    font-size: 1.1rem;
+}
+
+.genre-item-selected {
+    cursor: pointer;
+    width: fit-content;
+    padding: 5px !important;
+    height: 35px;
+    border-radius: 8px;
+    background-color: rgb(255, 255, 255);
+}
+
+.genre-item-selected h5 {
+    color: lightgrey;
+    font-size: 1.1rem;
 }

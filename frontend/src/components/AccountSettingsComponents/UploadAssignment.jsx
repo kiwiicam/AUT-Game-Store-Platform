@@ -1,5 +1,5 @@
 import react, { useEffect, useState, useRef } from "react";
-import 'react-toastify/dist/ReactToastify.css'; 
+import 'react-toastify/dist/ReactToastify.css';
 import '../../css/UploadAssignment.css'
 import axios from 'axios';
 import { MdOutlineFileUpload } from "react-icons/md";
@@ -17,14 +17,50 @@ function UploadAssignment() {
     const [teamName, setTeamName] = useState("");
     const [gameDesc, setGameDesc] = useState("");
     const [projectType, setProjectType] = useState("Individual Game Project");
+    const [projectTimeframe, setProjectTimeframe] = useState(1);
+    const [gameFile, setGameFile] = useState(null);
+    const [imageArray, setImageArray] = useState([])
+    const [selectedGenres, setSelectedGenres] = useState([]);
 
     const [groupMembers, setGroupMembers] = useState([])
     const [search, setSearch] = useState("");
     const [isSearching, setIsSearching] = useState(false)
     const [searchResults, setSearchResults] = useState([]);
 
-    const [gameFile, setGameFile] = useState(null);
-    const [imageArray, setImageArray] = useState([])
+    const gameGenres = [
+        "Action",
+        "Adventure",
+        "Role-Playing (RPG)",
+        "Simulation",
+        "Strategy",
+        "Sports",
+        "Racing",
+        "Fighting",
+        "Puzzle",
+        "Platformer",
+        "Shooter (FPS/TPS)",
+        "Survival",
+        "Horror",
+        "Sandbox",
+        "Stealth",
+        "MMORPG",
+        "MOBA (Multiplayer Online Battle Arena)",
+        "Battle Royale",
+        "Metroidvania",
+        "Rhythm",
+        "Visual Novel",
+        "Party",
+        "Card Game",
+        "Idle / Incremental",
+        "Roguelike / Roguelite",
+        "Tower Defense",
+        "Educational",
+        "Turn-Based Tactics",
+        "Interactive Story",
+        "Text Adventure"
+    ];
+
+
 
     const fileInputRef = useRef(null);
     const imageInputRef = useRef(null);
@@ -77,6 +113,21 @@ function UploadAssignment() {
         setGroupMembers((prev) => [...prev, { name }]);
     }
 
+    function addGenre(genre) {
+
+        if (selectedGenres.includes(genre)) {
+            setSelectedGenres(selectedGenres.filter(item => item !== genre))
+            return
+        }
+
+        if (selectedGenres.length >= 3) return
+
+        setSelectedGenres((prev) => [...prev, genre])
+
+        return
+
+    }
+
 
 
     return (
@@ -124,15 +175,24 @@ function UploadAssignment() {
                             onChange={(e) => setGameDesc(e.target.value)}
                         />
                     </div>
-                    <div className="left-div">
-                        <h2>Project Type</h2>
-                        <select
-                            value={projectType}
-                            onChange={(e) => setProjectType(e.target.value)}
-                            style={{ color: '#0000006B' }}>
-                            <option value="Individual Game Project">Individual Game Project</option>
-                            <option value="Group Game Project">Group Game Project</option>
-                        </select>
+                    <div className="container-left-div">
+                        <div className="left-div">
+                            <h2>Project Type</h2>
+                            <select
+                                value={projectType}
+                                onChange={(e) => setProjectType(e.target.value)}
+                                style={{ color: '#0000006B' }}>
+                                <option value="Individual Game Project">Individual Game Project</option>
+                                <option value="Group Game Project">Group Game Project</option>
+                            </select>
+                        </div>
+                        <div className="right-div">
+                            <h2>Project Timeframe</h2>
+                            <div className="number-div">
+                                <input style={{ paddingLeft: "10px" }} type="number" min="1" max="12" value={projectTimeframe} onChange={(e) => setProjectTimeframe(e.target.value)} />
+                                <h2>Week(s) to complete</h2>
+                            </div>
+                        </div>
                     </div>
                     {projectType === "Group Game Project" ?
                         <div className="search-container">
@@ -167,6 +227,17 @@ function UploadAssignment() {
                         <></>
                     }
 
+                </div>
+                <div className="genre-section">
+                    <h3>Game genres</h3>
+                    <h2>Please select 3 genres your game fits into.</h2>
+                    <div className="genre-selection">
+                        {gameGenres.map((item, i) => (
+                            <div className={selectedGenres.includes(item) ? "genre-item-selected" : "genre-item"} onClick={() => { addGenre(item) }} key={i}>
+                                <h5>{item}</h5>
+                            </div>
+                        ))}
+                    </div>
                 </div>
                 <div className="file-upload-div">
                     <div className="center-stuff">
@@ -209,7 +280,7 @@ function UploadAssignment() {
                                 :
                                 <>
                                     {imageArray.map((value, i) => (
-                                        <h2 key={i}>{value.name}</h2>
+                                        <h2 key={i}>{value.name}z</h2>
                                     ))}
                                 </>
                             }
