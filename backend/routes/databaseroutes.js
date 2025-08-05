@@ -1,5 +1,5 @@
 import express from 'express';
-import { addUser, changeName, getUserInfo, uploadGameInformation, retrieveFeaturedGames } from '../controllers/databasecontroller.js';
+import { addUser, changeName, getUserInfo, uploadGameInformation, retrieveFeaturedGames, getUserSearch } from '../controllers/databasecontroller.js';
 
 const router = express.Router();
 
@@ -8,5 +8,6 @@ router.post('/getuserinfo', getUserInfo);
 router.post('/uploadgameinfo', uploadGameInformation);
 router.post('/changename', changeName);
 router.get('/featuredgames', retrieveFeaturedGames);
+router.post('/getusersearch', getUserSearch);
 
 export default router;

@@ -137,6 +137,39 @@ function Gamepage() {
             {
                 text: "This game is really good, I enjoyed playing it and the quality is super good would recomend 10/10", name: "Campbell Boulton", picsrc: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png", date: "20/08/2025"
             },
+            {
+                text: "This game is really good, I enjoyed playing it and the quality is super good would recomend 10/10", name: "Campbell Boulton", picsrc: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png", date: "20/08/2025"
+            },
+            {
+                text: "This game is really good, I enjoyed playing it and the quality is super good would recomend 10/10", name: "Campbell Boulton", picsrc: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png", date: "20/08/2025"
+            },
+            {
+                text: "This game is really good, I enjoyed playing it and the quality is super good would recomend 10/10", name: "Campbell Boulton", picsrc: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png", date: "20/08/2025"
+            },
+            {
+                text: "This game is really good, I enjoyed playing it and the quality is super good would recomend 10/10", name: "Campbell Boulton", picsrc: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png", date: "20/08/2025"
+            },
+            {
+                text: "This game is really good, I enjoyed playing it and the quality is super good would recomend 10/10", name: "Campbell Boulton", picsrc: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png", date: "20/08/2025"
+            },
+            {
+                text: "This game is really good, I enjoyed playing it and the quality is super good would recomend 10/10", name: "Campbell Boulton", picsrc: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png", date: "20/08/2025"
+            },
+            {
+                text: "This game is really good, I enjoyed playing it and the quality is super good would recomend 10/10", name: "Campbell Boulton", picsrc: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png", date: "20/08/2025"
+            },
+            {
+                text: "This game is really good, I enjoyed playing it and the quality is super good would recomend 10/10", name: "Campbell Boulton", picsrc: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png", date: "20/08/2025"
+            },
+            {
+                text: "This game is really good, I enjoyed playing it and the quality is super good would recomend 10/10", name: "Campbell Boulton", picsrc: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png", date: "20/08/2025"
+            },
+            {
+                text: "This game is really good, I enjoyed playing it and the quality is super good would recomend 10/10", name: "Campbell Boulton", picsrc: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png", date: "20/08/2025"
+            },
+            {
+                text: "This game is really good, I enjoyed playing it and the quality is super good would recomend 10/10", name: "Campbell Boulton", picsrc: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png", date: "20/08/2025"
+            },
 
         ])
     }, []);
@@ -146,7 +179,7 @@ function Gamepage() {
             setMostRecent(true);
         }
     }, [mostRecent, leastRecent]);
-    
+
     const handleMostRecentChange = (checked) => {
         setMostRecent(checked);
         if (checked) setLeastRecent(false);

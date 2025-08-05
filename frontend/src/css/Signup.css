@@ -42,7 +42,7 @@
     margin: 10px 0;
 }
 
-button {
+.outer-background button {
     border: none;
     border-radius: 50px;
     background-color: #413E71;

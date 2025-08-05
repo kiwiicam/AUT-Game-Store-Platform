@@ -1,9 +1,14 @@
 import react, { useEffect, useState, useRef } from "react";
+import 'react-toastify/dist/ReactToastify.css'; 
 import '../../css/UploadAssignment.css'
 import axios from 'axios';
 import { MdOutlineFileUpload } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
 import { useNavigate } from 'react-router';
+import { FaSearch } from "react-icons/fa";
+import SearchPersonCard from "../SearchPersonCard";
+import { ToastContainer, toast } from 'react-toastify';
+
 
 function UploadAssignment() {
     const navigate = useNavigate();
@@ -12,7 +17,11 @@ function UploadAssignment() {
     const [teamName, setTeamName] = useState("");
     const [gameDesc, setGameDesc] = useState("");
     const [projectType, setProjectType] = useState("Individual Game Project");
+
     const [groupMembers, setGroupMembers] = useState([])
+    const [search, setSearch] = useState("");
+    const [isSearching, setIsSearching] = useState(false)
+    const [searchResults, setSearchResults] = useState([]);
 
     const [gameFile, setGameFile] = useState(null);
     const [imageArray, setImageArray] = useState([])
@@ -21,26 +30,58 @@ function UploadAssignment() {
     const imageInputRef = useRef(null);
 
     useEffect(() => {
-        //check if user is allowed first
+
     }, [])
 
 
+    async function handleSearchChange(search) {
+        setSearch(search)
+        if (search.trim() === "") {
+            setIsSearching(false)
+            return
+        }
+        setIsSearching(true);
+        try {
+            const response = await axios.post("http://localhost:8000/api/database/getusersearch", {
+                searchQuery: search
+            })
+            setSearchResults(response.data.namelist)
+        }
+        catch (err) {
+            alert(err.message)
+        }
+    }
 
     const handleImageDrop = (files) => {
         if (imageArray.length >= 3) return;
         setImageArray((prev) => [...prev, ...files]);
     }
 
+    function checkGameDesc() {
+        const wordCount = gameDesc.split(" ")
+        if (wordCount.length < 100) {
+            return
+        }
+        toast.error('Error your word count is greater than 100!', {
+            position: 'top-center', autoClose: 3000,
+        });
+        return
+    }
 
-    async function handleAssignmentUpload(){
-        //to do.....
+    async function handleAssignmentUpload() {
+        checkGameDesc();
+    }
 
+    function addTeamMember(name) {
+        if (groupMembers.length >= 5) return
+        setGroupMembers((prev) => [...prev, { name }]);
     }
 
 
 
     return (
         <div className="upload-div">
+            <ToastContainer />
             <div className="inner-upload-div">
                 <div>
                     <h1>Upload Assignments</h1>
@@ -67,11 +108,11 @@ function UploadAssignment() {
                     <div className="top-half">
                         <div className="left-div">
                             <h2>Game Title</h2>
-                            <input placeholder="Student game project title" type="text" onChange={(e) => setGameName(e.target.value)} />
+                            <input placeholder="Game Name" type="text" onChange={(e) => setGameName(e.target.value)} />
                         </div>
                         <div className="right-div">
                             <h2>Team Name</h2>
-                            <input placeholder="Student project team name" type="text" onChange={(e) => setTeamName(e.target.value)} />
+                            <input placeholder="Team Name" type="text" onChange={(e) => setTeamName(e.target.value)} />
                         </div>
                     </div>
                     <div>
@@ -80,6 +121,7 @@ function UploadAssignment() {
                             placeholder="Write a small paragraph about your game that gets the core mechanics across aswell as selling the game to the readers"
                             style={{ width: '100%', resize: 'none' }}
                             rows="6"
+                            onChange={(e) => setGameDesc(e.target.value)}
                         />
                     </div>
                     <div className="left-div">
@@ -93,7 +135,34 @@ function UploadAssignment() {
                         </select>
                     </div>
                     {projectType === "Group Game Project" ?
-                        <div> </div>
+                        <div className="search-container">
+                            <div className="member-container">
+                                <div style={{ width: "50%" }}>
+                                    <div className="search-members">
+                                        <input value={search} placeholder="Search Username" onChange={(e) => handleSearchChange(e.target.value)} className="search-box" />
+                                        {isSearching ?
+                                            <div className="searching-box">
+                                                <div className="top-close"><IoMdClose onClick={() => { setSearch(""); setIsSearching(false) }} style={{ cursor: "pointer" }} /> </div>
+                                                <div className="inner-searching-box">
+                                                    {searchResults.map((result, i) => (
+                                                        <SearchPersonCard src={result.src} name={result.name} add={addTeamMember} />
+                                                    ))}
+                                                </div>
+                                            </div>
+                                            : <></>}
+
+                                    </div>
+                                </div>
+                                <div className="grid-layout">
+                                    {groupMembers.map((member, i) => (
+                                        <div className="member-card">
+                                            <h2>{member.name}</h2>
+                                            <IoMdClose style={{ cursor: "pointer" }} onClick={() => { setGroupMembers(prev => prev.filter(m => m.name !== member.name)) }} />
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
                         :
                         <></>
                     }
@@ -148,7 +217,7 @@ function UploadAssignment() {
                         <div className="clear-button" onClick={() => { setImageArray([]) }}><h2>Clear files</h2></div>
                     </div>
                     <div className="bottom-buttons">
-                        <button onClick={() => {navigate("/")}}>Cancel Upload Request</button>
+                        <button onClick={() => { navigate("/") }}>Cancel Upload Request</button>
                         <button onClick={() => handleAssignmentUpload()}>Submit Upload Request</button>
                     </div>
                 </div>

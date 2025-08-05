@@ -144,3 +144,31 @@ export async function retrieveFeaturedGames(req, res) {
     }
 }
 
+export async function getUserSearch(req, res) {
+    const { searchQuery } = req.body;
+
+    const params = {
+        TableName: "userTable"
+    }
+    try {
+        const result = await client.send(new ScanCommand(params))
+        const response = result.Items.map(item => unmarshall(item));
+        const regex = new RegExp(`^${searchQuery}`, 'i')
+        const searchResult = response.filter(item => regex.test(item.username));
+        
+        const namelist = []
+        for (var person of searchResult) {
+            namelist.push({
+                name: person.username,
+                src: "https://wallpapers.com/images/hd/blank-default-pfp-wue0zko1dfxs9z2c.jpg"
+            })
+        }
+        console.log(namelist)
+        res.status(200).json({ namelist });
+    } catch (err) {
+        console.log("Error retrieving featured games:", err);
+        res.status(500).json({ error: err.message });
+    }
+
+}
+
