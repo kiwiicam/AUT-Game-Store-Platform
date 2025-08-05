@@ -104,6 +104,33 @@ function UploadAssignment() {
         return
     }
 
+    function checkGameName() {
+
+    }
+
+    function checkTeamName() {
+
+    }
+
+    function checkProjectType() {
+
+    }
+
+    function checkProjectTimeframe() {
+
+    }
+
+    function checkGameFile() {
+
+    }
+
+    function checkImageArray() {
+
+    }
+    function checkSelectedGenres() {
+
+    }
+
     async function handleAssignmentUpload() {
         checkGameDesc();
     }
