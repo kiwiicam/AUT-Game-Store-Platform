@@ -191,6 +191,8 @@ img {
     height: auto;
     width: 100%;
     display: flex;
+    flex-wrap: wrap;
+    row-gap: 10px;
     justify-content: space-evenly;
     align-items: center;
     margin-top: 20px;
