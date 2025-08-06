@@ -26,7 +26,7 @@ function App() {
           <Route path="/about" element={<Aboutpage />} />
           <Route path="/account" element={<Accountpage />} />
           <Route path="*" element={<h1 style={{ color: 'red', marginTop: '100px' }}>404 Not Found</h1>} />
-          <Route path="/games/:slug" element={<Gamepage />} />
+          <Route path="/games/:gameName" element={<Gamepage />} />
         </Route>
         {/*Routes without header (all auth routes)*/}
         <Route path="/signup" element={<Signup />} />

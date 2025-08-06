@@ -81,15 +81,25 @@ export async function changeName(req, res) {
 }
 
 export async function uploadGameInformation(req, res) {
-    const { gameName, description, developers } = req.body;
+    const { gameName, teamName, projectType, projectTimeframe, gameDesc, selectedGenres, groupMembers } = req.body;
     const params = {
         TableName: "gameInformation",
         Item: {
             gameName: { S: gameName },
-            description: { S: description },
-            developers: { S: developers },
+            gameDesc: { S: gameDesc },
+            teamName: { S: teamName },
+            projectTimeframe: { S: projectTimeframe },
+            projectType: { S: projectType },
+            selectedGenres: { SS: selectedGenres },
+            likes: { N: "0" }
         }
     };
+    if (projectType === "Group Game Project") {
+        params.Item.groupMembers = {
+            SS: groupMembers.map(member => member.name)
+        };
+    }
+
     try {
         const data = await client.send(new PutItemCommand(params));
         res.status(200).json({ message: "Game information uploaded successfully", data });
@@ -127,8 +137,8 @@ export async function retrieveFeaturedGames(req, res) {
                     featuredGames.push({
                         src: element.imageUrl,
                         title: game.gameName,
-                        desc: game.description,
-                        creator: game.developers,
+                        desc: game.gameDesc,
+                        creator: game.teamName,
                         likes: game.likes
                     });
                 }
@@ -155,7 +165,7 @@ export async function getUserSearch(req, res) {
         const response = result.Items.map(item => unmarshall(item));
         const regex = new RegExp(`^${searchQuery}`, 'i')
         const searchResult = response.filter(item => regex.test(item.username));
-        
+
         const namelist = []
         for (var person of searchResult) {
             namelist.push({
@@ -169,6 +179,32 @@ export async function getUserSearch(req, res) {
         console.log("Error retrieving featured games:", err);
         res.status(500).json({ error: err.message });
     }
+
+}
+
+export async function getGameInformation(req, res) {
+    const { gameName } = req.body;
+    console.log(gameName, "\n\n\n")
+    try {
+        const params = {
+            TableName: "gameInformation",
+            Key: {
+                gameName: { S: gameName }
+            }
+        }
+
+        const response = await client.send(new GetItemCommand(params))
+        const data = unmarshall(response.Item)
+        const genreArray = Array.from(data.selectedGenres);
+        res.status(200).json({
+            gameData: data,
+            genreArray
+        });
+    } catch (err) {
+        console.log("Error retrieving featured games:", err);
+        res.status(500).json({ error: err.message });
+    }
+
 
 }
 

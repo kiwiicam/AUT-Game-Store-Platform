@@ -8,13 +8,13 @@ import stream from 'stream';
 
 export async function uploadGame(req, res) {
     try {
-        const { gamename } = req.body;
+        const { gameName } = req.body;
         const { file } = req;
         console.log(file.originalname);
         const fileStream = fs.createReadStream(file.path);
         const uploadParams = {
             Bucket: process.env.AWS_BUCKET_NAME,
-            Key: `Games/${gamename}/GameFiles/${file.originalname}`,
+            Key: `Games/${gameName}/GameFiles/${file.originalname}`,
             Body: fileStream,
             ContentType: file.mimetype,
         };
@@ -38,14 +38,15 @@ export async function uploadGame(req, res) {
 
 export async function uploadGameImages(req, res) {
     try {
-        const { gamename } = req.body;
+        const { gameName } = req.body;
         const files = req.files;
         const uploadResults = [];
         for (const file of files) {
+            console.log(file.originalname)
             const fileStream = fs.createReadStream(file.path);
             const uploadParams = {
                 Bucket: process.env.AWS_BUCKET_NAME,
-                Key: `Games/${gamename}/Images/${file.originalname}`,
+                Key: `Games/${gameName}/Images/${file.originalname}`,
                 Body: fileStream,
                 ContentType: file.mimetype,
             };
@@ -57,7 +58,7 @@ export async function uploadGameImages(req, res) {
             message: "file recieved successful",
             result: uploadResults
         });
-        console.log("success");
+        console.log("successfuly uploaded images");
 
     } catch (err) {
         res.status(500).json({

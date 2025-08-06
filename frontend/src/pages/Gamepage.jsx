@@ -8,7 +8,8 @@ import { FaArrowDown } from "react-icons/fa";
 import Commentcard from "../components/Commentcard.jsx"
 import '../css/Gamepage.css'
 import Developercard from '../components/Developercard.jsx';
-
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 function Gamepage() {
     const [index, setIndex] = useState(0);
@@ -25,7 +26,38 @@ function Gamepage() {
     const [leastRecent, setLeastRecent] = useState(false);
 
     const navigate = useNavigate();
-    const { slug } = useParams();
+    const { gameName } = useParams();
+
+    useEffect(() => {
+        if (!gameName) return;
+        async function retrieveGameData() {
+            try {
+                const databaseData = await axios.post('http://localhost:8000/api/database/getgameinfo', { gameName });
+
+                setGameInfo({
+                    title: databaseData.data.gameData.gameName,
+                    description: databaseData.data.gameData.gameDesc,
+                    likes: 462,
+                    developer: databaseData.data.gameData.teamName,
+                    timeframe: databaseData.data.gameData.projectTimeframe + " Weeks",
+                    releaseDate: 'November 18, 2011',
+                    fileSize: '1.5 GB',
+                    projectType: databaseData.data.gameData.projectType,
+                    genre: databaseData.data.genreArray,
+                    developmentTeam: ['Campbell', 'Blaine', 'Joshua', 'Karlos']
+                });
+            }
+            catch (error) {
+                toast.error('Error retreiving the data for this game, please try again later.', {
+                    position: 'top-center', autoClose: 3000,
+                });
+            }
+        }
+
+        retrieveGameData();
+
+    }, [gameName])
+
     useEffect(() => {
         setGameImages([
             { src: 'https://staticg.sportskeeda.com/editor/2025/01/8827f-17376979472538-1920.jpg' },
@@ -33,19 +65,7 @@ function Gamepage() {
             { src: 'https://www.azcentral.com/gcdn/authoring/authoring-images/2024/11/19/USAT/76424170007-merlin-minecraft-image-2.jpg?crop=2149,1208,x0,y0&width=660&height=371&format=pjpg&auto=webps' }
         ]);
 
-        setGameInfo({
-            title: 'Minecraft',
-            description: 'Minecraft is a sandbox video game developed by Mojang Studios. It allows players to build and explore virtual worlds made up of blocks. It is a game of creativity and survival, where players can gather resources, craft items, and build structures. The game features different modes, including survival mode, where players must manage their health and hunger, and creative mode, where they have unlimited resources to build freely.',
-            likes: 462,
-            releaseDate: 'November 18, 2011',
-            developer: 'Mojang Studios',
-            timeframe: 'Ongoing',
-            releaseDate: 'November 18, 2011',
-            fileSize: '1.5 GB',
-            projectType: 'Team Group Project',
-            genre: ['Adventure', 'Sandbox', 'Survival'],
-            developmentTeam: ['Campbell', 'Blaine', 'Joshua', 'Karlos']
-        });
+
 
         setDeveloperCard([
             {
@@ -190,6 +210,7 @@ function Gamepage() {
     };
     return (
         <div className='gamepage-container'>
+            <ToastContainer />
             <div className='gamepage-inner'>
                 <div className='gamepage-header-container'>
                     <div className='gamepage-header'>
@@ -209,7 +230,7 @@ function Gamepage() {
                             >
                                 {gameImages.map((game, i) => (
                                     <div key={i} className="gamepage-slideshow-slide">
-                                        <img src={game.src} alt={slug} />
+                                        <img src={game.src} alt="gameimg" />
                                     </div>
                                 ))}
                             </div>

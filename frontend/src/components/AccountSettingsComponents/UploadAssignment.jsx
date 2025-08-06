@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router';
 import { FaSearch } from "react-icons/fa";
 import SearchPersonCard from "../SearchPersonCard";
 import { ToastContainer, toast } from 'react-toastify';
+import { ClipLoader } from "react-spinners";
 
 
 function UploadAssignment() {
@@ -27,10 +28,12 @@ function UploadAssignment() {
     const [isSearching, setIsSearching] = useState(false)
     const [searchResults, setSearchResults] = useState([]);
 
+    const [loading, setLoading] = useState(false);
+
     const gameGenres = [
         "Action",
         "Adventure",
-        "Role-Playing (RPG)",
+        "RPG",
         "Simulation",
         "Strategy",
         "Sports",
@@ -38,21 +41,21 @@ function UploadAssignment() {
         "Fighting",
         "Puzzle",
         "Platformer",
-        "Shooter (FPS/TPS)",
+        "Shooter",
         "Survival",
         "Horror",
         "Sandbox",
         "Stealth",
         "MMORPG",
-        "MOBA (Multiplayer Online Battle Arena)",
+        "MOBA",
         "Battle Royale",
         "Metroidvania",
         "Rhythm",
         "Visual Novel",
         "Party",
         "Card Game",
-        "Idle / Incremental",
-        "Roguelike / Roguelite",
+        "Idle",
+        "Roguelike",
         "Tower Defense",
         "Educational",
         "Turn-Based Tactics",
@@ -94,46 +97,214 @@ function UploadAssignment() {
     }
 
     function checkGameDesc() {
+        if (gameDesc.trim() === "") {
+            toast.error('Your description cannot be blank', {
+                position: 'top-center', autoClose: 3000,
+            });
+            return false
+        }
         const wordCount = gameDesc.split(" ")
         if (wordCount.length < 100) {
-            return
+            return true
         }
-        toast.error('Error your word count is greater than 100!', {
+        toast.error('Error your description word count is greater than 100!', {
             position: 'top-center', autoClose: 3000,
         });
-        return
+        return false
     }
 
     function checkGameName() {
+        if (gameName.trim() === "") {
+            toast.error('Your game name cannot be blank!', {
+                position: 'top-center', autoClose: 3000,
+            });
+            return false
+        }
+        if (gameName.length > 30) {
+            toast.error('Your game name is too long!', {
+                position: 'top-center', autoClose: 3000,
+            });
+            return false
+        }
+        return true;
 
     }
 
     function checkTeamName() {
-
+        if (teamName.trim() === "") {
+            toast.error('Your team name cannot be blank!', {
+                position: 'top-center', autoClose: 3000,
+            });
+            return false
+        }
+        if (teamName.length > 30) {
+            toast.error('Your team name is too long!', {
+                position: 'top-center', autoClose: 3000,
+            });
+            return false
+        }
+        return true;
     }
 
     function checkProjectType() {
-
+        if (projectType.trim() === "") {
+            toast.error('Please select a project type!', {
+                position: 'top-center', autoClose: 3000,
+            });
+            return false
+        }
+        return true
     }
 
     function checkProjectTimeframe() {
+        const value = Number(projectTimeframe);
+
+        if (isNaN(value)) {
+            toast.error('Project timeframe must be a number!', {
+                position: 'top-center',
+                autoClose: 3000,
+            });
+            return false;
+        }
+
+        if (value < 1 || value > 12) {
+            toast.error('Project timeframe must be between 1 and 12 weeks!', {
+                position: 'top-center',
+                autoClose: 3000,
+            });
+            return false;
+        }
+
+        return true;
+    }
+
+    function checkTeamMembers() {
+        if (groupMembers.length < 1 || groupMembers.length > 5) {
+            toast.error('Please select between 1 and 5 team members to add to your project!', {
+                position: 'top-center',
+                autoClose: 3000,
+            });
+            return false
+        }
+        return true
 
     }
 
-    function checkGameFile() {
 
+    function checkGameFile() {
+        if (!gameFile) {
+            toast.error('Please upload your game folder as a .zip!', {
+                position: 'top-center',
+                autoClose: 3000,
+            });
+            return false
+        }
+        return true
     }
 
     function checkImageArray() {
-
+        if (imageArray.length !== 3) {
+            toast.error('Please upload exactly 3 images, these will be used on your game page!', {
+                position: 'top-center',
+                autoClose: 3000,
+            });
+            return false
+        }
+        return true
     }
     function checkSelectedGenres() {
+        if (selectedGenres.length !== 3) {
+            toast.error('Please select exactly 3 Genres that fit your game!', {
+                position: 'top-center',
+                autoClose: 3000,
+            });
+            return false
+        }
+        return true
+    }
+
+    async function handleAssignmentUploadFiles() {
+        try {
+            setLoading(true)
+            const formDataFiles = new FormData();
+            formDataFiles.append('gameName', gameName);
+            formDataFiles.append('file', gameFile);
+            const responseFile = await axios.post('http://localhost:8000/api/storage/uploadgame', formDataFiles,
+                {
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                    timeout: 0,
+                });
+
+            const formDataImages = new FormData();
+            imageArray.forEach(image => {
+                formDataImages.append('images', image);
+            });
+            formDataImages.append('gameName', gameName);
+
+            const responseImage = await axios.post('http://localhost:8000/api/storage/uploadimages', formDataImages,
+                {
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                    timeout: 0,
+                })
+
+        }
+        catch (error) {
+            setLoading(false);
+            toast.error('Sorry, an error occured uploading your game. Please try again later', {
+                position: 'top-center',
+                autoClose: 3000,
+            });
+            alert(error.message)
+
+        }
 
     }
 
-    async function handleAssignmentUpload() {
-        checkGameDesc();
+    async function handleAssignmentUploadDatabase() {
+        if (!checkGameName() ||
+            !checkTeamName() ||
+            !checkGameDesc() ||
+            !checkProjectTimeframe() ||
+            !checkProjectType() ||
+            !checkSelectedGenres() ||
+            !checkImageArray() ||
+            !checkGameFile) return;
+        try {
+            const dataToSend = {
+                gameName,
+                teamName,
+                projectType,
+                projectTimeframe,
+                gameDesc,
+                selectedGenres,
+            };
+
+            if (projectType === "Group Game Project") {
+                if (checkTeamMembers() === false) {
+                    return;
+                }
+                dataToSend.groupMembers = groupMembers
+
+            }
+            await handleAssignmentUploadFiles();
+            const response = await axios.post('http://localhost:8000/api/database/uploadgameinfo', dataToSend)
+            setLoading(false);
+            toast.success('Your game has been successfully uploaded!', {
+                position: 'top-center',
+                autoClose: 3000,
+            });
+        } catch (error) {
+            setLoading(false);
+            toast.error('Sorry, an error occured uploading your game. Please try again later', {
+                position: 'top-center',
+                autoClose: 3000,
+            });
+        }
+
+
     }
+
+
 
     function addTeamMember(name) {
         if (groupMembers.length >= 5) return
@@ -160,6 +331,7 @@ function UploadAssignment() {
     return (
         <div className="upload-div">
             <ToastContainer />
+            {loading ? <ClipLoader color="#36d7b7" size={50}/> : <></>}
             <div className="inner-upload-div">
                 <div>
                     <h1>Upload Assignments</h1>
@@ -316,7 +488,7 @@ function UploadAssignment() {
                     </div>
                     <div className="bottom-buttons">
                         <button onClick={() => { navigate("/") }}>Cancel Upload Request</button>
-                        <button onClick={() => handleAssignmentUpload()}>Submit Upload Request</button>
+                        <button onClick={() => handleAssignmentUploadDatabase()}>Submit Upload Request</button>
                     </div>
                 </div>
             </div>
