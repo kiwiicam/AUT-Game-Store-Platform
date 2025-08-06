@@ -81,7 +81,10 @@ export async function changeName(req, res) {
 }
 
 export async function uploadGameInformation(req, res) {
-    const { gameName, teamName, projectType, projectTimeframe, gameDesc, selectedGenres, groupMembers } = req.body;
+    const { gameName, teamName, projectType, projectTimeframe, gameDesc, selectedGenres, groupMembers, fileSize } = req.body;
+    const date = new Date();
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const formattedDate = date.toLocaleDateString('en-US', options);
     const params = {
         TableName: "gameInformation",
         Item: {
@@ -91,7 +94,10 @@ export async function uploadGameInformation(req, res) {
             projectTimeframe: { S: projectTimeframe },
             projectType: { S: projectType },
             selectedGenres: { SS: selectedGenres },
-            likes: { N: "0" }
+            likes: { N: "0" },
+            releaseDate: { S: formattedDate },
+            fileSize: { N: fileSize },
+            groupMembers: { SS: groupMembers }
         }
     };
     if (projectType === "Group Game Project") {
@@ -205,6 +211,10 @@ export async function getGameInformation(req, res) {
         res.status(500).json({ error: err.message });
     }
 
+
+}
+
+export async function getDeveloperInformation(req, res) {
 
 }
 

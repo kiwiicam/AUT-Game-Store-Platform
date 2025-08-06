@@ -270,6 +270,7 @@ function UploadAssignment() {
             !checkImageArray() ||
             !checkGameFile) return;
         try {
+            const sizeInMB = (gameFile.size / (1024 * 1024)).toFixed(2);
             const dataToSend = {
                 gameName,
                 teamName,
@@ -277,6 +278,7 @@ function UploadAssignment() {
                 projectTimeframe,
                 gameDesc,
                 selectedGenres,
+                fileSize: sizeInMB
             };
 
             if (projectType === "Group Game Project") {
@@ -331,7 +333,7 @@ function UploadAssignment() {
     return (
         <div className="upload-div">
             <ToastContainer />
-            {loading ? <ClipLoader color="#36d7b7" size={50}/> : <></>}
+            {loading ? <ClipLoader color="#36d7b7" size={50} /> : <></>}
             <div className="inner-upload-div">
                 <div>
                     <h1>Upload Assignments</h1>

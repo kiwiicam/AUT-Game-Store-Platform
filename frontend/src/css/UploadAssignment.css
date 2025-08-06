@@ -326,7 +326,8 @@ select:focus {
     flex-wrap: wrap;
     gap: 5px;
     width: 100%;
-    height: 155px;
+    height: auto;
+    row-gap: 5px;
 }
 
 .genre-item {
@@ -345,7 +346,7 @@ select:focus {
 .genre-item h5 {
     margin: 0;
     color: lightgrey;
-    font-size: 0.7rem;
+    font-size: 1rem;
 }
 
 .genre-item-selected {
@@ -363,5 +364,5 @@ select:focus {
 .genre-item-selected h5 {
     margin: 0;
     color: lightgrey;
-    font-size: 0.7rem;
+    font-size: 1rem;
 }
