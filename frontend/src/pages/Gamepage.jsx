@@ -40,13 +40,14 @@ function Gamepage() {
                     likes: 462,
                     developer: databaseData.data.gameData.teamName,
                     timeframe: databaseData.data.gameData.projectTimeframe + " Weeks",
-                    releaseDate: 'November 18, 2011',
-                    fileSize: '1.5 GB',
+                    releaseDate: databaseData.data.gameData.releaseDate,
+                    fileSize: databaseData.data.gameData.fileSize + " MB",
                     projectType: databaseData.data.gameData.projectType,
-                    //genre: databaseData.data.genreArray,
-                    genre: ["Turn-Based Tactics", "Turn-Based Tactics", "Turn-Based Tactics"],
-                    developmentTeam: ['Campbell', 'Blaine', 'Joshua', 'Karlos']
+                    genre: databaseData.data.genreArray,
+                    developmentTeam: databaseData.data.gameData.groupMembers
                 });
+
+                const developerInfo = await axios.post('http://localhost:8000/api/database/getdeveloperinfo', databaseData.data.gameData.groupMembers)
             }
             catch (error) {
                 toast.error('Error retreiving the data for this game, please try again later.', {
