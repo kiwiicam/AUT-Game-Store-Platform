@@ -43,7 +43,8 @@ function Gamepage() {
                     releaseDate: 'November 18, 2011',
                     fileSize: '1.5 GB',
                     projectType: databaseData.data.gameData.projectType,
-                    genre: databaseData.data.genreArray,
+                    //genre: databaseData.data.genreArray,
+                    genre: ["Turn-Based Tactics", "Turn-Based Tactics", "Turn-Based Tactics"],
                     developmentTeam: ['Campbell', 'Blaine', 'Joshua', 'Karlos']
                 });
             }

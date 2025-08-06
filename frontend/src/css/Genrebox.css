@@ -1,5 +1,6 @@
 .genrebox{
-    width: 80px;
+    width: auto;
+    padding: 5px;
     height: 35px;
     display: flex;
     background-color: #5D5D5D;
@@ -10,5 +11,5 @@
 }
 .genrebox p {
     margin: 0;
-    font-size: 0.9rem;
+    font-size: 0.7rem !important;
 }
