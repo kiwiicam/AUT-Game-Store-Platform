@@ -104,10 +104,10 @@ function UploadAssignment() {
             return false
         }
         const wordCount = gameDesc.split(" ")
-        if (wordCount.length < 100) {
+        if (wordCount.length < 50) {
             return true
         }
-        toast.error('Error your description word count is greater than 100!', {
+        toast.error('Error your description word count is greater than 50!', {
             position: 'top-center', autoClose: 3000,
         });
         return false
@@ -366,7 +366,7 @@ function UploadAssignment() {
                         </div>
                     </div>
                     <div>
-                        <h2>About section (100 word limit)</h2>
+                        <h2>About section (50 word limit)</h2>
                         <textarea
                             placeholder="Write a small paragraph about your game that gets the core mechanics across aswell as selling the game to the readers"
                             style={{ width: '100%', resize: 'none' }}

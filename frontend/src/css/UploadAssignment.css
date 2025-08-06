@@ -345,7 +345,7 @@ select:focus {
 .genre-item h5 {
     margin: 0;
     color: lightgrey;
-    font-size: 0.7rem;
+    font-size: 1rem;
 }
 
 .genre-item-selected {
