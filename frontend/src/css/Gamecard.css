@@ -1,6 +1,5 @@
 .game-card {
     cursor: pointer;
-    min-width: 285.09px;
     height: 225px;
     border-radius: 15px;
     background-color: #14141499;
@@ -8,7 +7,6 @@
     padding: 5px;
     flex-direction: column;
     transition: 0.2s ease-in-out;    
-    margin-right: 15px;
 }
 
 .game-card:hover {

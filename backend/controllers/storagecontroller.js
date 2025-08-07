@@ -96,3 +96,36 @@ export async function retrieveGameImages(gameNameArray) {
     }
 
 }
+
+export async function retrieveGameImagesGame(req, res) {
+    const { gameName } = req.body
+    try {
+        const params = {
+            Bucket: process.env.AWS_BUCKET_NAME,
+            Prefix: `Games/${gameName}/Images/`
+        };
+        const data = await S3.send(new ListObjectsV2Command(params));
+        const gameImages = []
+        for (const item of data.Contents) {
+            const command = new GetObjectCommand({
+                Bucket: process.env.AWS_BUCKET_NAME,
+                Key: item.Key
+            });
+            const imageUrl = await getSignedUrl(S3, command, { expiresIn: 3600 });
+            gameImages.push({ imageUrl });
+
+        }
+        console.log(gameImages);
+        res.status(200).json({
+            message: "file retrieved successful",
+            gameImages
+        });
+
+    } catch (err) {
+        res.status(500).json({
+            error: "Failed to upload",
+            message: err.message
+        });
+        console.log(err.message);
+    }
+}

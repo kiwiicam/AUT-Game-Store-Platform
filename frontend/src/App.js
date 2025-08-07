@@ -15,6 +15,7 @@ import VerifyEmail from './pages/VerifyEmail.jsx';
 import Header from './components/Header.jsx';
 import HeaderLayout from './components/HeaderLayout.jsx';
 import Gamepage from './pages/Gamepage.jsx';
+import Browse from './pages/Browse.jsx';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
       <Routes>
         {/*Routes with header*/}
         <Route element={<HeaderLayout />}>
+          <Route path="/browse" element={<Browse />}/>
           <Route path="/" element={<Homepage />} />
           <Route path="/about" element={<Aboutpage />} />
           <Route path="/account" element={<Accountpage />} />

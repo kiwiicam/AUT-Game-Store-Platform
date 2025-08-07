@@ -152,8 +152,8 @@
 }
 
 .game-card-track {
-    width: 2320px;
     display: flex;
+    justify-content: space-evenly;
 }
 
 .recent-releases-slider {

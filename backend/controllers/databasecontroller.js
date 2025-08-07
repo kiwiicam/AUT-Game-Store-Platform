@@ -1,5 +1,5 @@
 import { client } from '../dynamoClient.js';
-import { PutItemCommand, GetItemCommand, UpdateItemCommand, ScanCommand } from '@aws-sdk/client-dynamodb';
+import { PutItemCommand, GetItemCommand, UpdateItemCommand, ScanCommand, QueryCommand } from '@aws-sdk/client-dynamodb';
 import { retrieveGameImages } from './storagecontroller.js';
 import { unmarshall } from '@aws-sdk/util-dynamodb';
 
@@ -97,7 +97,6 @@ export async function uploadGameInformation(req, res) {
             likes: { N: "0" },
             releaseDate: { S: formattedDate },
             fileSize: { N: fileSize },
-            groupMembers: { SS: groupMembers }
         }
     };
     if (projectType === "Group Game Project") {
@@ -105,7 +104,6 @@ export async function uploadGameInformation(req, res) {
             SS: groupMembers.map(member => member.name)
         };
     }
-
     try {
         const data = await client.send(new PutItemCommand(params));
         res.status(200).json({ message: "Game information uploaded successfully", data });
@@ -190,7 +188,6 @@ export async function getUserSearch(req, res) {
 
 export async function getGameInformation(req, res) {
     const { gameName } = req.body;
-    console.log(gameName, "\n\n\n")
     try {
         const params = {
             TableName: "gameInformation",
@@ -216,5 +213,47 @@ export async function getGameInformation(req, res) {
 
 export async function getDeveloperInformation(req, res) {
 
+}
+
+export async function uploadComment(req, res) {
+    try {
+        const { gameName, userName, comment, timestamp } = req.body
+        const params = {
+            TableName: "gameComments",
+            Item: {
+                gameName: { S: gameName },
+                timestamp: { N: timestamp.toString() },
+                userName: { S: userName },
+                comment: { S: comment }
+            }
+        }
+        const data = await client.send(new PutItemCommand(params));
+        res.status(200).json({});
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: err.message });
+    }
+}
+
+export async function retrieveComments(req, res) {
+    try {
+        const { gameName } = req.body;
+
+        const params = {
+            TableName: "gameComments",
+            KeyConditionExpression: "gameName = :g",
+            ExpressionAttributeValues: {
+                ":g": { S: gameName }
+            }
+        };
+
+        const response = await client.send(new QueryCommand(params));
+        const items = response.Items.map(item => unmarshall(item));
+        console.log(items)
+        res.status(200).json({ commentData: items });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: err.message });
+    }
 }
 

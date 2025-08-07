@@ -20,6 +20,8 @@ function Gamepage() {
     const [commentCards, setCommentCards] = useState([]);
     const [visibleCount, setVisibleCount] = useState(5);
 
+    const [comment, setComment] = useState("");
+
     //filter states
     const [withinMonth, setWithinMonth] = useState(false);
     const [mostRecent, setMostRecent] = useState(true);
@@ -46,8 +48,23 @@ function Gamepage() {
                     genre: databaseData.data.genreArray,
                     developmentTeam: databaseData.data.gameData.groupMembers
                 });
+                const images = await axios.post('http://localhost:8000/api/storage/getgameimages', { gameName: databaseData.data.gameData.gameName })
+                setGameImages([
+                    { src: images.data.gameImages[0].imageUrl },
+                    { src: images.data.gameImages[1].imageUrl },
+                    { src: images.data.gameImages[2].imageUrl }
+                ]);
 
-                const developerInfo = await axios.post('http://localhost:8000/api/database/getdeveloperinfo', databaseData.data.gameData.groupMembers)
+                //const developerInfo = await axios.post('http://localhost:8000/api/database/getdeveloperinfo', { groupArray: databaseData.data.gameData.groupMembers })
+
+                const commentInfo = await axios.post('http://localhost:8000/api/database/retrievecomments', { gameName: databaseData.data.gameData.gameName })
+                const commentState = commentInfo.data.commentData.map(value => ({
+                    text: value.comment,
+                    name: value.userName,
+                    picsrc: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
+                    date: value.timestamp
+                }))
+                setCommentCards(commentState)
             }
             catch (error) {
                 toast.error('Error retreiving the data for this game, please try again later.', {
@@ -61,11 +78,7 @@ function Gamepage() {
     }, [gameName])
 
     useEffect(() => {
-        setGameImages([
-            { src: 'https://staticg.sportskeeda.com/editor/2025/01/8827f-17376979472538-1920.jpg' },
-            { src: 'https://static0.gamerantimages.com/wordpress/wp-content/uploads/2025/02/minecraft-key-art-feature.jpg' },
-            { src: 'https://www.azcentral.com/gcdn/authoring/authoring-images/2024/11/19/USAT/76424170007-merlin-minecraft-image-2.jpg?crop=2149,1208,x0,y0&width=660&height=371&format=pjpg&auto=webps' }
-        ]);
+
 
 
 
@@ -155,45 +168,7 @@ function Gamepage() {
                     ]
             }
         ])
-        setCommentCards([
-            {
-                text: "This game is really good, I enjoyed playing it and the quality is super good would recomend 10/10", name: "Campbell Boulton", picsrc: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png", date: "20/08/2025"
-            },
-            {
-                text: "This game is really good, I enjoyed playing it and the quality is super good would recomend 10/10", name: "Campbell Boulton", picsrc: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png", date: "20/08/2025"
-            },
-            {
-                text: "This game is really good, I enjoyed playing it and the quality is super good would recomend 10/10", name: "Campbell Boulton", picsrc: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png", date: "20/08/2025"
-            },
-            {
-                text: "This game is really good, I enjoyed playing it and the quality is super good would recomend 10/10", name: "Campbell Boulton", picsrc: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png", date: "20/08/2025"
-            },
-            {
-                text: "This game is really good, I enjoyed playing it and the quality is super good would recomend 10/10", name: "Campbell Boulton", picsrc: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png", date: "20/08/2025"
-            },
-            {
-                text: "This game is really good, I enjoyed playing it and the quality is super good would recomend 10/10", name: "Campbell Boulton", picsrc: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png", date: "20/08/2025"
-            },
-            {
-                text: "This game is really good, I enjoyed playing it and the quality is super good would recomend 10/10", name: "Campbell Boulton", picsrc: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png", date: "20/08/2025"
-            },
-            {
-                text: "This game is really good, I enjoyed playing it and the quality is super good would recomend 10/10", name: "Campbell Boulton", picsrc: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png", date: "20/08/2025"
-            },
-            {
-                text: "This game is really good, I enjoyed playing it and the quality is super good would recomend 10/10", name: "Campbell Boulton", picsrc: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png", date: "20/08/2025"
-            },
-            {
-                text: "This game is really good, I enjoyed playing it and the quality is super good would recomend 10/10", name: "Campbell Boulton", picsrc: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png", date: "20/08/2025"
-            },
-            {
-                text: "This game is really good, I enjoyed playing it and the quality is super good would recomend 10/10", name: "Campbell Boulton", picsrc: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png", date: "20/08/2025"
-            },
-            {
-                text: "This game is really good, I enjoyed playing it and the quality is super good would recomend 10/10", name: "Campbell Boulton", picsrc: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png", date: "20/08/2025"
-            },
 
-        ])
     }, []);
 
     useEffect(() => {
@@ -210,6 +185,40 @@ function Gamepage() {
         setLeastRecent(checked);
         if (checked) setMostRecent(false);
     };
+
+    async function uploadComment() {
+        if (comment.length > 80) {
+            toast.error('Sorry, your comment cannot be longer than 80 characters.', {
+                position: 'top-center', autoClose: 3000,
+            });
+            return
+        }
+        try {
+            const timestamp = Date.now()
+            const response = await axios.post('http://localhost:8000/api/database/uploadcomment', {
+                gameName,
+                comment,
+                userName: "Campbell",
+                timestamp
+            })
+            const newComment = {
+                text: comment,
+                name: "Campbell",
+                date: timestamp,
+                picsrc: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
+            }
+            setComment("");
+            setCommentCards((prev) => [...prev, newComment])
+            toast.success('Your comment has been uploaded successfuly', {
+                position: 'top-center', autoClose: 3000,
+            });
+        }
+        catch (error) {
+            toast.error(error.message, {
+                position: 'top-center', autoClose: 3000,
+            });
+        }
+    }
     return (
         <div className='gamepage-container'>
             <ToastContainer />
@@ -240,9 +249,9 @@ function Gamepage() {
                         <div className='gamepage-slider-bottom'>
                             <div className='gamepage-slider-button-left' onClick={() => setIndex((index - 1 + gameImages.length) % gameImages.length)}><IoIosArrowBack style={{ margin: '0' }} /></div>
                             <div className='gamepage-slider-indicators'>
-                                <div className={`gamepage-slider-indicator ${index === 0 ? 'active' : ''}`}> </div>
-                                <div className={`gamepage-slider-indicator ${index === 1 ? 'active' : ''}`}> </div>
-                                <div className={`gamepage-slider-indicator ${index === 2 ? 'active' : ''}`}> </div>
+                                <div onClick={() => setIndex(0)} className={`gamepage-slider-indicator ${index === 0 ? 'active' : ''}`}> </div>
+                                <div onClick={() => setIndex(1)} className={`gamepage-slider-indicator ${index === 1 ? 'active' : ''}`}> </div>
+                                <div onClick={() => setIndex(2)} className={`gamepage-slider-indicator ${index === 2 ? 'active' : ''}`}> </div>
                             </div>
                             <div className='gamepage-slider-button-right' onClick={() => setIndex((index + 1) % gameImages.length)}><IoIosArrowForward style={{ margin: '0' }} /></div>
                         </div>
@@ -326,8 +335,8 @@ function Gamepage() {
                                         </img>
                                     </div>
                                     <div className='comment-input'>
-                                        <input className='comment-input-field' type='text' placeholder='Add a comment...' />
-                                        <div className='comment-submit'>
+                                        <input value={comment} onChange={(e) => setComment(e.target.value)} className='comment-input-field' type='text' placeholder='Add a comment...' />
+                                        <div onClick={() => uploadComment()} className='comment-submit'>
                                             <FaArrowDown />
                                         </div>
                                     </div>

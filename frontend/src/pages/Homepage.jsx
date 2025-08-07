@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import '../css/Homepage.css'
 import Gamecard from '../components/Gamecard'
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -10,13 +10,18 @@ function Homepage() {
     const [recentReleases, setRecentReleases] = useState([]);
     const [index, setIndex] = useState(0);
     const [recentIndex, setRecentIndex] = useState(0);
-
     const navigate = useNavigate();
+
+    const [width, setWidth] = useState(null);
+
+    const sliderRef = useRef(null);
     useEffect(() => {
         // This is where you can fetch data for the homepage, like featured games
+        setWidth((sliderRef.current.offsetWidth-45)/3)
         const fetchFeaturedGames = async () => {
             try {
                 const response = await axios.get('http://localhost:8000/api/database/featuredgames')
+
                 const featuredGamesReturn = response.data.featuredGames;
                 setFeaturedGames(
                     [
@@ -44,6 +49,7 @@ function Homepage() {
                 );
             }
             catch (error) {
+                alert(error.message)
                 console.error("Error fetching featured games:", error);
             }
         }
@@ -83,14 +89,13 @@ function Homepage() {
                                 style={{ transform: `translateX(-${index * (1 / 3) * 100}%)`, transition: 'transform 0.5s ease-in-out' }}
                             >
                                 {featuredGames.map((game, i) => (
-                                    <div key={i} className="slideshow-slide" onClick={() => {navigate(`/games/${game.title}`)}}>
+                                    <div key={i} className="slideshow-slide" onClick={() => { navigate(`/games/${game.title}`) }}>
                                         <div className='slideshow-text-container'>
                                             <div className="vertical-line">
                                             </div>
                                             <div className="slideshow-text">
                                                 <h2>{game.creator}</h2>
                                                 <h3>{game.title}</h3>
-                                                <p>{game.desc}</p>
                                             </div>
                                         </div>
                                         <img src={game.src} alt={`Featured game ${i + 1}`} className="slideshow-image" />
@@ -108,14 +113,14 @@ function Homepage() {
                 <div className='recent-releases'>
                     <h1>Recent student releases</h1>
                     <div className='split-line'></div>
-                    <div className='recent-releases-slider'>
+                    <div className='recent-releases-slider' ref={sliderRef}>
                         <div className='game-card-button-left' onClick={() => setRecentIndex(recentIndex === 0 ? 5 : recentIndex - 1)}><IoIosArrowBack /></div>                        <div className='game-cards'>
                             <div className='game-card-track'
-                                style={{ transform: `translateX(-${recentIndex * 300.09}px)`, transition: 'transform 0.5s ease-in-out' }}
+                                style={{ transform: `translateX(-${recentIndex * (width+15)}px)`, transition: 'transform 0.5s ease-in-out', width: (width*8)+(8*15) }}
 
                             >
                                 {recentReleases.map((game, i) => (
-                                    <Gamecard key={i} image={game.image} title={game.title} creator={game.creator} />
+                                    <Gamecard key={i} image={game.image} title={game.title} creator={game.creator} width={width}/>
                                 ))}
                             </div>
                         </div>
