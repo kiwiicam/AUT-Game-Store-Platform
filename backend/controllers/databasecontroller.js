@@ -257,3 +257,25 @@ export async function retrieveComments(req, res) {
     }
 }
 
+export async function retrieveGameNameSearch(req, res) {
+    try {
+        const { search } = req.body
+        const params = {
+            TableName: "gameInformation",
+            KeyConditionExpression: "gameName = :g",
+            ExpressionAttributeValues: {
+                ":g": { S: search }
+            }
+        }
+
+        const response = await client.send(new QueryCommand(params));
+
+        res.status(200).json({})
+
+    }
+    catch (err) {
+        console.log(err.message)
+        res.status(500).json({ error: err.message })
+    }
+}
+

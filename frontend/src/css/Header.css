@@ -43,11 +43,11 @@
 
 
 .login-button {
-    background-color: #D9D9D966;
-    width: 100px;
-    height: 40px;
+    background-color: #D9D9D966 !important;
+    max-width: 100px;
+    max-height: 40px;
     border: none;
-    border-radius: 5px;
+    border-radius: 5px !important;
 }
 
 .header-links {
