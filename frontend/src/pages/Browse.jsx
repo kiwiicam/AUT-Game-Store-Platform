@@ -115,7 +115,7 @@ function Browse() {
           <div className='scrollable-browse'>
             {
               gameArray.map((value, index) => (
-                <Gamecard key={index} image={value.image} title={value.title} creator={value.creator} width={50} />
+                <Gamecard key={index} image={value.image} title={value.title} creator={value.creator} width={300} />
               ))
             }
           </div>
