@@ -10,12 +10,11 @@
 .inner-content-browse {
     width: 73%;
     height: 900px;
-    border: 1px solid yellow;
     display: flex;
     justify-content: space-between;
 }
 
-#search-input{
+#search-input {
     width: 100%;
     border-radius: 15px;
     height: 30px;
@@ -27,7 +26,7 @@
     color: #fff;
 }
 
-#search-input:focus{
+#search-input:focus {
     outline: none;
     border: none;
 
@@ -43,14 +42,60 @@
 }
 
 .right-games-section {
+    border: 1px solid seashell;
     width: 69%;
     height: 100%;
     border-radius: 15px;
 }
-.top-browse{
+.scrollable-browse{
+    width: 100%;
+    height: auto;
+}
+
+.top-browse {
     display: flex;
     flex-direction: column;
+    gap: 10px;
+    height: auto;
+}
+
+.skinny-white-bar-browse {
+    width: 100%;
+    height: 1px;
+    background-color: #fff;
+}
+
+.top-browse h4 {
+    margin: 0;
+}
+
+.dropdown-browse {
+    display: flex;
+    flex-direction: column;
+    color: #fff;
     justify-content: space-between;
-    height: 400px;
-    border: 1px solid black;
+    align-items: center;
+}
+
+.inner-genre {
+    align-items: center;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.arrow-down {
+    cursor: pointer;
+    font-size: 40px;
+    transition: transform 0.3s ease;
+    transform: rotate(0deg);
+}
+
+.arrow-down.rotate-up {
+    transform: rotate(180deg);
+}
+
+.dropdown-genre-section {
+    width: 100%;
+    height: 300px;
 }
