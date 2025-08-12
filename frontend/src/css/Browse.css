@@ -1,6 +1,6 @@
 .background-browse {
     width: 100%;
-    height: 1000px;
+    height: 1100px;
     background: linear-gradient(to bottom, #3E4C71, #191D31);
     display: flex;
     align-items: center;
@@ -8,7 +8,7 @@
 }
 
 .inner-content-browse {
-    width: 73%;
+    width: 85%;
     height: 900px;
     display: flex;
     justify-content: space-between;
@@ -42,17 +42,37 @@
 }
 
 .right-games-section {
-    border: 1px solid seashell;
+    overflow-y: scroll;
     width: 69%;
     height: 100%;
     border-radius: 15px;
 }
-.scrollable-browse{
+
+.scrollable-browse {
     width: 100%;
     height: auto;
-    display: flex;
-    gap: 25px;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.right-games-section::-webkit-scrollbar {
+    width: 10px;
+}
+
+.right-games-section::-webkit-scrollbar-track {
+    background: #191D31;
+    border-radius: 10px;
+}
+
+.right-games-section::-webkit-scrollbar-thumb {
+    cursor: pointer;
+    background-color: #3E4C71;
+    border-radius: 10px;
+}
+
+.right-games-section::-webkit-scrollbar-thumb:hover {
+    background-color: #516394;
 }
 
 .top-browse {
@@ -102,4 +122,3 @@
     width: 100%;
     height: 300px;
 }
-

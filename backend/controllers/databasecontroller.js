@@ -279,3 +279,64 @@ export async function retrieveGameNameSearch(req, res) {
     }
 }
 
+export async function mergeImageUrlWithGameName(array) {
+    const gameNames = []
+    for (const names of array) {
+        gameNames.push(names.gameName);
+    }
+
+    const imageArray = await retrieveGameImages(gameNames);
+
+    return (array.map(item => ({
+        ...item,
+        imageUrl: (imageArray.find(img => img.gameName === item.gameName) || {}).imageUrl || null
+    })))
+
+}
+
+export async function browseGames(req, res) {
+    try {
+        const result = await client.send(new ScanCommand({ TableName: "gameInformation" }));
+        const plainItems = result.Items.map(item => unmarshall(item));
+        const converted = plainItems.map(game => ({
+            ...game,
+            selectedGenres: Array.from(game.selectedGenres)
+        }));
+        const mergedItems = await mergeImageUrlWithGameName(converted)
+        console.log(mergedItems)
+        res.status(200).json({
+            gameInfo: mergedItems
+        })
+    }
+    catch (err) {
+        console.log(err.message)
+        res.status(500).json({ error: err.message })
+    }
+}
+
+// export async function browseGamesBySearch(req, res) {
+//     try {
+//         const { searchQuery } = req.body;
+
+//         const params = {
+//             TableName: "gameInformation",
+//             FilterExpression: "begins_with(gameName, :search)",
+//             ExpressionAttributeValues: {
+//                 ":search": { S: searchQuery }
+//             }
+//         };
+//         const data = await client.send(new ScanCommand(params));
+//         const plainItems = data.Items.map(item => unmarshall(item));
+
+//         const searchResults = await mergeImageUrlWithGameName(plainItems)
+//         res.status(200).json({
+//             searchResults
+//         })
+//     }
+//     catch (err) {
+//         console.log(err.message)
+//         res.status(500).json({ error: err.message })
+//     }
+
+// }
+

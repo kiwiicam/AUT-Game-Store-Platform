@@ -1,6 +1,6 @@
 .game-card {
     cursor: pointer;
-    height: 225px;
+
     border-radius: 15px;
     background-color: #14141499;
     display: flex;

@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import '../css/Browse.css';
 import { RiArrowDropDownLine } from "react-icons/ri";
 import Gamecard from '../components/Gamecard';
+import { ToastContainer, toast } from 'react-toastify';
+import axios from 'axios';
 
 function Browse() {
   const [search, setSearch] = useState("")
@@ -10,15 +12,71 @@ function Browse() {
   const [selectedDate, setSelectedDate] = useState(false)
   const [selectedOther, setSelectedOther] = useState(false)
   const [gameArray, setGameArray] = useState([])
+  const [allGames, setAllGames] = useState([]);
+  const [width, setWidth] = useState(null);
+
+  const widthRef = useRef(null);
+
+  const gameGenres = [
+    "Action",
+    "Adventure",
+    "RPG",
+    "Simulation",
+    "Strategy",
+    "Sports",
+    "Racing",
+    "Fighting",
+    "Puzzle",
+    "Platformer",
+    "Shooter",
+    "Survival",
+    "Horror",
+    "Sandbox",
+    "Stealth",
+    "MMORPG",
+    "MOBA",
+    "Battle Royale",
+    "Metroidvania",
+    "Rhythm",
+    "Visual Novel",
+    "Party",
+    "Card Game",
+    "Idle",
+    "Roguelike",
+    "Tower Defense",
+    "Educational",
+    "Turn-Based Tactics",
+    "Interactive Story",
+    "Text Adventure"
+  ];
+
+  const initialFetch = async () => {
+    try {
+      const initialData = await axios.get('http://localhost:8000/api/database/browsegames')
+      const mappedGames = initialData.data.gameInfo.map(game => ({
+        title: game.gameName,
+        creator: game.teamName,
+        image: game.imageUrl,
+        genres: game.selectedGenres
+      }));
+      setAllGames(mappedGames);
+      setGameArray(mappedGames);
+
+    }
+    catch (err) {
+      toast.error('Error retreiving the data for this search' + err.message, {
+        position: 'top-center', autoClose: 3000,
+      });
+
+    }
+  }
 
   useEffect(() => {
-    setGameArray([
-      { image: "https://i.redd.it/q4fjauk2ebc31.png", title: "Mincecraft LOL", creator: "Mojang" },
-      { image: "https://i.redd.it/q4fjauk2ebc31.png", title: "Mincecraft LOL", creator: "Mojang" },
-      { image: "https://i.redd.it/q4fjauk2ebc31.png", title: "Mincecraft LOL", creator: "Mojang" },
-      { image: "https://i.redd.it/q4fjauk2ebc31.png", title: "Mincecraft LOL", creator: "Mojang" },
-    ])
+    initialFetch();
+    setWidth((widthRef.current.offsetWidth - 30) / 3)
   }, [])
+
+
 
   const handleSelected = (selection) => {
 
@@ -49,14 +107,30 @@ function Browse() {
     return
   }
 
+  const browseGamesBySearch = (searchQuery) => {
+    if (searchQuery.trim() === "") {
+      setGameArray(allGames);
+      return
+    }
+    const searchGame = allGames.filter(item =>
+      item.title.toLowerCase().startsWith(searchQuery.toLowerCase())
+    );
+    setGameArray(searchGame);
+  }
+
+  const genreSelection = () => {
+
+  }
+
 
   return (
     <div className='background-browse'>
+      <ToastContainer />
       <div className='inner-content-browse'>
         <div className='left-browse-section'>
           <div className='top-browse'>
             <h3>Search</h3>
-            <input id="search-input" value={search} onChange={(e) => setSearch(e.target.value)} type='text' placeholder='Search for a game...' />
+            <input id="search-input" onChange={(e) => browseGamesBySearch(e.target.value)} type='text' placeholder='Search for a game...' />
             <div className="skinny-white-bar-browse"></div>
             <div className='dropdown-browse'>
               <div className='inner-genre'>
@@ -66,6 +140,11 @@ function Browse() {
               {selectedGenre ?
                 <div className='dropdown-genre-section'>
                   <h2>Select up to 3 Genres</h2>
+                  {gameGenres.map((item, index) => (
+                    <div>
+                      <h2>{item}</h2>
+                    </div>
+                  ))}
                 </div>
                 : <></>}
             </div>
@@ -111,17 +190,20 @@ function Browse() {
 
           </div>
         </div>
-        <div className='right-games-section'>
+        <div ref={widthRef} className='right-games-section'
+        >
           <div className='scrollable-browse'>
-            {
+            {gameArray.length >= 1 ?
               gameArray.map((value, index) => (
-                <Gamecard key={index} image={value.image} title={value.title} creator={value.creator} width={300} />
+                <Gamecard key={index} image={value.image} title={value.title} creator={value.creator} width={width} />
               ))
+              :
+              <h2>Sorry, no games found please adjust your search.</h2>
             }
           </div>
         </div>
       </div>
-    </div>
+    </div >
   )
 }
 
