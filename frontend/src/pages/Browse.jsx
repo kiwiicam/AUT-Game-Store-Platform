@@ -13,6 +13,7 @@ function Browse() {
   const [selectedOther, setSelectedOther] = useState(false)
   const [gameArray, setGameArray] = useState([])
   const [allGames, setAllGames] = useState([]);
+  const [selectedGenres, setSelectedGenres] = useState([])
   const [width, setWidth] = useState(null);
 
   const widthRef = useRef(null);
@@ -59,8 +60,10 @@ function Browse() {
         image: game.imageUrl,
         genres: game.selectedGenres
       }));
+
+      const bigList = [...mappedGames, ...mappedGames];
       setAllGames(mappedGames);
-      setGameArray(mappedGames);
+      setGameArray(bigList);
 
     }
     catch (err) {
@@ -118,8 +121,29 @@ function Browse() {
     setGameArray(searchGame);
   }
 
-  const genreSelection = () => {
+  const browseGamesByGenre = (selection) => {
+    if(selection.length < 1)
+    {
+      return
+    }
+    const filteredGames = allGames.filter(game =>
+      game.genres.some(g => selection.includes(g))
+    );
+    setGameArray(filteredGames);
+  }
 
+  const genreSelection = (genre) => {
+    if (selectedGenres.includes(genre)) {
+      setSelectedGenres(selectedGenres.filter(g => g !== genre));
+      browseGamesByGenre(selectedGenres.filter(g => g !== genre));
+      return;
+    }
+    if (selectedGenres.length >= 3) {
+      return
+    }
+    const newSelection = [...selectedGenres, genre]
+    setSelectedGenres(newSelection)
+    browseGamesByGenre(newSelection);
   }
 
 
@@ -139,12 +163,14 @@ function Browse() {
               </div>
               {selectedGenre ?
                 <div className='dropdown-genre-section'>
-                  <h2>Select up to 3 Genres</h2>
-                  {gameGenres.map((item, index) => (
-                    <div>
-                      <h2>{item}</h2>
-                    </div>
-                  ))}
+                  <h2>Please select upto 3 genres. </h2>
+                  <div id="genre">
+                    {gameGenres.map((item, index) => (
+                      <div className={selectedGenres.includes(item) ? 'genre-item-browse-selected' : 'genre-item-browse'} onClick={() => genreSelection(item)}>
+                        <h2 className='genre-h2'>{item}</h2>
+                      </div>
+                    ))}
+                  </div>
                 </div>
                 : <></>}
             </div>

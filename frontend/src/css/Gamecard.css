@@ -6,14 +6,15 @@
     display: flex;
     padding: 5px;
     flex-direction: column;
-    transition: 0.2s ease-in-out;    
+    transition: 0.2s ease-in-out;
 }
 
 .game-card:hover {
     background-color: #141413;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transform: translateY(-2px);
-
+    position: relative;
+    z-index: 10;
 }
 
 .game-info {

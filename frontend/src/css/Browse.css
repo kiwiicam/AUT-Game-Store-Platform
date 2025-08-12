@@ -120,5 +120,43 @@
 
 .dropdown-genre-section {
     width: 100%;
-    height: 300px;
+    height: auto;
+}
+
+#genre {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px 5px !important;
+    margin: 0;
+    user-select: none;
+}
+
+.genre-item-browse {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    height: 35px;
+    background-color: #D9D9D966;
+    margin: 0 !important;
+    width: fit-content;
+    padding: 5px;
+}
+
+.genre-item-browse-selected {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    height: 35px;
+    background-color: #fff;
+    margin: 0 !important;
+    width: fit-content;
+    padding: 5px;
+}
+
+.genre-h2 {
+    margin: 0 !important;
+    font-size: 0.8rem;
+    line-height: 1;
 }
