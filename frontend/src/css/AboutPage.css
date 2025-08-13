@@ -1,0 +1,10 @@
+body {
+  background: linear-gradient(to bottom, #3E4C71, #191D31);
+  padding-bottom: 650px;
+}
+
+.main {
+    text-align: center;
+    color: black;
+    margin-top: 70px;
+}
