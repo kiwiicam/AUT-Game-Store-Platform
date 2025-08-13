@@ -8,6 +8,7 @@ import OtherSettings from '../components/AccountSettingsComponents/OtherSettings
 import UploadAssignment from '../components/AccountSettingsComponents/UploadAssignment';
 
 import '../css/Accountpage.css'
+import ManageUploads from '../components/AccountSettingsComponents/ManageUploads';
 function Accountpage() {
   const [active, setActive] = useState(<AccountInformation />);
 
@@ -29,7 +30,7 @@ function Accountpage() {
             <div className='setting' onClick={() => setActive(<h2>Coming Soon</h2>)}><h2>Verify Account</h2></div>
             <h1>Admin Tools</h1>
             <div className='split'></div>
-            <div id="first" className='setting' onClick={() => setActive(<h2>Coming Soon</h2>)}><h2>Manage Upload Requests</h2></div>
+            <div id="first" className='setting' onClick={() => setActive(<ManageUploads/>)}><h2>Manage Upload Requests</h2></div>
             <div className='setting' onClick={() => setActive(<h2>Coming Soon</h2>)}><h2>Edit Upload instructions</h2></div>
             <div className='setting' onClick={() => setActive(<h2>Coming Soon</h2>)}><h2>Manage Users</h2></div>
           </div>
