@@ -160,3 +160,25 @@
     font-size: 0.8rem;
     line-height: 1;
 }
+
+.sort-buttons {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.other-sort {
+    cursor: pointer;
+    width: auto;
+    height: auto;
+    padding: 5px;
+    background-color: #D9D9D966;
+    border-radius: 8px;
+}
+
+.other-sort h4{
+    font-size: 1rem;
+
+}

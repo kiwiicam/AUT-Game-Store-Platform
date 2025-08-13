@@ -6,14 +6,18 @@ import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
 
 function Browse() {
-  const [search, setSearch] = useState("")
+
   const [selectedGenre, setSelectedGenre] = useState(false)
   const [selectedType, setSelectedType] = useState(false)
   const [selectedDate, setSelectedDate] = useState(false)
   const [selectedOther, setSelectedOther] = useState(false)
+
   const [gameArray, setGameArray] = useState([])
   const [allGames, setAllGames] = useState([]);
-  const [selectedGenres, setSelectedGenres] = useState([])
+  const [theSelectedGenre, setTheSelectedGenre] = useState(null)
+  const [search, setSearch] = useState("")
+
+
   const [width, setWidth] = useState(null);
 
   const widthRef = useRef(null);
@@ -62,7 +66,7 @@ function Browse() {
       }));
 
       const bigList = [...mappedGames, ...mappedGames];
-      setAllGames(mappedGames);
+      setAllGames(bigList);
       setGameArray(bigList);
 
     }
@@ -110,40 +114,43 @@ function Browse() {
     return
   }
 
-  const browseGamesBySearch = (searchQuery) => {
-    if (searchQuery.trim() === "") {
-      setGameArray(allGames);
-      return
+  const filterResults = (searchQuery, genre) => {
+    let filtered = allGames;
+
+    if (genre) {
+      filtered = filtered.filter(game => game.genres.includes(genre));
     }
-    const searchGame = allGames.filter(item =>
-      item.title.toLowerCase().startsWith(searchQuery.toLowerCase())
-    );
-    setGameArray(searchGame);
+
+    if (searchQuery.trim() !== "") {
+      filtered = filtered.filter(game =>
+        game.title.toLowerCase().startsWith(searchQuery.toLowerCase())
+      );
+    }
+    setGameArray(filtered);
   }
 
-  const browseGamesByGenre = (selection) => {
-    if(selection.length < 1)
-    {
-      return
-    }
-    const filteredGames = allGames.filter(game =>
-      game.genres.some(g => selection.includes(g))
-    );
-    setGameArray(filteredGames);
+  const searchChange = (searchQuery) => {
+    setSearch(searchQuery);
+    filterResults(searchQuery, theSelectedGenre);
   }
 
   const genreSelection = (genre) => {
-    if (selectedGenres.includes(genre)) {
-      setSelectedGenres(selectedGenres.filter(g => g !== genre));
-      browseGamesByGenre(selectedGenres.filter(g => g !== genre));
+    if (theSelectedGenre === genre) {
+      setTheSelectedGenre(null);
+      filterResults(search, null);
       return;
     }
-    if (selectedGenres.length >= 3) {
-      return
-    }
-    const newSelection = [...selectedGenres, genre]
-    setSelectedGenres(newSelection)
-    browseGamesByGenre(newSelection);
+    setTheSelectedGenre(genre);
+    filterResults(search, genre);
+  }
+
+  const sortByLike = () => {
+
+  }
+
+  const sortByRandom = () => {
+    const shuffled = [...gameArray].sort(() => Math.random() - 0.5);
+    setGameArray(shuffled);
   }
 
 
@@ -154,7 +161,7 @@ function Browse() {
         <div className='left-browse-section'>
           <div className='top-browse'>
             <h3>Search</h3>
-            <input id="search-input" onChange={(e) => browseGamesBySearch(e.target.value)} type='text' placeholder='Search for a game...' />
+            <input id="search-input" onChange={(e) => searchChange(e.target.value)} type='text' placeholder='Search for a game...' />
             <div className="skinny-white-bar-browse"></div>
             <div className='dropdown-browse'>
               <div className='inner-genre'>
@@ -163,10 +170,10 @@ function Browse() {
               </div>
               {selectedGenre ?
                 <div className='dropdown-genre-section'>
-                  <h2>Please select upto 3 genres. </h2>
+                  <h2>Please select a genre. </h2>
                   <div id="genre">
                     {gameGenres.map((item, index) => (
-                      <div className={selectedGenres.includes(item) ? 'genre-item-browse-selected' : 'genre-item-browse'} onClick={() => genreSelection(item)}>
+                      <div className={theSelectedGenre === item ? 'genre-item-browse-selected' : 'genre-item-browse'} onClick={() => genreSelection(item)}>
                         <h2 className='genre-h2'>{item}</h2>
                       </div>
                     ))}
@@ -189,12 +196,17 @@ function Browse() {
             <div className="skinny-white-bar-browse"></div>
             <div className='dropdown-browse'>
               <div className='inner-genre'>
-                <h4>Release date</h4>
+                <h4>Sort By Release date</h4>
                 <RiArrowDropDownLine className={`arrow-down ${selectedDate ? 'rotate-up' : ''}`} onClick={() => handleSelected("Date")} />
               </div>
               {selectedDate ?
                 <div className='dropdown-genre-section'>
-                  <h2>Select up to 3 Genres</h2>
+                  <h2>Sort by the least or most recent uploads</h2>
+                  <div className='date-sort'>
+                    <div className='date-div'><h4>Most Recent</h4></div>
+                    <div className='date-div'><h4>Least Recent</h4></div>
+
+                  </div>
                 </div>
                 : <></>}
             </div>
@@ -206,7 +218,15 @@ function Browse() {
               </div>
               {selectedOther ?
                 <div className='dropdown-genre-section'>
-                  <h2>Select up to 3 Genres</h2>
+                  <h2>Sort by Likes, or randomise to discover new games.</h2>
+                  <div className='sort-buttons'>
+                    <div className='other-sort' onClick={() => sortByLike()}>
+                      <h4>Sort By Likes</h4>
+                    </div>
+                    <div className='other-sort' onClick={() => sortByRandom()}>
+                      <h4>Randomize Sort</h4>
+                    </div>
+                  </div>
                 </div>
                 : <></>}
             </div>
