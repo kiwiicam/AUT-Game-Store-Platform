@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import '../../css/ManageUploads.css'
 
 function ManageUploads() {
 
@@ -32,6 +34,7 @@ function ManageUploads() {
                                     <h2>{item.account}</h2>
                                     <h2>{item.type}</h2>
                                     <h2>{item.date}</h2>
+                                    <BsThreeDotsVertical />
                                 </div>
                                 <div className="thin-grey-line"></div>
                             </>
