@@ -1,0 +1,79 @@
+.manage-uploads-main {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.top-uploads {
+    width: 100%;
+    height: 20%;
+}
+
+.bottom-uploads {
+
+    height: 70%;
+    width: 100%;
+}
+
+.thin-grey-line {
+    width: 100%;
+    height: 1.5px;
+    background-color: #C2C2C260;
+}
+
+.scroll-overflow{
+    height: 80%;
+    overflow-y: scroll;
+    padding-right: 5px;
+}
+
+.scroll-manage-uploads {
+    height: auto;
+}
+
+.outer-item {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.what,
+.upload-item {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    align-items: center;
+    width: 92%;
+}
+
+.upload-item h2,
+.what h2 {
+    font-size: 0.8rem;
+    font-weight: 400;
+}
+
+.pfp-manage {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.account-cell {
+    display: flex;
+    align-items: center;
+}
+
+.pfp-manage img {
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: contain;
+    margin-bottom: 0;
+}

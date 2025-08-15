@@ -6,9 +6,10 @@ import PasswordSecurity from '../components/AccountSettingsComponents/PasswordSe
 import Languages from '../components/AccountSettingsComponents/Languages';
 import OtherSettings from '../components/AccountSettingsComponents/OtherSettings';
 import UploadAssignment from '../components/AccountSettingsComponents/UploadAssignment';
+import ManageUploads from '../components/AccountSettingsComponents/ManageUploads';
 
 import '../css/Accountpage.css'
-import ManageUploads from '../components/AccountSettingsComponents/ManageUploads';
+
 function Accountpage() {
   const [active, setActive] = useState(<AccountInformation />);
 

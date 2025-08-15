@@ -9,11 +9,12 @@
 
 .account-center {
     display: flex;
-    width: 55%;
+    width: 68%;
     height: 95%;
 }
 
 .left-options {
+    padding-top: 8px;
     display: flex;
     justify-content: center;
     width: 35%;
