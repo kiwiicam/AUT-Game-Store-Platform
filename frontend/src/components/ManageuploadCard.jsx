@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import '../css/MangeuploadCard.css'
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { useNavigate } from 'react-router';
 function ManageuploadCard({ account, type, date, pfp, id }) {
+    const navigate = useNavigate();
     const [selected, setSelected] = useState(false);
     return (
         <>
@@ -18,7 +20,7 @@ function ManageuploadCard({ account, type, date, pfp, id }) {
                 <BsThreeDotsVertical style={{ color: "lightgray", cursor: "pointer" }} onClick={() => setSelected((prev) => !prev)} />
                 {selected ?
                     <div className='approve-game-container'>
-                        <div className='approve-div'>
+                        <div className='approve-div' onClick={()=> navigate('/admin/minecraft')}>
                             <h2>Preview Game Page</h2>
                         </div>
                         <div className='approve-div'>

@@ -47,7 +47,7 @@ function ManageUploads() {
                     <div className="scroll-manage-uploads">
                         {uploadRequests.map((item, index) => (
                             <ManageuploadCard type={item.type} account={item.account} pfp={item.pfp} date={item.date} id={index} key={index} />
-                        ))
+                          ))
 
                         }
                     </div>

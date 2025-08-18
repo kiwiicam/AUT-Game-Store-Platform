@@ -1,0 +1,22 @@
+.gamepage-header-container-admin {
+    width: 70%;
+    height: 100px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.back-button-admin {
+    height: 55px;
+    width: 55px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: #EEEEEE;
+    cursor: pointer;
+}
+
+.back-admin-game{
+    font-size: 2.1rem;
+}
