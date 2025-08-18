@@ -1,0 +1,76 @@
+.pfp-manage {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.account-cell {
+    display: flex;
+    align-items: center;
+}
+
+.pfp-manage img {
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: contain;
+    margin-bottom: 0;
+}
+
+.outer-item {
+    width: 100%;
+    height: 65px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.upload-item {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    align-items: center;
+    width: 92%;
+}
+
+.thin-grey-line {
+    width: 100%;
+    height: 1.5px;
+    background-color: #C2C2C260;
+}
+
+.approve-game-container {
+    position: absolute;
+    right: 30px;
+    height: 60px;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    top: 2.5px;
+}
+
+.approve-div h2 {
+    font-size: 0.5rem;
+    padding: 0;
+    margin: 0;
+}
+
+.approve-div {
+    background-color: #14141499;
+    cursor: pointer;
+    height: calc(100% / 3);
+    width: 100%;
+    padding-left: 5px;
+    padding-right: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.approve-div:hover {
+    background-color: #00000099;
+}

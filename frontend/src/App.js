@@ -16,6 +16,7 @@ import Header from './components/Header.jsx';
 import HeaderLayout from './components/HeaderLayout.jsx';
 import Gamepage from './pages/Gamepage.jsx';
 import Browse from './pages/Browse.jsx';
+import GamepageAdmin from './pages/GamepageAdmin.jsx'
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route path="/account" element={<Accountpage />} />
           <Route path="*" element={<h1 style={{ color: 'red', marginTop: '100px' }}>404 Not Found</h1>} />
           <Route path="/games/:gameName" element={<Gamepage />} />
+          <Route path="/admin/:gameName" element={<GamepageAdmin />} />
         </Route>
         {/*Routes without header (all auth routes)*/}
         <Route path="/signup" element={<Signup />} />
