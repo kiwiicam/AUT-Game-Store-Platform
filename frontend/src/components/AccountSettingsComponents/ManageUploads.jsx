@@ -5,6 +5,8 @@ import ManageuploadCard from "../ManageuploadCard";
 function ManageUploads() {
 
     const [uploadRequests, setUploadRequests] = useState([])
+    var denyList = []
+    var approveList = []
     useEffect(() => {
 
         setUploadRequests(
@@ -29,6 +31,26 @@ function ManageUploads() {
 
     }, []);
 
+    const handleList = (game, type) => {
+        if (type === "deny") {
+            if (denyList.includes(game)) {
+                denyList = denyList.filter(item => item !== game);
+                return
+            }
+            denyList.push(game);
+            return
+        }
+        if (type === "approve") {
+            if (approveList.includes(game)) {
+                approveList = approveList.filter(item => item !== game);
+                return
+            }
+            approveList.push(game);
+            return
+        }
+        alert("error")
+    }
+
     return (
         <div className="manage-uploads-main">
             <div className="top-uploads">
@@ -46,13 +68,15 @@ function ManageUploads() {
                 <div className="scroll-overflow">
                     <div className="scroll-manage-uploads">
                         {uploadRequests.map((item, index) => (
-                            <ManageuploadCard type={item.type} account={item.account} pfp={item.pfp} date={item.date} id={index} key={index} />
-                          ))
+                            <ManageuploadCard type={item.type} account={item.account} pfp={item.pfp} date={item.date} id={index} key={index} func={handleList} />
+                        ))
 
                         }
                     </div>
                 </div>
             </div>
+            <button onClick={() => alert(denyList)}></button>
+            <button onClick={() => alert(approveList)}></button>
         </div>
     )
 }
