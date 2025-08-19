@@ -34,13 +34,15 @@
     height: auto;
 }
 
-
 .what,
 .upload-item {
     display: grid;
     grid-template-columns: 1.5fr 1fr 1fr;
     align-items: center;
-    width: 92%;
+}
+
+.what{
+    width: 85%;
 }
 
 .upload-item h2,

@@ -34,8 +34,8 @@
     display: grid;
     grid-template-columns: 1.5fr 1fr 1fr;
     align-items: center;
-    width: 92%;
-    padding: 5px;
+    width: 88%;
+    padding: 3px;
     border-radius: 5px;
     transition: 0.15s ease-in-out;
     cursor: pointer;
@@ -47,7 +47,7 @@
 }
 
 .buttons {
-    width: 8%;
+    width: 12%;
     height: auto;
     display: flex;
     justify-content: space-evenly;
