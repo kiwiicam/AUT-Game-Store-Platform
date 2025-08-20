@@ -86,7 +86,7 @@ export async function uploadGameInformation(req, res) {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     const formattedDate = date.toLocaleDateString('en-US', options);
     const params = {
-        TableName: "gameInformation",
+        TableName: "AwaitingGames",
         Item: {
             gameName: { S: gameName },
             gameDesc: { S: gameDesc },
@@ -314,29 +314,17 @@ export async function browseGames(req, res) {
     }
 }
 
-// export async function browseGamesBySearch(req, res) {
-//     try {
-//         const { searchQuery } = req.body;
+export async function retrieveGamesForAdmin(req, res) {
+    try {
+        const data = await client.send(new ScanCommand({ TableName: "AwaitingGames" }));
+        const realData = data.Items.map(item => unmarshall(item));
+        console.log(data)
+        res.status(200).json({games: realData});
+    }
+    catch (err) {
+        console.log(err.message);
+        res.status(500).json({ error: err.message });
 
-//         const params = {
-//             TableName: "gameInformation",
-//             FilterExpression: "begins_with(gameName, :search)",
-//             ExpressionAttributeValues: {
-//                 ":search": { S: searchQuery }
-//             }
-//         };
-//         const data = await client.send(new ScanCommand(params));
-//         const plainItems = data.Items.map(item => unmarshall(item));
-
-//         const searchResults = await mergeImageUrlWithGameName(plainItems)
-//         res.status(200).json({
-//             searchResults
-//         })
-//     }
-//     catch (err) {
-//         console.log(err.message)
-//         res.status(500).json({ error: err.message })
-//     }
-
-// }
+    }
+}
 

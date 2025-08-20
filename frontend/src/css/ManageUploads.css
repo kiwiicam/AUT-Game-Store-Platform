@@ -73,3 +73,16 @@
     object-fit: contain;
     margin-bottom: 0;
 }
+
+.end-button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.end-button button {
+    max-width: 200px;
+    border-radius: 8px !important;
+    font-size: 1rem
+}

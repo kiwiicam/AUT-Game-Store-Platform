@@ -14,7 +14,7 @@ export async function uploadGame(req, res) {
         const fileStream = fs.createReadStream(file.path);
         const uploadParams = {
             Bucket: process.env.AWS_BUCKET_NAME,
-            Key: `Games/${gameName}/GameFiles/${file.originalname}`,
+            Key: `AwaitingGames/${gameName}/GameFiles/${file.originalname}`,
             Body: fileStream,
             ContentType: file.mimetype,
         };
@@ -46,7 +46,7 @@ export async function uploadGameImages(req, res) {
             const fileStream = fs.createReadStream(file.path);
             const uploadParams = {
                 Bucket: process.env.AWS_BUCKET_NAME,
-                Key: `Games/${gameName}/Images/${file.originalname}`,
+                Key: `AwaitingGames/${gameName}/Images/${file.originalname}`,
                 Body: fileStream,
                 ContentType: file.mimetype,
             };

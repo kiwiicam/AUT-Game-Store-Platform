@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from 'axios'
 
 import '../../css/ManageUploads.css'
 import ManageuploadCard from "../ManageuploadCard";
@@ -9,27 +10,32 @@ function ManageUploads() {
     var approveList = []
     useEffect(() => {
 
-        setUploadRequests(
-            [
-                { account: "Blaine Mcdonald", type: "Team Game Project", date: "August 13, 2025", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-                { account: "Blaine Mcdonald", type: "Team Game Project", date: "August 13, 2025", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-                { account: "Blaine Mcdonald", type: "Team Game Project", date: "August 13, 2025", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-                { account: "Blaine Mcdonald", type: "Team Game Project", date: "August 13, 2025", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-                { account: "Blaine Mcdonald", type: "Team Game Project", date: "August 13, 2025", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-                { account: "Blaine Mcdonald", type: "Team Game Project", date: "August 13, 2025", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-                { account: "Blaine Mcdonald", type: "Team Game Project", date: "August 13, 2025", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-                { account: "Blaine Mcdonald", type: "Team Game Project", date: "August 13, 2025", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-                { account: "Blaine Mcdonald", type: "Team Game Project", date: "August 13, 2025", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-                { account: "Blaine Mcdonald", type: "Team Game Project", date: "August 13, 2025", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-                { account: "Blaine Mcdonald", type: "Team Game Project", date: "August 13, 2025", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-                { account: "Blaine Mcdonald", type: "Team Game Project", date: "August 13, 2025", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-                { account: "Blaine Mcdonald", type: "Team Game Project", date: "August 13, 2025", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-                { account: "Blaine Mcdonald", type: "Team Game Project", date: "August 13, 2025", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-                { account: "Blaine Mcdonald", type: "Team Game Project", date: "August 13, 2025", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-            ]
-        )
+        const getGameItems = async () => {
+            try {
+                const uploads = await axios.get('http://localhost:8000/api/database/admingames')
+                const mappedGames = uploads.data.games.map(game => ({
+                    account: "Campbell",
+                    type: game.projectType,
+                    date: game.releaseDate,
+                    gameName: game.gameName,
+                    pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                }));
+                setUploadRequests(mappedGames)
+            }
+            catch (err) {
+                alert(err.message)
+            }
+
+        }
+        getGameItems();
+
+
 
     }, []);
+
+    const makeChanges = async () => {
+
+    }
 
     const handleList = (game, type) => {
         if (type === "deny") {
@@ -68,15 +74,16 @@ function ManageUploads() {
                 <div className="scroll-overflow">
                     <div className="scroll-manage-uploads">
                         {uploadRequests.map((item, index) => (
-                            <ManageuploadCard type={item.type} account={item.account} pfp={item.pfp} date={item.date} id={index} key={index} func={handleList} />
+                            <ManageuploadCard type={item.type} account={item.account} pfp={item.pfp} date={item.date} id={index} key={index} func={handleList} gameName={item.gameName} />
                         ))
 
                         }
                     </div>
                 </div>
             </div>
-            <button onClick={() => alert(denyList)}></button>
-            <button onClick={() => alert(approveList)}></button>
+            <div className="end-button">
+                <button onClick={() => makeChanges()}>Confirm Changes?</button>
+            </div>
         </div>
     )
 }

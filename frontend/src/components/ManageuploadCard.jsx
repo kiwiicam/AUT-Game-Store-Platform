@@ -4,7 +4,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { useNavigate } from 'react-router';
 import { ImCross } from "react-icons/im";
 import { ImCheckmark } from "react-icons/im";
-function ManageuploadCard({ account, type, date, pfp, func, id }) {
+function ManageuploadCard({ account, type, date, pfp, func, id, gameName }) {
     const navigate = useNavigate();
     const [selectedApprove, setSelectedApprove] = useState(false);
     const [selectedDeny, setSelectedDeny] = useState(false);
@@ -50,7 +50,7 @@ function ManageuploadCard({ account, type, date, pfp, func, id }) {
     return (
         <>
             <div className="outer-item">
-                <div className="upload-item" onClick={() => navigate('/admin/minecraft')}>
+                <div className="upload-item" onClick={() => navigate(`/admin/${gameName}`)}>
                     <div className="account-cell">
                         <div className="pfp-manage"><img src={pfp}></img></div>
                         <h2>{account}</h2>
