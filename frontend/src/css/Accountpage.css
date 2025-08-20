@@ -11,13 +11,14 @@
     display: flex;
     width: 68%;
     height: 95%;
+    /* background-color: rgb(90, 100, 100); */
 }
 
 .left-options {
     padding-top: 8px;
     display: flex;
     justify-content: center;
-    width: 35%;
+    width: 28%;
     height: 100%;
     background-color: #14141499;
     border-radius: 15px;
@@ -74,9 +75,11 @@
 
 .right-content {
     width: 65%;
+    padding-left: 15px;
     height: 100%;
     display: flex;
     justify-content: end;
+    /* background-color: rgb(128, 109, 85); */
 }
 
 .right-inner {
