@@ -120,7 +120,7 @@ function AccountInformation() {
     return (
         <div className="account-information">
             <h1>Account Information</h1>
-            <h2>Managae your account details here.</h2>
+            <h2>Manage your account details here.</h2>
             <h1 className="subheading">Profile details</h1>
             <h2>Change your profile details that others can view</h2>
 
