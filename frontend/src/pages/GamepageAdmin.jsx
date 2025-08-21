@@ -8,6 +8,7 @@ import Genrebox from '../components/Genrebox';
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import { useNavigate } from 'react-router';
 import { IoMdArrowBack } from "react-icons/io";
+import axios from 'axios';
 
 function GamepageAdmin() {
     const [index, setIndex] = useState(0);
@@ -19,6 +20,16 @@ function GamepageAdmin() {
 
     useEffect(() => {
         if (!gameName) return;
+
+        const getGameInfo = async () => {
+            try {
+                const gameInfo = axios.post('http://localhost:8000/api/database/approvegames', gameName)
+                //const mappedInfo = 
+            }
+            catch (error) {
+                alert(error.message)
+            }
+        }
         setGameInfo({
             title: 'Minecraft',
             description: 'Minecraft is a sandbox video game developed by Mojang Studios. It allows players to build and explore virtual worlds made up of blocks. It is a game of creativity and survival, where players can gather resources, craft items, and build structures. The game features different modes, including survival mode, where players must manage their health and hunger, and creative mode, where they have unlimited resources to build freely.',

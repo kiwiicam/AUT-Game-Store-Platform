@@ -36,9 +36,7 @@ function ManageUploads() {
     const makeChanges = async () => {
         if (denyList.length >= 1) {
             try {
-                const result = axios.post('http://localhost:8000/api/database/denygames', {
-                    denyList
-                })
+                const result = axios.post('http://localhost:8000/api/database/denygames', denyList)
             }
             catch (err) {
                 alert(err.message)
@@ -46,9 +44,7 @@ function ManageUploads() {
         }
         if (approveList.length >= 1) {
             try {
-                const result = axios.post('http://localhost:8000/api/database/approvegames', {
-                    approveList
-                })
+                const result = axios.post('http://localhost:8000/api/database/approvegames', approveList)
             }
             catch (err) {
                 alert(err.message)

@@ -44,7 +44,7 @@ function ManageUsers() {
             <div className='user-outer-container'>
                 <div className='user-info-bar'></div>
                 <div className='overflow-users'>
-                    {users.map((item, index 
+                    {users.map((item, index) => (
                         <UserManageCard />
                     ))}
                 </div>

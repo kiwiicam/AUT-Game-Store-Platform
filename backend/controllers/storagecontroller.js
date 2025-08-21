@@ -1,7 +1,7 @@
 import express from 'express';
 import { S3 } from '../s3Client.js';
 import fs from 'fs';
-import { PutObjectCommand, GetObjectCommand, ListObjectsV2Command } from '@aws-sdk/client-s3';
+import { PutObjectCommand, GetObjectCommand, ListObjectsV2Command, DeleteObjectsCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import stream from 'stream';
 
@@ -14,7 +14,7 @@ export async function uploadGame(req, res) {
         const fileStream = fs.createReadStream(file.path);
         const uploadParams = {
             Bucket: process.env.AWS_BUCKET_NAME,
-            Key: `AwaitingGames/${gameName}/GameFiles/${file.originalname}`,
+            Key: `Games/${gameName}/GameFiles/${file.originalname}`,
             Body: fileStream,
             ContentType: file.mimetype,
         };
@@ -46,7 +46,7 @@ export async function uploadGameImages(req, res) {
             const fileStream = fs.createReadStream(file.path);
             const uploadParams = {
                 Bucket: process.env.AWS_BUCKET_NAME,
-                Key: `AwaitingGames/${gameName}/Images/${file.originalname}`,
+                Key: `Games/${gameName}/Images/${file.originalname}`,
                 Body: fileStream,
                 ContentType: file.mimetype,
             };
@@ -128,4 +128,27 @@ export async function retrieveGameImagesGame(req, res) {
         });
         console.log(err.message);
     }
+}
+
+export async function deleteFromS3(gameName) {
+    try {
+        const prefix = `Games/${gameName}/`;
+        const listedObjects = await S3.send(
+            new ListObjectsV2Command({
+                Bucket: process.env.AWS_BUCKET_NAME,
+                Prefix: prefix,
+            })
+        );
+        const deleteParams = {
+            Bucket: process.env.AWS_BUCKET_NAME,
+            Delete: {
+                Objects: listedObjects.Contents.map(({ Key }) => ({ Key })),
+            },
+        };
+        await S3.send(new DeleteObjectsCommand(deleteParams));
+    }
+    catch (error) {
+        console.log("s3 delete error")
+    }
+
 }

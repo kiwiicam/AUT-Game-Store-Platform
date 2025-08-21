@@ -1,7 +1,8 @@
 import { client } from '../dynamoClient.js';
-import { PutItemCommand, GetItemCommand, UpdateItemCommand, ScanCommand, QueryCommand } from '@aws-sdk/client-dynamodb';
+import { PutItemCommand, GetItemCommand, UpdateItemCommand, ScanCommand, QueryCommand, DeleteItemCommand } from '@aws-sdk/client-dynamodb';
 import { retrieveGameImages } from './storagecontroller.js';
 import { unmarshall } from '@aws-sdk/util-dynamodb';
+import { deleteFromS3 } from './storagecontroller.js';
 
 export async function addUser(req, res) {
     const { uid, username, accountType, email } = req.body;
@@ -318,7 +319,6 @@ export async function retrieveGamesForAdmin(req, res) {
     try {
         const data = await client.send(new ScanCommand({ TableName: "AwaitingGames" }));
         const realData = data.Items.map(item => unmarshall(item));
-        console.log(data)
         res.status(200).json({ games: realData });
     }
     catch (err) {
@@ -329,9 +329,91 @@ export async function retrieveGamesForAdmin(req, res) {
 }
 
 export async function approveGames(req, res) {
+    try {
+        const approveList = req.body
+        if (approveList.length < 1) {
+            res.status(200).json({ message: "No items" });
+            return;
+        }
+        for (const gameName of approveList) {
+
+            const getPararms = {
+                TableName: "AwaitingGames",
+                Key: {
+                    gameName: { S: gameName }
+
+                }
+            }
+
+            const items = await client.send(new GetItemCommand(getPararms))
+
+            const plainItems = unmarshall(items.Item);
+
+            console.log(plainItems)
+            const putParams = {
+                TableName: "gameInformation",
+                Item: {
+                    gameName: { S: plainItems.gameName },
+                    gameDesc: { S: plainItems.gameDesc },
+                    teamName: { S: plainItems.teamName },
+                    projectTimeframe: { S: plainItems.projectTimeframe },
+                    projectType: { S: plainItems.projectType },
+                    selectedGenres: { SS: Array.from(plainItems.selectedGenres) },
+                    likes: { N: "0" },
+                    releaseDate: { S: plainItems.releaseDate },
+                    fileSize: { N: plainItems.fileSize.toString() },
+                }
+            }
+
+            await client.send(new PutItemCommand(putParams))
+
+            const delParams = {
+                TableName: "AwaitingGames",
+                Key: {
+                    gameName: { S: gameName }
+
+                }
+            }
+            await client.send(new DeleteItemCommand(delParams))
+        }
+        res.status(200).json({ message: "Success" });
+    }
+    catch (error) {
+        console.log(error.message)
+        console.log("error")
+        res.status(500).json({ error: error.message });
+    }
 
 }
 
-export async function denyGames(req, res) {
 
+export async function denyGames(req, res) {
+    try {
+        const denyList = req.body
+        if (denyList.length < 1) {
+            res.status(200).json({ message: "No items" });
+            return;
+        }
+        for (const gameName of denyList) {
+            const params = {
+                TableName: "AwaitingGames",
+                Key: {
+                    gameName: { S: gameName }
+
+                }
+            }
+            await client.send(new DeleteItemCommand(params))
+            deleteFromS3(gameName);
+        }
+        res.status(200).json({ message: "Success" });
+    }
+    catch (error) {
+        console.log(error.message)
+        res.status(500).json({ error: error.message });
+    }
+
+}
+
+export async function getAdminGameInfo(req, res) {
+    
 }
