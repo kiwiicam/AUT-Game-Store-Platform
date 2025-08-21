@@ -319,7 +319,7 @@ export async function retrieveGamesForAdmin(req, res) {
         const data = await client.send(new ScanCommand({ TableName: "AwaitingGames" }));
         const realData = data.Items.map(item => unmarshall(item));
         console.log(data)
-        res.status(200).json({games: realData});
+        res.status(200).json({ games: realData });
     }
     catch (err) {
         console.log(err.message);
@@ -328,3 +328,10 @@ export async function retrieveGamesForAdmin(req, res) {
     }
 }
 
+export async function approveGames(req, res) {
+
+}
+
+export async function denyGames(req, res) {
+
+}

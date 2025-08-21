@@ -9,6 +9,7 @@ import Languages from '../components/AccountSettingsComponents/Languages';
 import OtherSettings from '../components/AccountSettingsComponents/OtherSettings';
 import UploadAssignment from '../components/AccountSettingsComponents/UploadAssignment';
 import ManageUploads from '../components/AccountSettingsComponents/ManageUploads';
+import ManageUsers from '../components/AccountSettingsComponents/ManageUsers';
 
 
 function Accountpage() {
@@ -40,8 +41,8 @@ function Accountpage() {
             <h1>Admin Tools</h1>
             <div className='split'></div>
             <div id="first" className='setting' onClick={() => setActive(<ManageUploads />)}><h2>Manage Upload Requests</h2></div>
-            <div className='setting' onClick={() => setActive(<h2>Coming Soon</h2>)}><h2>Edit Upload instructions</h2></div>
-            <div className='setting' onClick={() => setActive(<h2>Coming Soon</h2>)}><h2>Manage Users</h2></div>
+            <div className='setting' onClick={() => setActive(<ManageUsers/>)}><h2>Manage Users</h2></div>
+            <div className='setting' onClick={() => setActive(<h2>Coming Soon</h2>)}><h2>View analytics</h2></div>
           </div>
         </div>
         <div className='right-content'>

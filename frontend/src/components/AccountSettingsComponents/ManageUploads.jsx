@@ -34,7 +34,28 @@ function ManageUploads() {
     }, []);
 
     const makeChanges = async () => {
-
+        if (denyList.length >= 1) {
+            try {
+                const result = axios.post('http://localhost:8000/api/database/denygames', {
+                    denyList
+                })
+            }
+            catch (err) {
+                alert(err.message)
+            }
+        }
+        if (approveList.length >= 1) {
+            try {
+                const result = axios.post('http://localhost:8000/api/database/approvegames', {
+                    approveList
+                })
+            }
+            catch (err) {
+                alert(err.message)
+            }
+        }
+        //then handle state change to remove the approved or denied games
+        return
     }
 
     const handleList = (game, type) => {
