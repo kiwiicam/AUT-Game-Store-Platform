@@ -1,6 +1,5 @@
 .game-card {
     cursor: pointer;
-
     border-radius: 15px;
     background-color: #14141499;
     display: flex;
@@ -26,6 +25,10 @@
     color: #fff;
 }
 
+.game-info h2 {
+    font-size: 0.8rem;
+}
+
 .game-img {
     height: 70%;
     width: 100%;
@@ -41,9 +44,52 @@
     max-height: none !important;
 }
 
-
 h3 {
-    font-size: 1.2rem;
+    font-size: 1.0rem;
     color: #fff;
     margin-top: -5px;
+    font-weight: 600;
+}
+
+/* ------------------------
+   Netflix-style Ranked Card
+   ------------------------ */
+.ranked-card {
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    cursor: pointer;
+    background-color: #141414;
+    transition: 0.2s ease-in-out;
+}
+
+.ranked-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.ranked-card .ranked-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.ranked-card .ranked-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Big number overlay */
+.rank-number {
+    position: absolute;
+    bottom: -10px;
+    left: -10px;
+    font-size: 6rem; /* adjust for size */
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+    z-index: 2;
+    pointer-events: none; /* prevents interfering with clicks */
 }
