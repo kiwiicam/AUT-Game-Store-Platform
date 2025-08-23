@@ -1,0 +1,47 @@
+.inner-user{
+    display: flex;
+    align-items: center;
+    padding: 5px;
+}
+.user-info{
+    align-items: center;
+    display: grid;
+    width: 95%;
+    grid-template-columns: 1.5fr 2fr 1fr 1fr auto;
+    box-sizing: border-box;
+ }
+
+.dropdown-users{
+    font-size: 2.4rem;
+    color: #fff;
+    cursor: pointer;
+}
+.user-manage-pfp{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.user-info h4{
+    margin: 0;
+    font-size: 0.8rem;
+}
+
+.user-manage-pfp img{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.pfp-outer-user{
+    gap: 7px;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+.user-change-box{
+    width: 95%;
+}

@@ -415,5 +415,17 @@ export async function denyGames(req, res) {
 }
 
 export async function getAdminGameInfo(req, res) {
-    
+
+}
+
+export async function getAdminAllUsers(req, res) {
+    try {
+        const data = await client.send(new ScanCommand({ TableName: "UserTable" }));
+        console.log(data)
+        res.status(200).json({})
+    }
+    catch (error) {
+        res.status(500).json({})
+        console.log(error.message)
+    }
 }

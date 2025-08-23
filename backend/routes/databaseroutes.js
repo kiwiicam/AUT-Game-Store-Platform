@@ -17,7 +17,8 @@ router.get('/browsegames', browseGames);
 router.get('/admingames', retrieveGamesForAdmin);
 router.post('/approvegames', approveGames);
 router.post('/denygames', denyGames);
-router.post('/admingaminfo', getAdminGameInfo)
+router.post('/admingameinfo', getAdminGameInfo)
+router.get('/adminallusers', getAdminAllUsers)
 
 //router.post('/browsegamesbysearch', browseGamesBySearch);
 

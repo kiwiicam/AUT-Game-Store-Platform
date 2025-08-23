@@ -1,0 +1,78 @@
+.manage-users {
+    height: 100%;
+    width: 120%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.manage-users h2 {
+    font-size: 0.9rem;
+}
+
+.top-users {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.user-outer-container {
+    height: 58%;
+}
+
+.user-details {
+    display: grid;
+    width: 95%;
+    grid-template-columns: 1.5fr 2fr 1fr 1fr;
+    box-sizing: border-box;
+    align-items: center;
+}
+
+.user-accounts {
+    overflow-y: scroll;
+    height: 84%;
+}
+
+.over-users {
+    height: auto;
+}
+
+.top-sticky-users {
+    position: sticky;
+    top: 0;
+    background-color: #2C3551;
+}
+
+.users-filters {
+    display: flex;
+    align-items: center;
+    gap: 5%;
+}
+
+.users-filters input,
+.users-filters select {
+    height: 30px;
+    border-radius: 15px;
+    font-size: 1rem;
+    padding: 5px;
+}
+
+.users-filters input {
+    width: 200px;
+    background-color: #D9D9D966;
+    outline: 0;
+    border: 0;
+    padding-left: 10px;
+    padding-right: 15px;
+
+}
+
+.users-filters input::placeholder{
+    color: rgba(0, 0, 0, 0.42);
+
+}
+
+.users-filters input:focus {
+    outline: 0;
+    border: 0;
+}
