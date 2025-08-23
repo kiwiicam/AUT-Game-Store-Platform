@@ -8,8 +8,10 @@ function Homepage() {
 
     const [featuredGames, setFeaturedGames] = useState([]);
     const [recentReleases, setRecentReleases] = useState([]);
+    const [mostLiked, setMostLiked] = useState([]);
     const [index, setIndex] = useState(0);
     const [recentIndex, setRecentIndex] = useState(0);
+    const [likedIndex, setLikedIndex] = useState(0);
     const navigate = useNavigate();
 
     const [width, setWidth] = useState(null);
@@ -67,6 +69,17 @@ function Homepage() {
             { image: "https://i.guim.co.uk/img/media/c15da9438dd16a3563e80b799f65554295b81769/40_0_1200_720/master/1200.jpg?width=700&quality=85&auto=format&fit=max&s=64f83bdbf0f8d4ce2f2bd2862f30a8cd", title: "Skyrim: The Elden Scrolls V", creator: "Bethesda Game Studios" },
             { image: "http://localhost:3000/joshgame.png", title: "Josh's game", creator: "Joshua Knight" }
         ]);
+
+        setMostLiked([
+            { image: "https://i.redd.it/q4fjauk2ebc31.png", title: "Mincecraft LOL", creator: "Mojang" },
+            { image: "https://media.rockstargames.com/rockstargames/img/global/news/upload/1_gtavpc_03272015.jpg", title: "GTA 5", creator: "Rockstar Games" },
+            { image: "https://i.guim.co.uk/img/media/c15da9438dd16a3563e80b799f65554295b81769/40_0_1200_720/master/1200.jpg?width=700&quality=85&auto=format&fit=max&s=64f83bdbf0f8d4ce2f2bd2862f30a8cd", title: "Skyrim: The Elden Scrolls V", creator: "Bethesda Game Studios" },
+            { image: "http://localhost:3000/joshgame.png", title: "Josh's game", creator: "Joshua Knight" },
+            { image: "https://i.redd.it/q4fjauk2ebc31.png", title: "Mincecraft LOL", creator: "Mojang" },
+            { image: "https://media.rockstargames.com/rockstargames/img/global/news/upload/1_gtavpc_03272015.jpg", title: "GTA 5", creator: "Rockstar Games" },
+            { image: "https://i.guim.co.uk/img/media/c15da9438dd16a3563e80b799f65554295b81769/40_0_1200_720/master/1200.jpg?width=700&quality=85&auto=format&fit=max&s=64f83bdbf0f8d4ce2f2bd2862f30a8cd", title: "Skyrim: The Elden Scrolls V", creator: "Bethesda Game Studios" },
+            { image: "http://localhost:3000/joshgame.png", title: "Josh's game", creator: "Joshua Knight" }
+        ]);
     }, [])
 
 
@@ -111,7 +124,7 @@ function Homepage() {
 
                 </div>
                 <div className='recent-releases'>
-                    <h1>Recent student releases</h1>
+                    <h1>Recent Student Releases</h1>
                     <div className='split-line'></div>
                     <div className='recent-releases-slider' ref={sliderRef}>
                         <div className='game-card-button-left' onClick={() => setRecentIndex(recentIndex === 0 ? 5 : recentIndex - 1)}><IoIosArrowBack /></div>                        <div className='game-cards'>
@@ -126,6 +139,24 @@ function Homepage() {
                         </div>
                         {/*GONNA NEED SOME MAD CALCULATIONS FOR GETTING THIS TO WORK EVENLY CAN MAYBE DO TOTAL OF LENGTH OF ALL THE GAMECARDS / SOME NUMBER TO GET HOW MUCH YOU NEED TO SCROLL EACH TIME AND HOW MANY TIMES */}
                         <div className='game-card-button-right' onClick={() => setRecentIndex(recentIndex === 5 ? 0 : recentIndex + 1)}><IoIosArrowForward /></div>
+                    </div>
+                </div>
+                <div className='recent-releases'>
+                    <h1>Most Liked</h1>
+                    <div className='split-line'></div>
+                    <div className='recent-releases-slider' ref={sliderRef}>
+                        <div className='game-card-button-left' onClick={() => setLikedIndex(likedIndex === 0 ? 5 : likedIndex - 1)}><IoIosArrowBack /></div>                        <div className='game-cards'>
+                            <div className='game-card-track'
+                                style={{ transform: `translateX(-${likedIndex * (width+15)}px)`, transition: 'transform 0.5s ease-in-out', width: (width*8)+(8*15) }}
+
+                            >
+                                {mostLiked.map((game, i) => (
+                                    <Gamecard key={i} image={game.image} title={game.title} creator={game.creator} width={width}/>
+                                ))}
+                            </div>
+                        </div>
+                        {/*GONNA NEED SOME MAD CALCULATIONS FOR GETTING THIS TO WORK EVENLY CAN MAYBE DO TOTAL OF LENGTH OF ALL THE GAMECARDS / SOME NUMBER TO GET HOW MUCH YOU NEED TO SCROLL EACH TIME AND HOW MANY TIMES */}
+                        <div className='game-card-button-right' onClick={() => setLikedIndex(likedIndex === 5 ? 0 : likedIndex + 1)}><IoIosArrowForward /></div>
                     </div>
                 </div>
             </div>

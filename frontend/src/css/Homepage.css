@@ -22,6 +22,11 @@ body {
 
 }
 
+.homepage-content h1 {
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
 .split-line {
     width: 100%;
     height: 1.5px;
