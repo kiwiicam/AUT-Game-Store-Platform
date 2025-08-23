@@ -141,7 +141,7 @@ function Homepage() {
                         <div className='game-card-button-right' onClick={() => setRecentIndex(recentIndex === 5 ? 0 : recentIndex + 1)}><IoIosArrowForward /></div>
                     </div>
                 </div>
-                <div className='recent-releases'>
+                <div className='most-liked'>
                     <h1>Most Liked</h1>
                     <div className='split-line'></div>
                     <div className='recent-releases-slider' ref={sliderRef}>
