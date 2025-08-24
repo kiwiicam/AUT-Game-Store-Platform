@@ -151,7 +151,7 @@ function Homepage() {
 
                             >
                                 {mostLiked.map((game, i) => (
-                                    <Gamecard key={i} image={game.image} title={game.title} creator={game.creator} width={width}/>
+                                    <Gamecard key={i} image={game.image} title={game.title} creator={game.creator} width={width} variant="ranking" rank={i+1}/>
                                 ))}
                             </div>
                         </div>
