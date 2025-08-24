@@ -147,7 +147,7 @@ function Homepage() {
                     <div className='recent-releases-slider' ref={sliderRef}>
                         <div className='game-card-button-left' onClick={() => setLikedIndex(likedIndex === 0 ? 5 : likedIndex - 1)}><IoIosArrowBack /></div>                        <div className='game-cards'>
                             <div className='game-card-track'
-                                style={{ transform: `translateX(-${likedIndex * (width+15)}px)`, transition: 'transform 0.5s ease-in-out', width: (width*8)+(8*15) }}
+                                style={{ transform: `translateX(-${likedIndex * (width+11.5)}px)`, transition: 'transform 0.5s ease-in-out', width: (width*8)+(8*15) }}
 
                             >
                                 {mostLiked.map((game, i) => (

@@ -51,19 +51,17 @@ h3 {
     font-weight: 600;
 }
 
-/* ------------------------
-   Netflix-style Ranked Card
-   ------------------------ */
-.ranked-card {
+/* Ranked Card*/
+   .ranked-card {
     position: relative;
-    width: 260px;       /* slightly wider */
-    height: 380px;      /* taller like reference */
+    width: 260px;
+    height: 380px;
     border-radius: 12px;
     cursor: pointer;
-    overflow: visible;
-    background-color: #2c2c2c; /* fallback bg if no img */
+    background-color: #2c2c2c;
     transition: transform 0.2s ease-in-out;
-    flex-shrink: 0; /* prevents shrinking inside slider */
+    flex-shrink: 0;
+    overflow: visible;
 }
 
 .ranked-card:hover {
@@ -86,12 +84,11 @@ h3 {
     max-height: none !important;
 }
 
-/* Big number overlay */
 .rank-number {
     position: absolute;
-    bottom: -50px;
-    left: -30px;
-    font-size: 12rem; /* adjust this to taste */
+    bottom: -50px; /* overhangs below */
+    left: -25px;   /* overhangs left */
+    font-size: 12rem;
     font-weight: 900;
     color: #fff;
     text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.7);
