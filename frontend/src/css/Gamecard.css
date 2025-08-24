@@ -56,11 +56,14 @@ h3 {
    ------------------------ */
 .ranked-card {
     position: relative;
-    border-radius: 15px;
-    overflow: hidden;
+    width: 260px;       /* slightly wider */
+    height: 360px;      /* taller like reference */
+    border-radius: 12px;
     cursor: pointer;
-    background-color: #141414;
-    transition: 0.2s ease-in-out;
+    overflow: hidden;
+    background-color: #2c2c2c; /* fallback bg if no img */
+    transition: transform 0.2s ease-in-out;
+    flex-shrink: 0; /* prevents shrinking inside slider */
 }
 
 .ranked-card:hover {
@@ -71,25 +74,27 @@ h3 {
 .ranked-card .ranked-img {
     width: 100%;
     height: 100%;
-    border-radius: 15px;
+    border-radius: 12px;
     overflow: hidden;
 }
 
 .ranked-card .ranked-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    max-width: none !important;
+    max-height: none !important;
 }
 
 /* Big number overlay */
 .rank-number {
     position: absolute;
-    bottom: -10px;
-    left: -10px;
-    font-size: 6rem; /* adjust for size */
+    bottom: -40px;
+    left: -30px;
+    font-size: 11rem; /* adjust this to taste */
     font-weight: 900;
     color: #fff;
-    text-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.7);
     z-index: 2;
-    pointer-events: none; /* prevents interfering with clicks */
+    pointer-events: none;
 }
