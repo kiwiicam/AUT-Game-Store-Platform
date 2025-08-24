@@ -41,6 +41,7 @@
     position: sticky;
     top: 0;
     background-color: #2C3551;
+    z-index: 15;
 }
 
 .users-filters {
@@ -69,7 +70,6 @@
 
 .users-filters input::placeholder{
     color: rgba(0, 0, 0, 0.42);
-
 }
 
 .users-filters input:focus {
