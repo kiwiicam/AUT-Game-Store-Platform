@@ -6,7 +6,7 @@ body {
 
 .homepage-background {
     width: 100%;
-    height: 200vh;
+    height: 370vh;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -18,8 +18,12 @@ body {
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+}
 
+.homepage-content h1 {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-top: 50px;
 }
 
 .split-line {
@@ -129,7 +133,7 @@ body {
 
 .slideshow-indicators {
     position: absolute;
-    bottom: -15px;
+    bottom: -10px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -152,15 +156,16 @@ body {
 
 .game-cards {
     position: relative;
-    height: auto;
     width: 100%;
-    overflow-x: hidden;
+    overflow: hidden; 
 }
 
 .game-card-track {
     display: flex;
     justify-content: space-evenly;
+    overflow: visible;
 }
+
 
 .recent-releases-slider {
     width: 100%;
