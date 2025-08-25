@@ -415,14 +415,36 @@ export async function denyGames(req, res) {
 }
 
 export async function getAdminGameInfo(req, res) {
+    try {
+        const { gameName } = req.body;
+        const params = {
+            TableName: "AwaitingGames",
+            Key: {
+                gameName: { S: gameName }
+            }
+        }
 
+        const response = await client.send(new GetItemCommand(params))
+        const data = unmarshall(response.Item)
+        const genreArray = Array.from(data.selectedGenres);
+        console.log(data)
+        console.log(genreArray)
+        res.status(200).json({
+            gameData: data,
+            genreArray: genreArray,
+        });
+    } catch (err) {
+        console.log("Error retrieving featured games:", err);
+        res.status(500).json({ error: err.message });
+    }
 }
 
 export async function getAdminAllUsers(req, res) {
     try {
-        const data = await client.send(new ScanCommand({ TableName: "UserTable" }));
-        console.log(data)
-        res.status(200).json({})
+        const data = await client.send(new ScanCommand({ TableName: "userTable" }));
+        const realData = data.Items.map(item => unmarshall(item));
+        console.log(realData)
+        res.status(200).json({realData})
     }
     catch (error) {
         res.status(500).json({})

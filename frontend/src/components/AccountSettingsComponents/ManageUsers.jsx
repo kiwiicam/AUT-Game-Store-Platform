@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import '../../css/ManageUsers.css';
 import UserManageCard from '../UserManageCard';
+import axios from 'axios';
 function ManageUsers() {
     const [search, setSearch] = useState("")
     const [role, setRole] = useState("all")
@@ -8,21 +9,40 @@ function ManageUsers() {
     const [users, setUsers] = useState([])
 
     useEffect(() => {
-        setUsers([
-            { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-            { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-            { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-            { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-            { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-            { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-            { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-            { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-            { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-            { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-            { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-            { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
 
-        ])
+        const fetchUsers = async () => {
+            try {
+                const userInfo = await axios.get('http://localhost:8000/api/database/adminallusers')
+                const users = userInfo.data.realData.map((item) => ({
+                    email: item.email,
+                    name: item.username,
+                    pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
+                    firstn: item.firstname || "Not set",
+                    lastn: item.lastname || "Not set",
+                    date: item.date || "Not set",
+                    role: item.role || "admin"
+                }));
+                setUsers(users);
+            } catch (error) {
+                console.error("Error fetching users:", error);
+            }
+        }
+        fetchUsers();
+        // setUsers([
+        //     { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
+        //     { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
+        //     { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
+        //     { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
+        //     { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
+        //     { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
+        //     { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
+        //     { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
+        //     { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
+        //     { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
+        //     { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
+        //     { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
+
+        // ])
     }, [])
 
     return (
