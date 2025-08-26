@@ -6,8 +6,8 @@ import ManageuploadCard from "../ManageuploadCard";
 function ManageUploads() {
 
     const [uploadRequests, setUploadRequests] = useState([])
-    var denyList = []
-    var approveList = []
+    const [denyList, setDenyList] = useState([]);
+    const [approveList, setApproveList] = useState([]);
     useEffect(() => {
 
         const getGameItems = async () => {
@@ -51,28 +51,32 @@ function ManageUploads() {
             }
         }
         //then handle state change to remove the approved or denied games
+        const filteredRequests = uploadRequests.filter(request =>
+            !approveList.includes(request.gameName) && !denyList.includes(request.gameName)
+        );
+
+        setUploadRequests(filteredRequests)
+
         return
     }
 
     const handleList = (game, type) => {
         if (type === "deny") {
-            if (denyList.includes(game)) {
-                denyList = denyList.filter(item => item !== game);
-                return
-            }
-            denyList.push(game);
-            return
+            setDenyList(prev =>
+                prev.includes(game) ? prev.filter(item => item !== game) : [...prev, game]
+            );
+            return;
         }
+
         if (type === "approve") {
-            if (approveList.includes(game)) {
-                approveList = approveList.filter(item => item !== game);
-                return
-            }
-            approveList.push(game);
-            return
+            setApproveList(prev =>
+                prev.includes(game) ? prev.filter(item => item !== game) : [...prev, game]
+            );
+            return;
         }
-        alert("error")
-    }
+
+        alert("error");
+    };
 
     return (
         <div className="manage-uploads-main">

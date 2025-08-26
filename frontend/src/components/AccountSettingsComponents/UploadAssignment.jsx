@@ -174,7 +174,7 @@ function UploadAssignment() {
             });
             return false;
         }
-
+        
         return true;
     }
 
@@ -275,7 +275,7 @@ function UploadAssignment() {
                 gameName,
                 teamName,
                 projectType,
-                projectTimeframe,
+                projectTimeframe: projectTimeframe.toString(),
                 gameDesc,
                 selectedGenres,
                 fileSize: sizeInMB

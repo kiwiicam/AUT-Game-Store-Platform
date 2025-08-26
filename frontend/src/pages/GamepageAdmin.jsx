@@ -139,7 +139,7 @@ function GamepageAdmin() {
     }, [gameName])
 
     return (
-        <div className='gamepage-container'>
+        <div className='gamepage-container' id='admin-gamepg'>
             <ToastContainer />
             <div className='gamepage-inner'>
                 <div className='gamepage-header-container-admin'>

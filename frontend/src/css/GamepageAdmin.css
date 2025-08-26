@@ -20,3 +20,8 @@
 .back-admin-game{
     font-size: 2.1rem;
 }
+
+#admin-gamepg{
+    height: auto !important;
+    padding-bottom: 10px;
+}
