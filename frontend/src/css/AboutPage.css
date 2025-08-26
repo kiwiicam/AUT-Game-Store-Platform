@@ -1,10 +1,38 @@
 body {
   background: linear-gradient(to bottom, #3E4C71, #191D31);
-  padding-bottom: 650px;
+  padding-bottom: 670px;
+}
+
+@media only screen and (max-width: 600px) { /* For mobile users */
+  body {
+    padding-bottom: 670;
+  }
+  .main {
+    width: 90%;
+  }
+  p {
+    font-size: 16px !important;
+  }
 }
 
 .main {
     text-align: center;
     color: black;
+    margin: auto;
     margin-top: 70px;
+    width: 70%;
+}
+
+p {
+    /*margin-top: 20px;*/
+    font-size: 20px;
+}
+.APImg {
+    max-width: 80% !important; 
+    max-height: 40% !important;
+    border-radius: 0%;
+}
+.FigureText {
+    font-size: 15px;
+    color: black;
 }
