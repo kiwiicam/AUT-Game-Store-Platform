@@ -47,7 +47,6 @@ const VerifyEmail = () => {
         try {
             const email = localStorage.getItem('email');
             const response = await axios.post('http://localhost:8000/api/auth/resend', { email });
-            alert(response.data.message);
             setTimeLeft(30);
             setOtp(Array(6).fill(''));
             inputsRef.current[0].focus();
@@ -66,7 +65,6 @@ const VerifyEmail = () => {
                 code: value,
                 email: email
             })
-            alert(reponse.data.message);
             if (localStorage.getItem('uid') === null) {
                 alert("email verified please sign in now")
                 navigate("/signin");
@@ -97,8 +95,8 @@ const VerifyEmail = () => {
                         />
                     ))}
                 </div>
-                <p>{timeLeft === 0 ? timeLeft : <></>}</p>
-                <p className='resend' onClick={() => resendCode()}>Resend Code</p>
+                <p></p>
+                <p className={timeLeft === 0 ? 'resend' : 'resend-countdown'} onClick={() => resendCode()}>{timeLeft !== 0 ? timeLeft : "Resend Code"}</p>
                 <button onClick={() => verifyEm()}>Verify Email</button>
             </div>
         </div>

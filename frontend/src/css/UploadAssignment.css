@@ -366,3 +366,11 @@ select:focus {
     color: lightgrey;
     font-size: 1rem;
 }
+
+.loading-circle{
+    position: absolute;
+    top: 50%;
+    left: 65%;
+    border-width: 6px !important;
+}
+

@@ -49,6 +49,7 @@ function GamepageAdmin() {
                 alert(error.message)
             }
         }
+        getGameInfo();
         setDeveloperCard([
             {
                 name: 'Campbell',
@@ -213,7 +214,7 @@ function GamepageAdmin() {
                                 <div className="skinny-white-bar"></div>
                                 <div className='gamepage-details-item'>
                                     <h2>File Size</h2>
-                                    <h2>{gameInfo.fileSize}</h2>
+                                    <h2>{gameInfo.fileSize} MB</h2>
                                 </div>
                                 <div className="skinny-white-bar"></div>
 

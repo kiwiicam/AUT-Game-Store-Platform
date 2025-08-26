@@ -89,3 +89,45 @@
     display: flex;
     align-items: center;
 }
+
+.right-group h2 {
+    margin: 0;
+
+}
+
+.logout-dropdown {
+    margin-left: 5px;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.pfp-header {
+    cursor: pointer;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    position: relative;
+}
+
+.logout-dropdown-up {
+    transform: rotate(180deg);
+    margin-left: 5px;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.logout-container{
+    cursor: pointer;
+    position: absolute;
+    top: 65%;
+    right: 3px;
+    border-radius: 15px;
+    padding: 10px;
+    background-color: #303950;
+    display: flex;
+    align-items: center;
+}

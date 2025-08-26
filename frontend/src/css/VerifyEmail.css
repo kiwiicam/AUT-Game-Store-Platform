@@ -20,3 +20,7 @@ h2, p{
     cursor: pointer;
     text-decoration: underline;
 }
+
+.resend-countdown {
+  cursor: not-allowed;
+}

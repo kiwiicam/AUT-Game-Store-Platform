@@ -58,9 +58,6 @@ function Signup() {
         alert(dbResponse.data.error);
         return;
       }
-      alert(dbResponse.data.error || dbResponse.data.message);
-
-
 
       setUsername('');
       setEmail('');
