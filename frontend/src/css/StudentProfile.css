@@ -1,10 +1,6 @@
 .student-profile-container {
-    /*width: 100%;            /* Fill parent 
-    height: auto;           /* Auto height so it grows with content 
-    display: flex;
-    flex-direction: column;*/
-    padding-top: 10px;
-    gap: 20px;              /* Space between sections */
+    padding: 10px;
+    gap: 20px;              
     padding-bottom: 40px;
 }
 
@@ -19,3 +15,10 @@ h2 {
     color: lightgray !important;
     font-size: 0.8rem;
 }
+
+
+/* Extra CSS */
+/*width: 100%;            /* Fill parent 
+    height: auto;           /* Auto height so it grows with content 
+    display: flex;
+    flex-direction: column;*/

@@ -6,15 +6,11 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function PasswordSecurity() {
-    const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-
     const [currentEmail, setCurrentEmail] = useState('');
     const [currentPhone, setCurrentPhone] = useState('');
-
     const [editMode, setEditMode] = useState(false);
     const [editField, setEditField] = useState('');
     const [editValue, setEditValue] = useState('');
@@ -27,17 +23,18 @@ function PasswordSecurity() {
                     toast.error("User not logged in");
                     return;
                 }
+
                 const response = await axios.post('http://localhost:8000/api/database/getuserinfo', {
                     uid
                 });
 
                 setCurrentEmail(response.data.email || "user@example.com");
                 setCurrentPhone(response.data.phone || "+64 ** *** ****");
-
             } catch (error) {
                 toast.error("Failed to load user data");
             }
-        }
+        };
+
         fetchUserData();
     }, []);
 
@@ -65,6 +62,7 @@ function PasswordSecurity() {
                 uid: uid,
                 newEmail: editValue.trim()
             });
+
             setCurrentEmail(editValue.trim());
             setEditMode(false);
             toast.success("Email updated successfully");
@@ -85,6 +83,7 @@ function PasswordSecurity() {
                 uid: uid,
                 newPhone: editValue.trim()
             });
+
             setCurrentPhone(editValue.trim());
             setEditMode(false);
             toast.success("Phone number updated successfully");
@@ -134,10 +133,22 @@ function PasswordSecurity() {
         }
     };
 
+    const handleCancelEdit = () => {
+        setEditMode(false);
+        setEditValue('');
+        setEditField('');
+    };
+
+    const handleConfirmSave = () => {
+        setEditMode(false);
+        handleSaveEdit();
+    };
+
     return (
-        <div className="password-security-container">  {/* Add this wrapper */}
+        <div className="password-security-container">
             <div className="password-security">
                 <ToastContainer />
+
                 <div className="header">
                     <h1>Password & Security</h1>
                     <h2>Change your accounts password and manage security.</h2>
@@ -146,23 +157,22 @@ function PasswordSecurity() {
                 <div className="email-section">
                     <h3>Email</h3>
                     <p>Information about your email</p>
-
                     <div className="email-container">
                         <label>Email Address</label>
                         <div className="email-input">
                             <div className="email-input-field">{currentEmail}</div>
                             <div className="icon-email-container" onClick={() => handleEditClick('email', currentEmail)}>
-                                <MdOutlineModeEditOutline
-                                    className="edit-icon"
-                                />
+                                <MdOutlineModeEditOutline className="edit-icon" />
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div className="password-section">
-                        <h3>Change Password</h3>
-                        <p>Change your password here</p>
+                <div className="password-section">
+                    <h3>Change Password</h3>
+                    <p>Change your password here</p>
 
+                    <div className="password-container">
                         <div className="field-container">
                             <label>Enter Current Password</label>
                             <input
@@ -187,53 +197,56 @@ function PasswordSecurity() {
                             <label>Confirm New Password</label>
                             <input
                                 type="password"
-                                placeholder="confrim new password"
+                                placeholder="confirm new password"
                                 value={confirmPassword}
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                             />
                         </div>
 
-                        <button className="update-button" onClick={handlePasswordChange}>
-                            Update?
-                        </button>
-                    </div>
-
-                    <div className="phone-section">
-                        <h3>Phone</h3>
-                        <p>Change your phone number here</p>
-
-                        <div className="field-container">
-                            <label>Phone</label>
-                            <div className="input-field">
-                                <div className="field-value">{currentPhone}</div>
-                                <MdOutlineModeEditOutline
-                                    className="edit-icon"
-                                    onClick={() => handleEditClick('phone', currentPhone)}
-                                />
+                        <div className="update-button-container">
+                            <div className="update-button">
+                            <button onClick={handlePasswordChange}>
+                                Update
+                            </button>
                             </div>
                         </div>
                     </div>
-
-                    {editMode && (
-                        <div className="edit-modal">
-                            <div className="edit-content">
-                                <h3>Edit {editField === 'email' ? 'Email Address' : 'Phone Number'}</h3>
-                                <input
-                                    type={editField === 'email' ? 'email' : 'tel'}
-                                    value={editValue}
-                                    onChange={(e) => setEditValue(e.target.value)}
-                                    placeholder={editField === 'email' ? 'Enter new email' : 'Enter new phone number'}
-                                />
-                                <div className="button-container">
-                                    <button onClick={() => setEditMode(false)}>Cancel</button>
-                                    <button onClick={handleSaveEdit}>Save</button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
                 </div>
-            </div>
 
+                <div className="phone-section">
+                    <h3>Phone</h3>
+                    <p>Change your phone number here</p>
+
+                    <div className="phone-container">
+                        <label>Phone</label>
+                        <div className="phone-input">
+                            <div className="phone-input-field">{currentPhone}</div>
+                            <div className="icon-phone-container" onClick={() => handleEditClick('phone', currentPhone)}>
+                                <MdOutlineModeEditOutline className="edit-icon" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {editMode && (
+                    <div className="edit-bg-ps">
+                        <div className="edit-box-ps">
+                            <h2>{editField === 'email' ? 'Edit Email Address' : 'Edit Phone Number'}</h2>
+                            <input
+                                className="edit-input-ps"
+                                type={editField === 'email' ? 'email' : 'tel'}
+                                value={editValue}
+                                onChange={(e) => setEditValue(e.target.value)}
+                                placeholder={editField === 'email' ? 'Enter new email' : 'Enter new phone number'}
+                            />
+                            <div className="button-container-ps">
+                                <button onClick={handleCancelEdit}>Cancel</button>
+                                <button onClick={handleConfirmSave}>Save</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }
