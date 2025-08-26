@@ -8,6 +8,7 @@ import Genrebox from '../components/Genrebox';
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import { useNavigate } from 'react-router';
 import { IoMdArrowBack } from "react-icons/io";
+import axios from 'axios';
 
 function GamepageAdmin() {
     const [index, setIndex] = useState(0);
@@ -19,24 +20,36 @@ function GamepageAdmin() {
 
     useEffect(() => {
         if (!gameName) return;
-        setGameInfo({
-            title: 'Minecraft',
-            description: 'Minecraft is a sandbox video game developed by Mojang Studios. It allows players to build and explore virtual worlds made up of blocks. It is a game of creativity and survival, where players can gather resources, craft items, and build structures. The game features different modes, including survival mode, where players must manage their health and hunger, and creative mode, where they have unlimited resources to build freely.',
-            likes: 462,
-            releaseDate: 'November 18, 2011',
-            developer: 'Mojang Studios',
-            timeframe: 'Ongoing',
-            releaseDate: 'November 18, 2011',
-            fileSize: '1.5 GB',
-            projectType: 'Team Group Project',
-            genre: ['Adventure', 'Sandbox', 'Survival'],
-            developmentTeam: ['Campbell', 'Blaine', 'Joshua', 'Karlos']
-        });
-        setGameImages([
-            { src: 'https://staticg.sportskeeda.com/editor/2025/01/8827f-17376979472538-1920.jpg' },
-            { src: 'https://static0.gamerantimages.com/wordpress/wp-content/uploads/2025/02/minecraft-key-art-feature.jpg' },
-            { src: 'https://www.azcentral.com/gcdn/authoring/authoring-images/2024/11/19/USAT/76424170007-merlin-minecraft-image-2.jpg?crop=2149,1208,x0,y0&width=660&height=371&format=pjpg&auto=webps' }
-        ]);
+
+        const getGameInfo = async () => {
+            try {
+                const gameInfo = await axios.post('http://localhost:8000/api/database/admingameinfo', { gameName })
+
+                const gameData = gameInfo.data.gameData;
+                setGameInfo({
+                    title: gameData.gameName,
+                    description: gameData.gameDesc,
+                    likes: gameData.likes,
+                    releaseDate: gameData.releaseDate,
+                    developer: gameData.teamName,
+                    timeframe: gameData.projectTimeframe,
+                    fileSize: gameData.fileSize,
+                    projectType: gameData.projectType,
+                    description: gameInfo.data.gameData.gameDesc,
+                    genre: gameInfo.data.genreArray
+                })
+                const images = await axios.post('http://localhost:8000/api/storage/getgameimages', { gameName: gameData.gameName })
+                setGameImages([
+                    { src: images.data.gameImages[0].imageUrl },
+                    { src: images.data.gameImages[1].imageUrl },
+                    { src: images.data.gameImages[2].imageUrl }
+                ]);
+            }
+            catch (error) {
+                alert(error.message)
+            }
+        }
+        getGameInfo();
         setDeveloperCard([
             {
                 name: 'Campbell',
@@ -126,7 +139,7 @@ function GamepageAdmin() {
     }, [gameName])
 
     return (
-        <div className='gamepage-container'>
+        <div className='gamepage-container' id='admin-gamepg'>
             <ToastContainer />
             <div className='gamepage-inner'>
                 <div className='gamepage-header-container-admin'>
@@ -186,7 +199,7 @@ function GamepageAdmin() {
                                 <div className="skinny-white-bar"></div>
                                 <div className='gamepage-details-item'>
                                     <h2>Timeframe</h2>
-                                    <h2>{gameInfo.timeframe}</h2>
+                                    <h2>{gameInfo.timeframe} Weeks</h2>
                                 </div>
                                 <div className="skinny-white-bar"></div>
                                 <div className='gamepage-details-item'>
@@ -201,7 +214,7 @@ function GamepageAdmin() {
                                 <div className="skinny-white-bar"></div>
                                 <div className='gamepage-details-item'>
                                     <h2>File Size</h2>
-                                    <h2>{gameInfo.fileSize}</h2>
+                                    <h2>{gameInfo.fileSize} MB</h2>
                                 </div>
                                 <div className="skinny-white-bar"></div>
 

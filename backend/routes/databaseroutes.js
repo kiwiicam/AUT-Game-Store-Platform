@@ -1,5 +1,5 @@
 import express from 'express';
-import { addUser, changeName, getUserInfo, uploadGameInformation, retrieveFeaturedGames, getUserSearch, getGameInformation, getDeveloperInformation, uploadComment, retrieveComments, browseGames, retrieveGamesForAdmin } from '../controllers/databasecontroller.js';
+import { addUser, changeName, getUserInfo, uploadGameInformation, retrieveFeaturedGames, getUserSearch, getGameInformation, getDeveloperInformation, uploadComment, retrieveComments, browseGames, retrieveGamesForAdmin, approveGames, denyGames, getAdminGameInfo, getAdminAllUsers } from '../controllers/databasecontroller.js';
 
 const router = express.Router();
 
@@ -14,7 +14,12 @@ router.post('/getdeveloperinfo', getDeveloperInformation);
 router.post('/uploadcomment', uploadComment)
 router.post('/retrievecomments', retrieveComments);
 router.get('/browsegames', browseGames);
-router.get('/admingames', retrieveGamesForAdmin)
+router.get('/admingames', retrieveGamesForAdmin);
+router.post('/approvegames', approveGames);
+router.post('/denygames', denyGames);
+router.post('/admingameinfo', getAdminGameInfo)
+router.get('/adminallusers', getAdminAllUsers)
+
 //router.post('/browsegamesbysearch', browseGamesBySearch);
 
 export default router;

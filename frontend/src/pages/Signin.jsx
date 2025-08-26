@@ -45,7 +45,6 @@ function Signin() {
       const response = await axios.post('http://localhost:8000/api/database/getuserinfo', {
         uid: uid
       });
-      alert(response.data.error || response.data.item);
       localStorage.setItem('accountType', response.data.accountType);
     }
     catch (error) {

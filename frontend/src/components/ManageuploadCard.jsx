@@ -13,35 +13,35 @@ function ManageuploadCard({ account, type, date, pfp, func, id, gameName }) {
         if (type === "approve") {
             if (selectedApprove) {
                 setSelectedApprove(false)
-                func(id, "approve")
+                func(gameName, "approve")
                 return
             }
             if (selectedDeny) {
                 setSelectedDeny(false)
                 setSelectedApprove(true)
-                func(id, "deny")
-                func(id, "approve")
+                func(gameName, "deny")
+                func(gameName, "approve")
                 return
             }
             setSelectedApprove(true)
-            func(id, "approve")
+            func(gameName, "approve")
             return
         }
         if (type === "deny") {
             if (selectedDeny) {
                 setSelectedDeny(false)
-                func(id, "deny")
+                func(gameName, "deny")
                 return
             }
             if (selectedApprove) {
                 setSelectedApprove(false)
                 setSelectedDeny(true)
-                func(id, "approve")
-                func(id, "deny")
+                func(gameName, "approve")
+                func(gameName, "deny")
                 return
             }
             setSelectedDeny(true)
-            func(id, "deny")
+            func(gameName, "deny")
             return
 
         }

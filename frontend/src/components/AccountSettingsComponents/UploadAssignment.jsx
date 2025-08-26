@@ -174,7 +174,7 @@ function UploadAssignment() {
             });
             return false;
         }
-
+        
         return true;
     }
 
@@ -275,7 +275,7 @@ function UploadAssignment() {
                 gameName,
                 teamName,
                 projectType,
-                projectTimeframe,
+                projectTimeframe: projectTimeframe.toString(),
                 gameDesc,
                 selectedGenres,
                 fileSize: sizeInMB
@@ -295,6 +295,9 @@ function UploadAssignment() {
                 position: 'top-center',
                 autoClose: 3000,
             });
+            setTimeout(() => {
+                navigate('/')
+            }, 3000);
         } catch (error) {
             setLoading(false);
             toast.error('Sorry, an error occured uploading your game. Please try again later', {
@@ -333,7 +336,7 @@ function UploadAssignment() {
     return (
         <div className="upload-div">
             <ToastContainer />
-            {loading ? <ClipLoader color="#36d7b7" size={50} /> : <></>}
+            {loading ? <ClipLoader className="loading-circle" color="#3643d7ff" size={70} /> : <></>}
             <div className="inner-upload-div">
                 <div>
                     <h1>Upload Assignments</h1>
