@@ -41,7 +41,6 @@ function Signup() {
         password: password
       })
       localStorage.setItem('email', email);
-      alert(response.data.error || response.data.message);
       if (response.data.error === "UsernameExists") {
         navigate(response.data.navigate);
         return;
