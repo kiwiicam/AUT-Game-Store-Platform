@@ -111,7 +111,7 @@ function Signup() {
         <button className='but-acc' onClick={() => signup()}>Create Account </button>
         <div className='divider'></div>
         <label className='account'>Already have an account?</label>
-        <button className='but-log'>Login</button>
+        <button className='but-log' onClick={() => navigate('/signin')}>Login</button>
       </div>
     </div>
   )

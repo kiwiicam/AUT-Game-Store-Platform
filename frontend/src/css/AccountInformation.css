@@ -161,3 +161,12 @@ h2 {
     display: flex;
     justify-content: space-evenly;
 }
+
+.button-container button {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    width: 25% !important;
+    height: 25px !important;
+    border-radius: 8px !important;
+}
