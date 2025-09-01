@@ -13,7 +13,7 @@ h2 {
 
 .account-information h1 {
     font-weight: bold;
-    margin-bottom: -0.8rem;
+    margin-bottom: 0;
 }
 
 .account-information h2 {
@@ -31,6 +31,7 @@ h2 {
     width: 100%;
     height: 100%;
     justify-content: space-evenly;
+    padding: 10px;
 }
 
 .profile-pics {
@@ -139,8 +140,9 @@ h2 {
 }
 
 .edit-box button {
-    width: 80px;
-    height: 30px;
+    width: 80px !important;
+    height: 30px !important;
+    border-radius: 8px !important;
     margin-top: 10px;
     background-color: #333333;
     color: white;

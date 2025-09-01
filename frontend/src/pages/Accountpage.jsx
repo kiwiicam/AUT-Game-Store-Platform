@@ -5,11 +5,10 @@ import '../css/Accountpage.css'
 //settings components
 import AccountInformation from '../components/AccountSettingsComponents/AccountInformation';
 import PasswordSecurity from '../components/AccountSettingsComponents/PasswordSecurity';
-import Languages from '../components/AccountSettingsComponents/Languages';
-import OtherSettings from '../components/AccountSettingsComponents/OtherSettings';
 import UploadAssignment from '../components/AccountSettingsComponents/UploadAssignment';
 import ManageUploads from '../components/AccountSettingsComponents/ManageUploads';
 import ManageUsers from '../components/AccountSettingsComponents/ManageUsers';
+import StudentProfile from '../components/AccountSettingsComponents/StudentProfile';
 
 
 function Accountpage() {
@@ -31,13 +30,10 @@ function Accountpage() {
             <div className='split'></div>
             <div id="first" className='setting' onClick={() => setActive(<AccountInformation />)}><h2>Account information</h2></div>
             <div className='setting' onClick={() => setActive(<PasswordSecurity />)}><h2>Password & Security</h2></div>
-            <div className='setting' onClick={() => setActive(<Languages />)}><h2>Languages</h2></div>
-            <div className='setting' onClick={() => setActive(<OtherSettings />)}><h2>Other</h2></div>
             <h1>Student Tools</h1>
             <div className='split'></div>
-            <div id="first" className='setting' onClick={() => setActive(<h2>Coming Soon</h2>)}><h2>Your Student Profile</h2></div>
+            <div id="first" className='setting' onClick={() => setActive(<StudentProfile />)}><h2>Your Student Profile</h2></div>
             <div className='setting' onClick={() => setActive(<UploadAssignment />)}><h2>Upload Assignments</h2></div>
-            <div className='setting' onClick={() => setActive(<h2>Coming Soon</h2>)}><h2>Verify Account</h2></div>
             <h1>Admin Tools</h1>
             <div className='split'></div>
             <div id="first" className='setting' onClick={() => setActive(<ManageUploads />)}><h2>Manage Upload Requests</h2></div>

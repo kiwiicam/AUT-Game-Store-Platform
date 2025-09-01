@@ -302,7 +302,7 @@ function Gamepage() {
 
                             </div>
                             <div className='gamepage-details-button-div'>
-                                <button>Download</button>
+                                <button onClick={() => alert('Downloading the game!')}>Download</button>
                             </div>
                         </div>
 
