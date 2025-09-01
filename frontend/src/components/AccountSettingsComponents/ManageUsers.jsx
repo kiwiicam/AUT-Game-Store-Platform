@@ -8,6 +8,10 @@ function ManageUsers() {
     const [dateSort, setDateSort] = useState("none")
     const [users, setUsers] = useState([])
 
+    const [currentUserDisplay, setCurrentUserDisplay] = useState([])
+    const [filteredResults, setFilteredResults] = useState([])
+    const [searchResults, setSearchResults] = useState([])
+
     useEffect(() => {
 
         const fetchUsers = async () => {
@@ -26,27 +30,21 @@ function ManageUsers() {
 
                 }));
                 setUsers(users);
+                setCurrentUserDisplay(users);
             } catch (error) {
                 console.error("Error fetching users:", error);
             }
         }
         fetchUsers();
-        // setUsers([
-        //     { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-        //     { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-        //     { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-        //     { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-        //     { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-        //     { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-        //     { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-        //     { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-        //     { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-        //     { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-        //     { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-        //     { name: "Kiwicam123", email: "mastercamnz@goatmail.com", date: "23/08/2025", firstn: "Campbell", lastn: "Boulton", role: "User", pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-
-        // ])
     }, [])
+
+    const filterChange = () => {
+
+    }
+
+    const searchChange = () => {
+        
+    }
 
     return (
         <div className='manage-users'>
@@ -94,7 +92,7 @@ function ManageUsers() {
                         </div>
                         <div className='thin-grey-line'></div>
                         {users.map((item, index) => (
-                            <UserManageCard name={item.name} email={item.email} date={item.dateJoined} firstn={item.firstn} lastn={item.lastn} role={item.role} pfp={item.pfp} uid={item.uid}/>
+                            <UserManageCard name={item.name} email={item.email} date={item.dateJoined} firstn={item.firstn} lastn={item.lastn} role={item.role} pfp={item.pfp} uid={item.uid} />
                         ))}
                     </div>
                 </div>
