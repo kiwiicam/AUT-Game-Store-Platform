@@ -13,6 +13,7 @@ function ManageUsers() {
         const fetchUsers = async () => {
             try {
                 const userInfo = await axios.get('http://localhost:8000/api/database/adminallusers')
+                console.log(userInfo.data.realData)
                 const users = userInfo.data.realData.map((item) => ({
                     email: item.email,
                     name: item.username,
@@ -20,7 +21,7 @@ function ManageUsers() {
                     firstn: item.firstname || "Not set",
                     lastn: item.lastname || "Not set",
                     date: item.date || "Not set",
-                    role: item.role || "admin"
+                    role: item.accountType || "Not Set"
                 }));
                 setUsers(users);
             } catch (error) {

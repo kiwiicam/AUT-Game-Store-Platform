@@ -444,10 +444,14 @@ export async function getAdminAllUsers(req, res) {
         const data = await client.send(new ScanCommand({ TableName: "userTable" }));
         const realData = data.Items.map(item => unmarshall(item));
         console.log(realData)
-        res.status(200).json({realData})
+        res.status(200).json({ realData })
     }
     catch (error) {
         res.status(500).json({})
         console.log(error.message)
     }
+}
+
+export async function adminUpdateRole(req, res) {
+    const { name, email, firstn, lastn, role } = req.body;
 }
