@@ -1,11 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import '../css/UserManageCard.css'
 import { RiArrowDropDownLine } from "react-icons/ri";
+import axios from 'axios';
 
-function UserManageCard({ name, email, date, firstn, lastn, role, pfp }) {
+function UserManageCard({ name, email, date, firstn, lastn, role, pfp, uid }) {
 
   const [selected, isSelected] = useState(false);
   const [userRole, setUserRole] = useState(role);
+
+  const [oldName, setOldName] = useState(name);
+  const [oldEmail, setOldEmail] = useState(email);
+  const [oldFirstn, setOldFirstn] = useState(firstn);
+  const [oldLastn, setOldLastn] = useState(lastn);
+
+  const old = new Date(Number(date));
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  const formatted = new Intl.DateTimeFormat('en-NZ', options).format(old);
+
+  const [displayDate, setDisplayDate] = useState(formatted);
+
   const [newName, setNewName] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const [newFirstn, setNewFirstn] = useState("");
@@ -17,28 +30,42 @@ function UserManageCard({ name, email, date, firstn, lastn, role, pfp }) {
 
   const makeChanges = async () => {
     try {
-      const form = new FormData()
+      alert(uid)
+      const payload = {}
 
-      if (newName.trim() !== name && newName.trim() !== "") {
-        form.append("name", newName)
+      if (newName.trim() !== oldName && newName.trim() !== "") {
+        payload.name = newName
+        setOldName(newName)
+        setNewName("")
       }
 
-      if (newEmail.trim() !== email && newEmail.trim() !== "") {
-        form.append("email", newEmail)
+      if (newEmail.trim() !== oldEmail && newEmail.trim() !== "") {
+        payload.email = newEmail
+        setOldEmail(newEmail)
+        setNewEmail("")
       }
 
-      if (newFirstn.trim() !== firstn && newFirstn.trim() !== "") {
-        form.append("firstn", newFirstn)
+      if (newFirstn.trim() !== oldFirstn && newFirstn.trim() !== "") {
+        payload.firstn = newFirstn
+        setOldFirstn(newFirstn)
+        setNewFirstn("")
       }
 
-      if (newLastn.trim() !== lastn && newLastn.trim() !== "") {
-        form.append("lastn", newLastn)
+      if (newLastn.trim() !== oldLastn && newLastn.trim() !== "") {
+        payload.lastn = newLastn
+        setOldLastn(newLastn)
+        setNewLastn("")
+      }
+      if (userRole !== role) {
+        payload.role = userRole
       }
 
-      if(form.getAll("name").length > 0 || form.getAll("email").length > 0 || form.getAll("firstn").length > 0 || form.getAll("lastn").length > 0) {
-        const response = await axios.post('http://localhost:8000/api/database/adminupdaterole', form)
+      if (Object.keys(payload).length > 0) {
+        payload.uid = uid
+        const response = await axios.post('http://localhost:8000/api/database/adminupdaterole', payload)
+        alert("Changes Saved!")
       }
-      else{
+      else {
         return;
       }
     }
@@ -63,21 +90,21 @@ function UserManageCard({ name, email, date, firstn, lastn, role, pfp }) {
             <div className='row1'>
               <div className='input-field-usermanage'>
                 <h5>Email Address</h5>
-                <input placeholder={email} onChange={(e) => setNewEmail(e.target.value)} type="text" />
+                <input placeholder={oldEmail} value={newEmail} onChange={(e) => setNewEmail(e.target.value)} type="text" />
               </div>
               <div className='input-field-usermanage'>
                 <h5>Username</h5>
-                <input placeholder={name} onChange={(e) => setNewName(e.target.value)} type="text" />
+                <input placeholder={oldName} value={newName} onChange={(e) => setNewName(e.target.value)} type="text" />
               </div>
             </div>
             <div className='row2'>
               <div className='input-field-usermanage'>
                 <h5>Firstname</h5>
-                <input placeholder={firstn} onChange={(e) => setNewFirstn(e.target.value)} type="text" />
+                <input placeholder={oldFirstn} value={newFirstn} onChange={(e) => setNewFirstn(e.target.value)} type="text" />
               </div>
               <div className='input-field-usermanage'>
                 <h5>Lastname</h5>
-                <input placeholder={lastn} onChange={(e) => setNewLastn(e.target.value)} type="text" />
+                <input placeholder={oldLastn} value={newLastn} onChange={(e) => setNewLastn(e.target.value)} type="text" />
               </div>
             </div>
             <div className='row3'>
@@ -105,7 +132,7 @@ function UserManageCard({ name, email, date, firstn, lastn, role, pfp }) {
             </div>
             <h4>{email}</h4>
             <h4>{role}</h4>
-            <h4>{date}</h4>
+            <h4>{displayDate}</h4>
           </div>
         }
         <RiArrowDropDownLine className={!selected ? 'dropdown-users' : 'dropdown-userupsidedown'} onClick={() => isSelected((prev) => !prev)} />

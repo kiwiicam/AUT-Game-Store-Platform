@@ -13,15 +13,17 @@ function ManageUsers() {
         const fetchUsers = async () => {
             try {
                 const userInfo = await axios.get('http://localhost:8000/api/database/adminallusers')
-                console.log(userInfo.data.realData)
+                console.log(userInfo.data.realData[0].uid)
                 const users = userInfo.data.realData.map((item) => ({
                     email: item.email,
                     name: item.username,
                     pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
                     firstn: item.firstname || "Not set",
                     lastn: item.lastname || "Not set",
-                    date: item.date || "Not set",
-                    role: item.accountType || "Not Set"
+                    role: item.accountType || "Not Set",
+                    uid: item.uid,
+                    dateJoined: item.dateJoined || 1193512123123
+
                 }));
                 setUsers(users);
             } catch (error) {
@@ -92,7 +94,7 @@ function ManageUsers() {
                         </div>
                         <div className='thin-grey-line'></div>
                         {users.map((item, index) => (
-                            <UserManageCard name={item.name} email={item.email} date={item.date} firstn={item.firstn} lastn={item.lastn} role={item.role} pfp={item.pfp} />
+                            <UserManageCard name={item.name} email={item.email} date={item.dateJoined} firstn={item.firstn} lastn={item.lastn} role={item.role} pfp={item.pfp} uid={item.uid}/>
                         ))}
                     </div>
                 </div>

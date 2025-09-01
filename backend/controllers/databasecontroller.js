@@ -6,6 +6,7 @@ import { deleteFromS3 } from './storagecontroller.js';
 
 export async function addUser(req, res) {
     const { uid, username, accountType, email } = req.body;
+    const unixMillis = Date.now(); 
     const params = {
         TableName: "userTable",
         Item: {
@@ -15,6 +16,7 @@ export async function addUser(req, res) {
             email: { S: email },
             firstname: { S: "" },
             lastname: { S: "" },
+            dateJoined: { N: unixMillis.toString() }
         }
     };
     try {
@@ -453,5 +455,89 @@ export async function getAdminAllUsers(req, res) {
 }
 
 export async function adminUpdateRole(req, res) {
-    const { name, email, firstn, lastn, role } = req.body;
+    const payload = req.body
+
+    try {
+        if ("name" in payload) {
+            console.log(payload.name)
+            const params = {
+                TableName: "userTable",
+                Key: {
+                    uid: { S: payload.uid },
+                },
+                UpdateExpression: `SET username = :newValue`,
+                ExpressionAttributeValues: {
+                    ":newValue": { S: payload.name },
+                },
+            };
+            await client.send(new UpdateItemCommand(params));
+
+        }
+
+        if ("email" in payload) {
+            const params = {
+                TableName: "userTable",
+                Key: {
+                    uid: { S: payload.uid },
+                },
+                UpdateExpression: `SET email = :newValue`,
+                ExpressionAttributeValues: {
+                    ":newValue": { S: payload.email },
+                },
+            };
+            await client.send(new UpdateItemCommand(params));
+
+        }
+
+        if ("firstn" in payload) {
+            const params = {
+                TableName: "userTable",
+                Key: {
+                    uid: { S: payload.uid },
+                },
+                UpdateExpression: `SET firstname = :newValue`,
+                ExpressionAttributeValues: {
+                    ":newValue": { S: payload.firstn },
+                },
+            };
+            await client.send(new UpdateItemCommand(params));
+
+        }
+
+        if ("lastn" in payload) {
+            const params = {
+                TableName: "userTable",
+                Key: {
+                    uid: { S: payload.uid },
+                },
+                UpdateExpression: `SET lastname = :newValue`,
+                ExpressionAttributeValues: {
+                    ":newValue": { S: payload.lastn },
+                },
+            };
+            await client.send(new UpdateItemCommand(params));
+
+        }
+
+        if ("role" in payload) {
+            const params = {
+                TableName: "userTable",
+                Key: {
+                    uid: { S: payload.uid },
+                },
+                UpdateExpression: `SET accountType = :newValue`,
+                ExpressionAttributeValues: {
+                    ":newValue": { S: payload.role },
+                },
+            };
+            await client.send(new UpdateItemCommand(params));
+
+        }
+        res.status(200).json({ message: "Success" });
+    }
+    catch (err) {
+        res.status(500).json({ error: "Failed to change name" });
+        console.log("Error changing name:", err.message);
+
+    }
 }
