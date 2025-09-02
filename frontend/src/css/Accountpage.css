@@ -29,7 +29,8 @@
     flex-direction: column;
     align-items: flex-start;
     width: 85%;
-    justify-content: space-evenly;
+    justify-content: flex-start;
+    gap: 20px;
     height: 80%;
 }
 

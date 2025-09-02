@@ -5,14 +5,14 @@ import { unmarshall } from '@aws-sdk/util-dynamodb';
 import { deleteFromS3 } from './storagecontroller.js';
 
 export async function addUser(req, res) {
-    const { uid, username, accountType, email } = req.body;
-    const unixMillis = Date.now(); 
+    const { uid, username, email } = req.body;
+    const unixMillis = Date.now();
     const params = {
         TableName: "userTable",
         Item: {
             uid: { S: uid },
             username: { S: username },
-            accountType: { S: accountType },
+            accountType: { S: "user" },
             email: { S: email },
             firstname: { S: "" },
             lastname: { S: "" },
@@ -539,5 +539,24 @@ export async function adminUpdateRole(req, res) {
         res.status(500).json({ error: "Failed to change name" });
         console.log("Error changing name:", err.message);
 
+    }
+}
+
+export async function checkAccessByUID(req, res) {
+    try {
+        const { uid } = req.body;
+        const params = {
+            TableName: "userTable",
+            Key: {
+                uid: { S: uid },
+            },
+        };
+        const response = await client.send(new GetItemCommand(params));
+        const plainItem = unmarshall(response.Item);
+        console.log(plainItem)
+        res.status(200).json({ role: plainItem.accountType });
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).json({ error: "Failed to fetch user info" });
     }
 }

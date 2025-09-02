@@ -50,7 +50,6 @@ function Signup() {
       const dbResponse = await axios.post('http://localhost:8000/api/database/adduser', {
         uid: uid,
         username: username,
-        accountType: "user",
         email: email
       });
       if (dbResponse.data.error) {
