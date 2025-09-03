@@ -7,6 +7,8 @@ import axios from 'axios';
 
 function Browse() {
 
+  const backend_url = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000/api';
+
   const [selectedGenre, setSelectedGenre] = useState(false)
   const [selectedType, setSelectedType] = useState(false)
   const [selectedDate, setSelectedDate] = useState(false)
@@ -57,7 +59,7 @@ function Browse() {
 
   const initialFetch = async () => {
     try {
-      const initialData = await axios.get('http://localhost:8000/api/database/browsegames')
+      const initialData = await axios.get(`${backend_url}/database/browsegames`)
       const mappedGames = initialData.data.gameInfo.map(game => ({
         title: game.gameName,
         creator: game.teamName,
