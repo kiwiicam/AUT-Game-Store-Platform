@@ -24,7 +24,7 @@ app.use('/', example)
 app.use('/api/auth', authentication);
 app.use('/api/database', database);
 app.use('/api/storage', storage);
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

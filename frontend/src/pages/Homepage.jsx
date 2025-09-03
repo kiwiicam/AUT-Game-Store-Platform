@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router';
 import axios from 'axios'
 function Homepage() {
 
+    const backend_url = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000/api';
+
     const [featuredGames, setFeaturedGames] = useState([]);
     const [recentReleases, setRecentReleases] = useState([]);
     const [mostLiked, setMostLiked] = useState([]);
@@ -28,7 +30,7 @@ function Homepage() {
         setWidth((sliderRef.current.offsetWidth-45)/3)
         const fetchFeaturedGames = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/database/featuredgames')
+                const response = await axios.get(`${backend_url}/database/featuredgames`)
 
                 const featuredGamesReturn = response.data.featuredGames;
                 setFeaturedGames(

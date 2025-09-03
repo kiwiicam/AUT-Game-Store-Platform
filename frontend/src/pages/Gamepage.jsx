@@ -12,6 +12,9 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 
 function Gamepage() {
+
+    const backend_url = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000/api';
+
     const [index, setIndex] = useState(0);
     const [gameImages, setGameImages] = useState([]);
     const [gameInfo, setGameInfo] = useState({});
@@ -34,7 +37,7 @@ function Gamepage() {
         if (!gameName) return;
         async function retrieveGameData() {
             try {
-                const databaseData = await axios.post('http://localhost:8000/api/database/getgameinfo', { gameName });
+                const databaseData = await axios.post(`${backend_url}/database/getgameinfo`, { gameName });
 
                 setGameInfo({
                     title: databaseData.data.gameData.gameName,
@@ -48,7 +51,7 @@ function Gamepage() {
                     genre: databaseData.data.genreArray,
                     developmentTeam: databaseData.data.gameData.groupMembers
                 });
-                const images = await axios.post('http://localhost:8000/api/storage/getgameimages', { gameName: databaseData.data.gameData.gameName })
+                const images = await axios.post(`${backend_url}/storage/getgameimages`, { gameName: databaseData.data.gameData.gameName })
                 setGameImages([
                     { src: images.data.gameImages[0].imageUrl },
                     { src: images.data.gameImages[1].imageUrl },
@@ -57,7 +60,7 @@ function Gamepage() {
 
                 //const developerInfo = await axios.post('http://localhost:8000/api/database/getdeveloperinfo', { groupArray: databaseData.data.gameData.groupMembers })
 
-                const commentInfo = await axios.post('http://localhost:8000/api/database/retrievecomments', { gameName: databaseData.data.gameData.gameName })
+                const commentInfo = await axios.post(`${backend_url}/database/retrievecomments`, { gameName: databaseData.data.gameData.gameName })
                 const commentState = commentInfo.data.commentData.map(value => ({
                     text: value.comment,
                     name: value.userName,
@@ -242,6 +245,12 @@ function Gamepage() {
                                 {gameImages.map((game, i) => (
                                     <div key={i} className="gamepage-slideshow-slide">
                                         <img src={game.src} alt="gameimg" />
+                                        {/*
+                                        <video width="640" height="360" controls>
+                                            <source src="http://localhost:3000/46012-448062061_small.mp4" type="video/mp4"/>
+                                                Your browser does not support the video tag.
+                                        </video>
+                                        */}
                                     </div>
                                 ))}
                             </div>

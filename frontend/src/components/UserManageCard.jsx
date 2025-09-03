@@ -62,6 +62,7 @@ function UserManageCard({ name, email, date, firstn, lastn, role, pfp, uid }) {
 
       if (Object.keys(payload).length > 0) {
         payload.uid = uid
+        // eslint-disable-next-line no-undef
         const response = await axios.post('http://localhost:8000/api/database/adminupdaterole', payload)
         alert("Changes Saved!")
       }
