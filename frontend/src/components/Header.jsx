@@ -12,7 +12,7 @@ function Header() {
       <div className="header-main">
         <div className="header-content">
           <div className="left-group">
-            <img src="http://localhost:3000/aut_logo_ribbon.png" alt="" />
+            <img src="https://deployment-test.d2mwlph9qkry2s.amplifyapp.com/aut_logo_ribbon.png" alt="" />
             <div className="header-links">
               <h2 onClick={() => navigate('/')}>Home</h2>
               <h2 onClick={() => navigate('/browse')}>Browse</h2>
