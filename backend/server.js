@@ -14,8 +14,13 @@ const app = express();
 
 app.use(express.json());
 
+const allowedOrigins = [
+  'https://deployment-test.d2mwlph9qkry2s.amplifyapp.com',
+  'http://localhost:3000'
+];
+
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: allowedOrigins,
     methods: 'GET,POST,PUT,DELETE,OPTIONS'
 }));
 

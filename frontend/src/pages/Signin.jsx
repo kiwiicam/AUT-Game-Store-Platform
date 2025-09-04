@@ -5,6 +5,9 @@ import axios from 'axios';
 import '../css/Signin.css';
 
 function Signin() {
+
+  const backend_url = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000/api';
+
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -15,14 +18,14 @@ function Signin() {
       return;
     }
     try {
-      const response = await axios.post('http://localhost:8000/api/auth/login', {
+      const response = await axios.post(`${backend_url}/auth/login`, {
         email: email,
         password: password
       })
       localStorage.setItem('email', email);
       if (response.data.error === "UserNotConfirmed") {
         alert(response.data.error);
-        const verify = await axios.post('http://localhost:8000/api/auth/resend', {
+        const verify = await axios.post(`${backend_url}/auth/resend`, {
           email: email,
         });
         navigate(response.data.navigate);
@@ -42,7 +45,7 @@ function Signin() {
   async function retrieveUserInfo() {
     const uid = localStorage.getItem('uid');
     try {
-      const response = await axios.post('http://localhost:8000/api/database/getuserinfo', {
+      const response = await axios.post(`${backend_url}/database/getuserinfo`, {
         uid: uid
       });
       localStorage.setItem('accountType', response.data.accountType);

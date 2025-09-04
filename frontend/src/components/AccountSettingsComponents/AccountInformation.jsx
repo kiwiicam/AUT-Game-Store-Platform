@@ -3,6 +3,9 @@ import '../../css/AccountInformation.css'
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import axios from "axios";
 function AccountInformation() {
+
+    const backend_url = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000/api';
+
     const [username, setUsername] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -24,7 +27,7 @@ function AccountInformation() {
                     alert("User not logged in");
                     return;
                 }
-                const response = await axios.post('http://localhost:8000/api/database/getuserinfo', {
+                const response = await axios.post(`${backend_url}/database/getuserinfo`, {
                     uid
                 });
 
@@ -61,7 +64,7 @@ function AccountInformation() {
     async function handleUsernameChange(newInputValue) {
         const uid = localStorage.getItem('uid');
         try {
-            const response = await axios.post('http://localhost:8000/api/database/changename', {
+            const response = await axios.post(`${backend_url}/database/changename`, {
                 uid: uid,
                 newName: newInputValue,
                 type: 'username'
@@ -80,7 +83,7 @@ function AccountInformation() {
     async function handleFirstNameChange(newInputValue) {
         const uid = localStorage.getItem('uid');
         try {
-            const response = await axios.post('http://localhost:8000/api/database/changename', {
+            const response = await axios.post(`${backend_url}/database/changename`, {
                 uid: uid,
                 newName: newInputValue,
                 type: 'firstname'
@@ -98,7 +101,7 @@ function AccountInformation() {
         const uid = localStorage.getItem('uid');
         alert(newInputValue)
         try {
-            const response = await axios.post('http://localhost:8000/api/database/changename', {
+            const response = await axios.post(`${backend_url}/database/changename`, {
                 uid: uid,
                 newName: newInputValue,
                 type: 'lastname'

@@ -4,6 +4,8 @@ import { MdHelp } from "react-icons/md";
 import axios from 'axios';
 import { Navigate, useNavigate } from 'react-router';
 function Signup() {
+
+  const backend_url = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000/api';
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -36,7 +38,7 @@ function Signup() {
     }
 
     try {
-      const response = await axios.post('http://localhost:8000/api/auth/signup', {
+      const response = await axios.post(`${backend_url}/auth/signup`, {
         email: email,
         password: password
       })
@@ -47,7 +49,7 @@ function Signup() {
       }
       const uid = response.data.item;
       localStorage.setItem('uid', uid);
-      const dbResponse = await axios.post('http://localhost:8000/api/database/adduser', {
+      const dbResponse = await axios.post(`${backend_url}/database/adduser`, {
         uid: uid,
         username: username,
         email: email

@@ -30,6 +30,7 @@ img {
 }
 
 .gamepage-likes {
+    gap: 6px;
     width: 80px;
     height: 40px;
     border-radius: 50px;

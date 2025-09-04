@@ -12,6 +12,9 @@ import { ClipLoader } from "react-spinners";
 
 
 function UploadAssignment() {
+
+    const backend_url = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000/api';
+
     const navigate = useNavigate();
 
     const [gameName, setGameName] = useState("");
@@ -81,7 +84,7 @@ function UploadAssignment() {
         }
         setIsSearching(true);
         try {
-            const response = await axios.post("http://localhost:8000/api/database/getusersearch", {
+            const response = await axios.post(`${backend_url}/database/getusersearch`, {
                 searchQuery: search
             })
             setSearchResults(response.data.namelist)
@@ -229,7 +232,7 @@ function UploadAssignment() {
             const formDataFiles = new FormData();
             formDataFiles.append('gameName', gameName);
             formDataFiles.append('file', gameFile);
-            const responseFile = await axios.post('http://localhost:8000/api/storage/uploadgame', formDataFiles,
+            const responseFile = await axios.post(`${backend_url}/storage/uploadgame`, formDataFiles,
                 {
                     headers: { 'Content-Type': 'multipart/form-data' },
                     timeout: 0,
@@ -241,7 +244,7 @@ function UploadAssignment() {
             });
             formDataImages.append('gameName', gameName);
 
-            const responseImage = await axios.post('http://localhost:8000/api/storage/uploadimages', formDataImages,
+            const responseImage = await axios.post(`${backend_url}/storage/uploadimages`, formDataImages,
                 {
                     headers: { 'Content-Type': 'multipart/form-data' },
                     timeout: 0,

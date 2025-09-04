@@ -98,6 +98,7 @@ export async function uploadGameInformation(req, res) {
             projectType: { S: projectType },
             selectedGenres: { SS: selectedGenres },
             likes: { N: "0" },
+            downloads: { N: "0" },
             releaseDate: { S: formattedDate },
             fileSize: { N: fileSize },
         }
@@ -220,18 +221,30 @@ export async function getDeveloperInformation(req, res) {
 
 export async function uploadComment(req, res) {
     try {
-        const { gameName, userName, comment, timestamp } = req.body
+        const { gameName, uid, comment, timestamp } = req.body
+
+        const userParams = {
+            TableName: "userTable",
+            Key: {
+                uid: { S: uid }
+            }
+        };
+        const userResponse = await client.send(new GetItemCommand(userParams));
+        const userData = unmarshall(userResponse.Item);
+        const userName = userData.username;
+
         const params = {
             TableName: "gameComments",
             Item: {
                 gameName: { S: gameName },
                 timestamp: { N: timestamp.toString() },
+                uid: { S: uid },
                 userName: { S: userName },
                 comment: { S: comment }
             }
         }
         const data = await client.send(new PutItemCommand(params));
-        res.status(200).json({});
+        res.status(200).json({ userName });
     } catch (err) {
         console.log(err);
         res.status(500).json({ error: err.message });
@@ -544,7 +557,7 @@ export async function adminUpdateRole(req, res) {
 
 export async function checkAccessByUID(req, res) {
     try {
-        const { uid } = req.body;
+        const { uid, gameName } = req.body;
         const params = {
             TableName: "userTable",
             Key: {
@@ -553,10 +566,139 @@ export async function checkAccessByUID(req, res) {
         };
         const response = await client.send(new GetItemCommand(params));
         const plainItem = unmarshall(response.Item);
-        console.log(plainItem)
+        console.log(gameName)
+        console.log(gameName === true)
+        if (gameName) {
+            const commentParams = {
+                TableName: "gameComments",
+                KeyConditionExpression: "gameName = :g",
+                ExpressionAttributeValues: {
+                    ":g": { S: gameName }
+                }
+            };
+            const response = await client.send(new QueryCommand(commentParams));
+            const items = response.Items.map(item => unmarshall(item));
+            const commentUploaded = items.some(c => c.uid === uid);
+            res.status(200).json({ role: plainItem.accountType, commentUploaded });
+            return;
+        }
+
         res.status(200).json({ role: plainItem.accountType });
     } catch (err) {
         console.log(err.message);
         res.status(500).json({ error: "Failed to fetch user info" });
+    }
+}
+
+export async function likeGame(req, res) {
+
+    try {
+        const { uid, gameName } = req.body;
+
+        const likeCountParams = {
+            TableName: "gameInformation",
+            Key: {
+                gameName: { S: gameName }
+            }
+        };
+
+        const likeCount = await client.send(new GetItemCommand(likeCountParams));
+        const plainLikeCount = unmarshall(likeCount.Item);
+
+        const newLikeCount = Number(plainLikeCount.likes) + 1;
+
+        const updateLikeParams = {
+            TableName: "gameInformation",
+            Key: {
+                gameName: { S: gameName }
+            },
+            UpdateExpression: `SET likes = :newValue`,
+            ExpressionAttributeValues: {
+                ":newValue": { N: newLikeCount.toString() }
+            }
+        };
+        await client.send(new UpdateItemCommand(updateLikeParams));
+
+        const userLikes = {
+            TableName: "gameLikes",
+            Item: {
+                gameName: { S: gameName },
+                uid: { S: uid },
+            }
+        };
+        await client.send(new PutItemCommand(userLikes));
+        console.log("success", newLikeCount)
+        res.status(200).json({ message: "Game liked successfully" });
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+export async function hasLiked(req, res) {
+    try {
+        const { uid, gameName } = req.body;
+
+        const params = {
+            TableName: "gameLikes",
+            Key: {
+                uid: { S: uid },
+                gameName: { S: gameName },
+            }
+        };
+
+        const response = await client.send(new GetItemCommand(params));
+        const hasLiked = response.Item ? true : false;
+
+        console.log(hasLiked)
+
+        res.status(200).json({ hasLiked });
+    } catch (error) {
+        console.log(error.message, " likes failed");
+        res.status(500).json({ error: "Failed to check like status" });
+    }
+}
+
+export async function removeLike(req, res) {
+
+    const { uid, gameName } = req.body;
+
+    try {
+        const params = {
+            TableName: "gameLikes",
+            Key: {
+                uid: { S: uid },
+                gameName: { S: gameName },
+            }
+        };
+        await client.send(new DeleteItemCommand(params));
+
+        const likeCountParams = {
+            TableName: "gameInformation",
+            Key: {
+                gameName: { S: gameName }
+            }
+        };
+
+        const likeCount = await client.send(new GetItemCommand(likeCountParams));
+        const plainLikeCount = unmarshall(likeCount.Item);
+
+        const newLikeCount = Number(plainLikeCount.likes) - 1;
+
+        const updateLikeParams = {
+            TableName: "gameInformation",
+            Key: {
+                gameName: { S: gameName }
+            },
+            UpdateExpression: `SET likes = :newValue`,
+            ExpressionAttributeValues: {
+                ":newValue": { N: newLikeCount.toString() }
+            }
+        };
+        await client.send(new UpdateItemCommand(updateLikeParams));
+
+        res.status(200).json({ message: "Like removed successfully" });
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ error: "Failed to remove like" });
     }
 }

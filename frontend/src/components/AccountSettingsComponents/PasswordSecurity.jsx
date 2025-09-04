@@ -6,6 +6,9 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function PasswordSecurity() {
+
+    const backend_url = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000/api';
+
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -24,7 +27,7 @@ function PasswordSecurity() {
                     return;
                 }
 
-                const response = await axios.post('http://localhost:8000/api/database/getuserinfo', {
+                const response = await axios.post(`${backend_url}/database/getuserinfo`, {
                     uid
                 });
 
