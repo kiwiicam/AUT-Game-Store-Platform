@@ -28,6 +28,7 @@ This project uses React for our frontend, Node and Express for our backend and u
 - Game searching
 - Filtering games
 - Admin Analytics
+- Comments for games
 
 
 ## Authors
