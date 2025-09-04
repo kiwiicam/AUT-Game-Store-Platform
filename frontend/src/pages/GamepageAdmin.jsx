@@ -11,6 +11,9 @@ import { IoMdArrowBack } from "react-icons/io";
 import axios from 'axios';
 
 function GamepageAdmin() {
+
+    const backend_url = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000/api';
+
     const [index, setIndex] = useState(0);
     const { gameName } = useParams();
     const [developerCard, setDeveloperCard] = useState([]);
@@ -23,7 +26,7 @@ function GamepageAdmin() {
 
         const getGameInfo = async () => {
             try {
-                const gameInfo = await axios.post('http://localhost:8000/api/database/admingameinfo', { gameName })
+                const gameInfo = await axios.post(`${backend_url}/database/admingameinfo`, { gameName })
 
                 const gameData = gameInfo.data.gameData;
                 setGameInfo({
@@ -38,7 +41,7 @@ function GamepageAdmin() {
                     description: gameInfo.data.gameData.gameDesc,
                     genre: gameInfo.data.genreArray
                 })
-                const images = await axios.post('http://localhost:8000/api/storage/getgameimages', { gameName: gameData.gameName })
+                const images = await axios.post(`${backend_url}/storage/getgameimages`, { gameName: gameData.gameName })
                 setGameImages([
                     { src: images.data.gameImages[0].imageUrl },
                     { src: images.data.gameImages[1].imageUrl },

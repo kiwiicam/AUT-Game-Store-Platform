@@ -14,6 +14,8 @@ import axios from 'axios';
 
 function Accountpage() {
 
+  const backend_url = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000/api';
+
   const UserRole = {
     Admin: "admin",
     Student: "student",
@@ -38,7 +40,7 @@ function Accountpage() {
     const checkAccess = async () => {
       try {
         const uid = localStorage.getItem('uid');
-        const response = await axios.post('http://localhost:8000/api/database/checkaccess', { uid });
+        const response = await axios.post(`${backend_url}/database/checkaccess`, { uid });
         const role = response.data.role;
         setAccess(role);
       }

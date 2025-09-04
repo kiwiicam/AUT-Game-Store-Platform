@@ -5,6 +5,8 @@ import axios from 'axios';
 
 function UserManageCard({ name, email, date, firstn, lastn, role, pfp, uid }) {
 
+  const backend_url = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000/api';
+
   const [selected, isSelected] = useState(false);
   const [userRole, setUserRole] = useState(role);
 
@@ -63,7 +65,7 @@ function UserManageCard({ name, email, date, firstn, lastn, role, pfp, uid }) {
       if (Object.keys(payload).length > 0) {
         payload.uid = uid
         // eslint-disable-next-line no-undef
-        const response = await axios.post('http://localhost:8000/api/database/adminupdaterole', payload)
+        const response = await axios.post(`${backend_url}/database/adminupdaterole`, payload)
         alert("Changes Saved!")
       }
       else {
