@@ -71,7 +71,7 @@ export async function uploadGameImages(req, res) {
 
 export async function retrieveGameImages(gameNameArray) {
     //alot more efficent to store the url in the database and costs less money as aws chargres per request and signed url
-    //plus its valid for a set amount of time
+    //plus its valid for a set amount of time changes
     try {
         const gameImages = [];
         for (const gameName of gameNameArray) {
