@@ -20,6 +20,12 @@ jobs:
           zip -r ../app.zip ./*   # zip only backend folder contents
           cd ..
 
+      - name: Upload app.zip as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: backend-zip
+          path: app.zip
+
       - name: Deploy to Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v22
         with:
