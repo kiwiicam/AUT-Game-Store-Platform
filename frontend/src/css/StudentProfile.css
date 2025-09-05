@@ -98,7 +98,7 @@ h4 {
     cursor: not-allowed;
 }
 
-/* About Me Section */
+/* About Me Section - Updated to match PasswordSecurity style */
 .about-me-container {
     display: flex;
     flex-direction: row;
@@ -119,16 +119,17 @@ h4 {
     line-height: 1.4;
     cursor: not-allowed;
     max-width: 400px;
+    display: flex;
+    align-items: flex-start;
 }
 
-/* Skills Section */
+/* Skills Section - Updated to match PasswordSecurity style */
 .skills-container {
     display: flex;
     flex-direction: column;
     gap: 8px;
     max-width: 400px;
     margin-bottom: 7%;
-
 }
 
 .skill-item {
@@ -150,6 +151,8 @@ h4 {
     display: flex;
     align-items: center;
     cursor: not-allowed;
+    border: none;
+    outline: none;
 }
 
 /* Contact Fields */

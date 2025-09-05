@@ -125,38 +125,6 @@ function StudentProfile() {
         setEditIndex(null);
     };
 
-    const handleSaveField = async (e) => {
-        const field = e.target.dataset.field;
-        const index = e.target.dataset.index;
-        const value = e.target.value;
-
-        if (!value || value.trim() === "") {
-            toast.error("Field cannot be blank");
-            return;
-        }
-
-        try {
-            const uid = localStorage.getItem('uid');
-            let updateData = { uid };
-
-            switch (field) {
-                case 'aboutMe':
-                    updateData.aboutMe = value.trim();
-                    break;
-                case 'skills':
-                    updateData.skills = skills;
-                    break;
-                default:
-                    break;
-            }
-
-            await axios.post('http://localhost:8000/api/database/updatestudentprofile', updateData);
-            toast.success("Profile updated successfully");
-        } catch (error) {
-            toast.error("Failed to update profile");
-        }
-    };
-
     const handleViewPortfolio = () => {
         // Navigate to portfolio view or open in new tab
         window.open(portfolioLink, '_blank');
@@ -195,42 +163,13 @@ function StudentProfile() {
                         </div>
                     </div>
 
-                    {/* <div className="field-group">
+                    <div className="field-group">
                         <label>About Me (500 word limit)</label>
                         <div className="about-me-container">
                             <div className="about-me-field">{aboutMe}</div>
                             <div className="edit-icon-container" onClick={() => handleEditClick('aboutMe', aboutMe)}>
                                 <MdOutlineModeEditOutline className="edit-icon" />
                             </div>
-                        </div>
-                    </div> */}
-
-                    {/* <div className="field-group">
-                        <label>Skills (eg. C++ Programmer)</label>
-                        <div className="skills-container">
-                            {skills.map((skill, index) => (
-                                <div key={index} className="skill-item">
-                                    <div className="skill-field">{skill}</div>
-                                    <div className="edit-icon-container" onClick={() => handleEditClick('skill', skill, index)}>
-                                        <MdOutlineModeEditOutline className="edit-icon" />
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div> */}
-
-                    <div className="field-group">
-                        <label>About Me (500 word limit)</label>
-                        <div className="about-me-container">
-                            <textarea
-                                className="about-me-field"
-                                value={aboutMe}
-                                onChange={(e) => setAboutMe(e.target.value)}
-                                onBlur={handleSaveField}
-                                data-field="aboutMe"
-                                placeholder="Write a small paragraph about your game! What gets the player/the mechanics across? Tell and inform the game to the student."
-                                maxLength={500}
-                            />
                         </div>
                     </div>
 
@@ -239,20 +178,10 @@ function StudentProfile() {
                         <div className="skills-container">
                             {skills.map((skill, index) => (
                                 <div key={index} className="skill-item">
-                                    <input
-                                        type="text"
-                                        className="skill-field"
-                                        value={skill}
-                                        onChange={(e) => {
-                                            const newSkills = [...skills];
-                                            newSkills[index] = e.target.value;
-                                            setSkills(newSkills);
-                                        }}
-                                        onBlur={handleSaveField}
-                                        data-field="skills"
-                                        data-index={index}
-                                        placeholder={`Skill ${index + 1}`}
-                                    />
+                                    <div className="skill-field">{skill}</div>
+                                    <div className="edit-icon-container" onClick={() => handleEditClick('skill', skill, index)}>
+                                        <MdOutlineModeEditOutline className="edit-icon" />
+                                    </div>
                                 </div>
                             ))}
                         </div>
@@ -352,13 +281,13 @@ function StudentProfile() {
                 {editMode && (
                     <div className="edit-bg-sp">
                         <div className="edit-box-sp">
-                            <h2>Edit {//editField === 'aboutMe' ? 'About Me' :
-                                // editField === 'skill' ? 'Skill' :
-                                editField === 'contactEmail' ? 'Contact Email' :
-                                    editField === 'contactPhone' ? 'Contact Phone' :
-                                        editField === 'portfolioLink' ? 'Portfolio Link' :
-                                            editField === 'studentName' ? 'Student Name' :
-                                                editField === 'studentAge' ? 'Student Age' : editField}</h2>
+                            <h2>Edit {editField === 'aboutMe' ? 'About Me' :
+                                editField === 'skill' ? 'Skill' :
+                                    editField === 'contactEmail' ? 'Contact Email' :
+                                        editField === 'contactPhone' ? 'Contact Phone' :
+                                            editField === 'portfolioLink' ? 'Portfolio Link' :
+                                                editField === 'studentName' ? 'Student Name' :
+                                                    editField === 'studentAge' ? 'Student Age' : editField}</h2>
                             {editField === 'aboutMe' ? (
                                 <textarea
                                     className="edit-textarea-sp"
