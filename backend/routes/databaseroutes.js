@@ -1,5 +1,5 @@
 import express from 'express';
-import { addUser, changeName, getUserInfo, uploadGameInformation, retrieveFeaturedGames, getUserSearch, getGameInformation, getDeveloperInformation, uploadComment, retrieveComments, browseGames, retrieveGamesForAdmin, approveGames, denyGames, getAdminGameInfo, getAdminAllUsers, adminUpdateRole, checkAccessByUID } from '../controllers/databasecontroller.js';
+import { addUser, changeName, getUserInfo, uploadGameInformation, retrieveFeaturedGames, getUserSearch, getGameInformation, getDeveloperInformation, uploadComment, retrieveComments, browseGames, retrieveGamesForAdmin, approveGames, denyGames, getAdminGameInfo, getAdminAllUsers, adminUpdateRole, checkAccessByUID, likeGame, hasLiked, removeLike } from '../controllers/databasecontroller.js';
 
 const router = express.Router();
 
@@ -21,6 +21,9 @@ router.post('/admingameinfo', getAdminGameInfo)
 router.get('/adminallusers', getAdminAllUsers)
 router.post('/adminupdaterole', adminUpdateRole)
 router.post('/checkaccess', checkAccessByUID)
+router.post('/likegame', likeGame);
+router.post('/hasliked', hasLiked);
+router.post('/removelike', removeLike);
 
 //router.post('/browsegamesbysearch', browseGamesBySearch);
 

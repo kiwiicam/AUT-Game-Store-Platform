@@ -5,6 +5,8 @@ import '../../css/ManageUploads.css'
 import ManageuploadCard from "../ManageuploadCard";
 function ManageUploads() {
 
+    const backend_url = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000/api';
+
     const [uploadRequests, setUploadRequests] = useState([])
     const [denyList, setDenyList] = useState([]);
     const [approveList, setApproveList] = useState([]);
@@ -12,7 +14,7 @@ function ManageUploads() {
 
         const getGameItems = async () => {
             try {
-                const uploads = await axios.get('http://localhost:8000/api/database/admingames')
+                const uploads = await axios.get(`${backend_url}/database/admingames`)
                 const mappedGames = uploads.data.games.map(game => ({
                     account: "Campbell",
                     type: game.projectType,
@@ -36,7 +38,7 @@ function ManageUploads() {
     const makeChanges = async () => {
         if (denyList.length >= 1) {
             try {
-                const result = axios.post('http://localhost:8000/api/database/denygames', denyList)
+                const result = axios.post(`${backend_url}/database/denygames`, denyList)
             }
             catch (err) {
                 alert(err.message)
@@ -44,7 +46,7 @@ function ManageUploads() {
         }
         if (approveList.length >= 1) {
             try {
-                const result = axios.post('http://localhost:8000/api/database/approvegames', approveList)
+                const result = axios.post(`${backend_url}/database/approvegames`, approveList)
             }
             catch (err) {
                 alert(err.message)

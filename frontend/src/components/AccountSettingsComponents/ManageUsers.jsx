@@ -3,6 +3,9 @@ import '../../css/ManageUsers.css';
 import UserManageCard from '../UserManageCard';
 import axios from 'axios';
 function ManageUsers() {
+
+    const backend_url = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000/api';
+
     const [search, setSearch] = useState("")
     const [role, setRole] = useState("all")
     const [dateSort, setDateSort] = useState("none")
@@ -16,7 +19,7 @@ function ManageUsers() {
 
         const fetchUsers = async () => {
             try {
-                const userInfo = await axios.get('http://localhost:8000/api/database/adminallusers')
+                const userInfo = await axios.get(`${backend_url}/database/adminallusers`)
                 console.log(userInfo.data.realData[0].uid)
                 const users = userInfo.data.realData.map((item) => ({
                     email: item.email,

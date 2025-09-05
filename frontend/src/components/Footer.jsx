@@ -7,7 +7,7 @@ function Footer() {
       <div className='footer-inner'>
         <div className='aut-footer'>
           <div className='aut-footer-img'>
-            <img src='http://localhost:3000/footer-logo2.png' />
+            <img src='https://deployment-test.d2mwlph9qkry2s.amplifyapp.com/footer-logo2.png' />
           </div>
           <p>Auckland University of Technology</p>
         </div>

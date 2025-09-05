@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { SlLike } from "react-icons/sl";
+import { BiSolidLike, BiLike} from "react-icons/bi";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import Genrebox from '../components/Genrebox.jsx';
 import { useNavigate } from 'react-router-dom';
@@ -12,15 +12,25 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 
 function Gamepage() {
+
+    const backend_url = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000/api';
+
     const [index, setIndex] = useState(0);
     const [gameImages, setGameImages] = useState([]);
     const [gameInfo, setGameInfo] = useState({});
     const [developerCard, setDeveloperCard] = useState([]);
-    const [loggedIn, setLoggedIn] = useState(true);
+
     const [commentCards, setCommentCards] = useState([]);
     const [visibleCount, setVisibleCount] = useState(5);
 
     const [comment, setComment] = useState("");
+
+    const [loggedIn, setLoggedIn] = useState(false);
+    const [commentUploaded, setCommentUploaded] = useState(true);
+    const [role, setRole] = useState("");
+
+    const [likes, setLikes] = useState(0);
+    const [hasLiked, setHasLiked] = useState(false);
 
     //filter states
     const [withinMonth, setWithinMonth] = useState(false);
@@ -34,12 +44,11 @@ function Gamepage() {
         if (!gameName) return;
         async function retrieveGameData() {
             try {
-                const databaseData = await axios.post('http://localhost:8000/api/database/getgameinfo', { gameName });
-
+                const databaseData = await axios.post(`${backend_url}/database/getgameinfo`, { gameName });
+                setLikes(databaseData.data.gameData.likes || 0);
                 setGameInfo({
                     title: databaseData.data.gameData.gameName,
                     description: databaseData.data.gameData.gameDesc,
-                    likes: 462,
                     developer: databaseData.data.gameData.teamName,
                     timeframe: databaseData.data.gameData.projectTimeframe + " Weeks",
                     releaseDate: databaseData.data.gameData.releaseDate,
@@ -48,7 +57,7 @@ function Gamepage() {
                     genre: databaseData.data.genreArray,
                     developmentTeam: databaseData.data.gameData.groupMembers
                 });
-                const images = await axios.post('http://localhost:8000/api/storage/getgameimages', { gameName: databaseData.data.gameData.gameName })
+                const images = await axios.post(`${backend_url}/storage/getgameimages`, { gameName: databaseData.data.gameData.gameName })
                 setGameImages([
                     { src: images.data.gameImages[0].imageUrl },
                     { src: images.data.gameImages[1].imageUrl },
@@ -57,7 +66,7 @@ function Gamepage() {
 
                 //const developerInfo = await axios.post('http://localhost:8000/api/database/getdeveloperinfo', { groupArray: databaseData.data.gameData.groupMembers })
 
-                const commentInfo = await axios.post('http://localhost:8000/api/database/retrievecomments', { gameName: databaseData.data.gameData.gameName })
+                const commentInfo = await axios.post(`${backend_url}/database/retrievecomments`, { gameName: databaseData.data.gameData.gameName })
                 const commentState = commentInfo.data.commentData.map(value => ({
                     text: value.comment,
                     name: value.userName,
@@ -75,13 +84,40 @@ function Gamepage() {
 
         retrieveGameData();
 
+        async function retrieveAccess() {
+            const uid = localStorage.getItem('uid');
+            if (!uid) return;
+            try {
+                const response = await axios.post(`${backend_url}/database/checkaccess`, { uid, gameName });
+                if (response.data.role === "student" || response.data.role === "admin" || response.data.role === "user") {
+                    setLoggedIn(true);
+                    setRole(response.data.role);
+                    setCommentUploaded(response.data.commentUploaded);
+                }
+            } catch (error) {
+                toast.error('Error checking access, please try again later. ' + error.message, {
+                    position: 'top-center', autoClose: 3000,
+                });
+            }
+        }
+        retrieveAccess();
+
+        async function hasUserLiked() {
+            const uid = localStorage.getItem('uid');
+            if (!uid) return;
+            try {
+                const response = await axios.post(`${backend_url}/database/hasliked`, { uid, gameName });
+                setHasLiked(response.data.hasLiked);
+            } catch (error) {
+                console.log(error.message)
+            }
+        }
+        hasUserLiked();
+
+
     }, [gameName])
 
     useEffect(() => {
-
-
-
-
         setDeveloperCard([
             {
                 name: 'Campbell',
@@ -194,20 +230,23 @@ function Gamepage() {
             return
         }
         try {
+            const uid = localStorage.getItem('uid');
+            if (!uid) return;
             const timestamp = Date.now()
             const response = await axios.post('http://localhost:8000/api/database/uploadcomment', {
                 gameName,
                 comment,
-                userName: "Campbell",
+                uid,
                 timestamp
             })
             const newComment = {
                 text: comment,
-                name: "Campbell",
+                name: response.data.userName,
                 date: timestamp,
                 picsrc: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
             }
             setComment("");
+            setCommentUploaded(true);
             setCommentCards((prev) => [...prev, newComment])
             toast.success('Your comment has been uploaded successfuly', {
                 position: 'top-center', autoClose: 3000,
@@ -219,6 +258,36 @@ function Gamepage() {
             });
         }
     }
+
+    const likeGame = async () => {
+        if (!loggedIn) { navigate('/signin'); return }
+        if (hasLiked) {
+            const uid = localStorage.getItem('uid');
+            if (!uid) return;
+            const response = await axios.post(`${backend_url}/database/removelike`, { uid, gameName });
+            setHasLiked(false);
+            setLikes((prevLikes) => prevLikes - 1);
+            return;
+        }
+
+        try {
+            const uid = localStorage.getItem('uid');
+            if (!uid) return;
+            const response = await axios.post(`${backend_url}/database/likegame`, { uid, gameName });
+            setHasLiked(true);
+            setLikes((prevLikes) => prevLikes + 1);
+
+        }
+        catch (error) {
+            toast.error('Error liking the game, please try again later. ' + error.message, {
+                position: 'top-center', autoClose: 3000,
+            });
+        }
+
+    }
+
+
+
     return (
         <div className='gamepage-container'>
             <ToastContainer />
@@ -229,8 +298,8 @@ function Gamepage() {
                         <h2>{gameInfo.developer}</h2>
                     </div>
                     <div className='gamepage-likes'>
-                        <p>{gameInfo.likes}</p>
-                        <div className='gamepage-like-icon'><SlLike /></div>
+                        <p>{likes}</p>
+                        <div className='gamepage-like-icon' onClick={() => likeGame()}>{hasLiked ? <BiSolidLike style={{ fontSize: '22px'}} /> : <BiLike style={{ fontSize: '22px'}} />}</div>
                     </div>
                 </div>
                 <div className='gamepage-info'>
@@ -242,6 +311,12 @@ function Gamepage() {
                                 {gameImages.map((game, i) => (
                                     <div key={i} className="gamepage-slideshow-slide">
                                         <img src={game.src} alt="gameimg" />
+                                        {/*
+                                        <video width="640" height="360" controls>
+                                            <source src="http://localhost:3000/46012-448062061_small.mp4" type="video/mp4"/>
+                                                Your browser does not support the video tag.
+                                        </video>
+                                        */}
                                     </div>
                                 ))}
                             </div>
@@ -327,7 +402,7 @@ function Gamepage() {
                                 overflowY: commentCards.length > 2 ? "scroll" : "auto"
                             }}
                         >
-                            {loggedIn ?
+                            {loggedIn ? (!commentUploaded ?
                                 <div className='logged-in-comment'>
                                     <div className='comment-pfp'>
                                         <img src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'>
@@ -340,8 +415,8 @@ function Gamepage() {
                                             <FaArrowDown />
                                         </div>
                                     </div>
-                                </div>
-                                : <div><h2>Please login to comment</h2></div>}
+                                </div> : <h2>You already have uploaded a comment.</h2>)
+                                : <div><h2 style={{ textDecoration: "underline", cursor: "pointer" }} onClick={() => navigate('/signin')}>Please login to comment.</h2></div>}
 
                             <div className='comments-container'>
 

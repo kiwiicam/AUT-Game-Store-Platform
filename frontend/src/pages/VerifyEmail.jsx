@@ -5,6 +5,9 @@ import axios from 'axios';
 import { useNavigate } from 'react-router';
 
 const VerifyEmail = () => {
+
+    const backend_url = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000/api';
+
     const [timeLeft, setTimeLeft] = useState(30);
     const [otp, setOtp] = useState(Array(6).fill(''));
     const inputsRef = useRef([]);
@@ -46,7 +49,7 @@ const VerifyEmail = () => {
         if (timeLeft > 0) return;
         try {
             const email = localStorage.getItem('email');
-            const response = await axios.post('http://localhost:8000/api/auth/resend', { email });
+            const response = await axios.post(`${backend_url}/auth/resend`, { email });
             setTimeLeft(30);
             setOtp(Array(6).fill(''));
             inputsRef.current[0].focus();
@@ -61,7 +64,7 @@ const VerifyEmail = () => {
         }
         try {
             const email = localStorage.getItem('email');
-            const reponse = await axios.post('http://localhost:8000/api/auth/verify', {
+            const response = await axios.post(`${backend_url}/auth/verify`, {
                 code: value,
                 email: email
             })
