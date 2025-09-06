@@ -286,6 +286,38 @@ function Gamepage() {
 
     }
 
+   async function downloadGame()
+    {
+     //   try{
+  //          const response = await axios.get('http://localhost:8000/api/storage/test/${gameName}')
+      //      alert(response.data.message)
+  //      }
+   //     catch(err)
+  //      {
+
+//        }
+    try {
+        const response = await axios.get(
+            `http://localhost:8000/api/storage/downloadGame/${gameName}`,
+            { responseType: 'blob' } 
+        );
+
+        // Create a link element to trigger download
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `${gameName}.zip`); 
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+
+    } catch (err) {
+        console.error("Download error:", err);
+        alert("Failed to download file");
+    }
+
+
+    }
 
 
     return (
@@ -377,7 +409,7 @@ function Gamepage() {
 
                             </div>
                             <div className='gamepage-details-button-div'>
-                                <button onClick={() => alert('Downloading the game!')}>Download</button>
+                                <button type="submit" onClick={() => downloadGame()}>Download</button>
                             </div>
                         </div>
 
