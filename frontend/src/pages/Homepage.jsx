@@ -117,16 +117,11 @@ function Homepage() {
 
 
     function setId(slideshowID) {
-        if (hoverLocked) return; // ignore if still in cooldown
-
         setMultiplayerIndex(
             slideshowID < 1 ? 0 :
                 slideshowID > 6 ? slideshowID - 2 :
                     slideshowID - 1
         );
-
-        setHoverLocked(true); // lock hover
-        setTimeout(() => setHoverLocked(false), 500); // unlock after 1.5s
     }
 
 
