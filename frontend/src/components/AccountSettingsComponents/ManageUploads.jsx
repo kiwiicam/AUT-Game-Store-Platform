@@ -3,7 +3,7 @@ import axios from 'axios'
 
 import '../../css/ManageUploads.css'
 import ManageuploadCard from "../ManageuploadCard";
-function ManageUploads() {
+function ManageUploads({ setActiveCom }) {
 
     const backend_url = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000/api';
 
@@ -105,6 +105,7 @@ function ManageUploads() {
                 </div>
             </div>
             <div className="end-button">
+                <h2 onClick={() => {setActiveCom()}}>Recently Deleted</h2>
                 <button onClick={() => makeChanges()}>Confirm Changes?</button>
             </div>
         </div>

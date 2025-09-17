@@ -9,6 +9,8 @@ import UploadAssignment from '../components/AccountSettingsComponents/UploadAssi
 import ManageUploads from '../components/AccountSettingsComponents/ManageUploads';
 import ManageUsers from '../components/AccountSettingsComponents/ManageUsers';
 import StudentProfile from '../components/AccountSettingsComponents/StudentProfile';
+import RecentlyDeleted from '../components/AccountSettingsComponents/RecentlyDeleted';
+
 import axios from 'axios';
 
 
@@ -32,7 +34,7 @@ function Accountpage() {
 
   useEffect(() => {
     if (location.state && location.state.fromManageUploads) {
-      setActive(<ManageUploads />);
+      setActive(<ManageUploads setActiveCom={setActiveComponent} />);
     }
   }, [location]);
 
@@ -51,6 +53,10 @@ function Accountpage() {
     }
     checkAccess();
   }, [])
+
+  function setActiveComponent() {
+    setActive(<RecentlyDeleted />);
+  }
 
   return (
     <div className='account-main'>
@@ -72,7 +78,7 @@ function Accountpage() {
               <>
                 <h1>Admin Tools</h1>
                 <div className='split'></div>
-                <div id="first" className='setting' onClick={() => setActive(<ManageUploads />)}><h2>Manage Upload Requests</h2></div>
+                <div id="first" className='setting' onClick={() => setActive(<ManageUploads setActiveCom={setActiveComponent} />)}><h2>Manage Upload Requests</h2></div>
                 <div className='setting' onClick={() => setActive(<ManageUsers />)}><h2>Manage Users</h2></div>
                 <div className='setting' onClick={() => setActive(<h2>Coming Soon</h2>)}><h2>View analytics</h2></div>
               </> : <></>}
