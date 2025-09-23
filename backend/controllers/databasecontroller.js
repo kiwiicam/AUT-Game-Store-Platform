@@ -423,6 +423,8 @@ export async function denyGames(req, res) {
             const nowMs = Date.now();
             const thirtyDaysLater = nowMs + 30 * 24 * 60 * 60 * 1000;
 
+            const epochtime = thirtyDaysLater / 1000;
+
             const putParams = {
                 TableName: "PendingDeletion",
                 Item: {
@@ -435,12 +437,12 @@ export async function denyGames(req, res) {
                     likes: { N: "0" },
                     releaseDate: { S: plainItems.releaseDate },
                     fileSize: { N: plainItems.fileSize.toString() },
-                    expires: { N: thirtyDaysLater.toString() }
+                    expires: { N: epochtime.toString() }
                 }
             }
 
             await client.send(new PutItemCommand(putParams))
-            
+
             const delParams = {
                 TableName: "AwaitingGames",
                 Key: {
@@ -449,6 +451,17 @@ export async function denyGames(req, res) {
                 }
             }
             await client.send(new DeleteItemCommand(delParams))
+
+            //copy to a special s3 prefix where it has a life cycle rule to delete after 30 days
+
+
+
+            await s3.send(new CopyObjectCommand({}))
+            // DO IT IN THE STORAGE CONTROLLER THO
+            await s3.send(new DeleteObjectCommand({}));
+
+
+            
             // deleteFromS3(gameName);
         }
         console.log("success")
@@ -737,7 +750,9 @@ export async function removeLike(req, res) {
 
 export async function getPendingDeletionGames(req, res) {
     try {
-
+        const data = await client.send(new ScanCommand({ TableName: "PendingDeletion" }));
+        const realData = data.Items.map(item => unmarshall(item));
+        res.status(200).json({ games: realData });
     }
     catch (error) {
         console.log(error.message);
@@ -749,11 +764,42 @@ export async function restoreGame(req, res) {
     try {
         const { gameName } = req.body;
 
-        const getParams = {}
+        const getParams = {
+            TableName: "PendingDeletion",
+            Key: {
+                gameName: { S: gameName }
+            }
+        };
 
-        const putParams = {}
+        const gameItem = await client.send(new GetItemCommand(getParams));
 
-        const deleteParams = {}
+        const plainItems = unmarshall(gameItem.Item);
+
+        const putParams = {
+            TableName: "AwaitingGames",
+            Item: {
+                gameName: { S: plainItems.gameName },
+                gameDesc: { S: plainItems.gameDesc },
+                teamName: { S: plainItems.teamName },
+                projectTimeframe: { S: plainItems.projectTimeframe },
+                projectType: { S: plainItems.projectType },
+                selectedGenres: { SS: Array.from(plainItems.selectedGenres) },
+                likes: { N: "0" },
+                releaseDate: { S: plainItems.releaseDate },
+                fileSize: { N: plainItems.fileSize.toString() },
+            }
+
+        }
+
+        const data = await client.send(new PutItemCommand(putParams));
+
+        const deleteParams = {
+            TableName: "PendingDeletion",
+            Key: {
+                gameName: { S: gameName }
+            }
+        }
+        await client.send(new DeleteItemCommand(deleteParams))
 
         res.status(200).json({ message: "Restore game endpoint hit", gameName });
     } catch (error) {

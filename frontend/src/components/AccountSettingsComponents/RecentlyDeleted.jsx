@@ -8,11 +8,25 @@ function RecentlyDeleted() {
 
     const navigate = useNavigate();
 
-    const backend_url = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000/api';
+    const backend_url = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000/api/';
 
     const [data, setData] = useState([]);
 
     useEffect(() => {
+
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`${backend_url}database/getPendingDeletionGames`);
+                setData(response.data.games);
+                console.table(response.data.games);
+            }
+            catch (err) {
+                alert(err.message);
+            }
+        }
+
+        fetchData();
+
         setData([
             { account: "Campbell", gameName: "Game 1", daysLeft: 15 },
             { account: "Alice", gameName: "Game 2", daysLeft: 10 },
@@ -29,9 +43,9 @@ function RecentlyDeleted() {
 
         try {
             //restore games
+            const repsonse = await axios.post(`${backend_url}database/restoregame`, { gameName: gameName });
             const newData = data.filter(item => item.gameName !== gameName);
             setData(newData);
-
         }
         catch (err) {
             alert(err.message);
@@ -64,9 +78,9 @@ function RecentlyDeleted() {
                     {data.map((item, index) => (
                         <div>
                             <div className='recent-item' key={index}>
-                                <h4 className='flex'>{item.account}</h4>
+                                <h4 className='flex'>campbell</h4>
                                 <h4 className='flex'>{item.gameName}</h4>
-                                <h4 className='flex'>{item.daysLeft}</h4>
+                                <h4 className='flex'>{Math.ceil((item.expires * 1000 - Date.now()) / (1000 * 60 * 60 * 24))} days left</h4>
                                 <button className='flex' id='restore-button' onClick={() => restoreGame(item.gameName)}>Restore</button>
 
                             </div>
