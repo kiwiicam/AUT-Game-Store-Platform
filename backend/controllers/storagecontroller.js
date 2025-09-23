@@ -6,6 +6,55 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import stream from 'stream';
 
 
+
+export async function downloadGame(req,res)
+{
+        console.log("-------------------------------------------------");
+        console.log("-------------------------------------------------");
+        console.log("-------------------------------------------------");
+        console.log("-------------------------------------------------");
+        console.log("-------------------------------------------------");
+        console.log("-------------------------------------------------");
+
+        const { gamename } = req.params || null;
+        const prefix  =`Games/${gamename}/GameFiles/`;
+        const { game } = '';
+        try
+        {
+            //gets the end of the folder name eg gold/gamefile/gold , to find/get gold
+            const getname = new ListObjectsV2Command({
+                Bucket: process.env.AWS_BUCKET_NAME,
+                Prefix: prefix,
+                Delimiter:"/",
+            });
+            const getfullprefix = await S3.send(getname);
+            const fullprefix  =  getfullprefix.Contents[0].Key;
+    console.log("First object key:", fullprefix);
+    const  lastname  = fullprefix.replace(prefix,'');
+    console.log(lastname);
+            
+            const command = new GetObjectCommand({
+                Bucket: process.env.AWS_BUCKET_NAME,
+                Key: fullprefix,
+            });
+            const s3response = await S3.send(command);
+            res.setHeader("Content-Disposition", `attachment; filename="${lastname}"`);
+            res.setHeader("Content-Type", "application/zip");
+
+            res.setHeader("Content-Type", /*s3response.ContentType ||*/ "application/octet-stream");
+
+            s3response.Body.pipe(res);
+           
+        }
+        catch (err)
+        {
+            console.error(err);
+            res.status(500).send("File not downloadable at the moment");
+        }
+
+}
+
+
 export async function uploadGame(req, res) {
     try {
         const { gameName } = req.body;

@@ -417,9 +417,54 @@ export async function denyGames(req, res) {
 
                 }
             }
-            await client.send(new DeleteItemCommand(params))
-            deleteFromS3(gameName);
+            const game = await client.send(new GetItemCommand(params));
+            const plainItems = unmarshall(game.Item);
+
+            const nowMs = Date.now();
+            const thirtyDaysLater = nowMs + 30 * 24 * 60 * 60 * 1000;
+
+            const epochtime = thirtyDaysLater / 1000;
+
+            const putParams = {
+                TableName: "PendingDeletion",
+                Item: {
+                    gameName: { S: plainItems.gameName },
+                    gameDesc: { S: plainItems.gameDesc },
+                    teamName: { S: plainItems.teamName },
+                    projectTimeframe: { S: plainItems.projectTimeframe },
+                    projectType: { S: plainItems.projectType },
+                    selectedGenres: { SS: Array.from(plainItems.selectedGenres) },
+                    likes: { N: "0" },
+                    releaseDate: { S: plainItems.releaseDate },
+                    fileSize: { N: plainItems.fileSize.toString() },
+                    expires: { N: epochtime.toString() }
+                }
+            }
+
+            await client.send(new PutItemCommand(putParams))
+
+            const delParams = {
+                TableName: "AwaitingGames",
+                Key: {
+                    gameName: { S: gameName }
+
+                }
+            }
+            await client.send(new DeleteItemCommand(delParams))
+
+            //copy to a special s3 prefix where it has a life cycle rule to delete after 30 days
+
+
+
+            await s3.send(new CopyObjectCommand({}))
+            // DO IT IN THE STORAGE CONTROLLER THO
+            await s3.send(new DeleteObjectCommand({}));
+
+
+            
+            // deleteFromS3(gameName);
         }
+        console.log("success")
         res.status(200).json({ message: "Success" });
     }
     catch (error) {
@@ -700,5 +745,65 @@ export async function removeLike(req, res) {
     } catch (error) {
         console.log(error.message);
         res.status(500).json({ error: "Failed to remove like" });
+    }
+}
+
+export async function getPendingDeletionGames(req, res) {
+    try {
+        const data = await client.send(new ScanCommand({ TableName: "PendingDeletion" }));
+        const realData = data.Items.map(item => unmarshall(item));
+        res.status(200).json({ games: realData });
+    }
+    catch (error) {
+        console.log(error.message);
+        res.status(500).json({ error: "Failed to restore game" });
+    }
+}
+
+export async function restoreGame(req, res) {
+    try {
+        const { gameName } = req.body;
+
+        const getParams = {
+            TableName: "PendingDeletion",
+            Key: {
+                gameName: { S: gameName }
+            }
+        };
+
+        const gameItem = await client.send(new GetItemCommand(getParams));
+
+        const plainItems = unmarshall(gameItem.Item);
+
+        const putParams = {
+            TableName: "AwaitingGames",
+            Item: {
+                gameName: { S: plainItems.gameName },
+                gameDesc: { S: plainItems.gameDesc },
+                teamName: { S: plainItems.teamName },
+                projectTimeframe: { S: plainItems.projectTimeframe },
+                projectType: { S: plainItems.projectType },
+                selectedGenres: { SS: Array.from(plainItems.selectedGenres) },
+                likes: { N: "0" },
+                releaseDate: { S: plainItems.releaseDate },
+                fileSize: { N: plainItems.fileSize.toString() },
+            }
+
+        }
+
+        const data = await client.send(new PutItemCommand(putParams));
+
+        const deleteParams = {
+            TableName: "PendingDeletion",
+            Key: {
+                gameName: { S: gameName }
+            }
+        }
+        await client.send(new DeleteItemCommand(deleteParams))
+
+        res.status(200).json({ message: "Restore game endpoint hit", gameName });
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ error: "Failed to restore game" });
     }
 }

@@ -78,7 +78,12 @@
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
+}
+
+.end-button h2{
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 .end-button button {

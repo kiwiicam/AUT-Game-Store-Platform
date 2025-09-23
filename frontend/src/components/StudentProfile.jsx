@@ -1,14 +1,5 @@
-<<<<<<< HEAD:frontend/src/components/AccountSettingsComponents/StudentProfile.jsx
-import React, { useEffect, useState } from "react";
-import '../../css/StudentProfile.css';
-import { MdOutlineModeEditOutline } from "react-icons/md";
-import axios from "axios";
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-=======
 import react from "react"
 import '../css/StudentProfile.css';
->>>>>>> origin/main:frontend/src/components/StudentProfile.jsx
 
 function StudentProfile() {
     const [aboutMe, setAboutMe] = useState('');

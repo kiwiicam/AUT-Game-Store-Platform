@@ -11,10 +11,12 @@ body {
     align-items: center;
     flex-direction: column;
     background: linear-gradient(to bottom, #3E4C71, #191D31);
+    padding-bottom: 25px;
 }
 
 .homepage-content {
-    width: 70%;
+    margin-top: 20px;
+    width: 80%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -157,12 +159,18 @@ body {
 .game-cards {
     position: relative;
     width: 100%;
-    overflow: hidden; 
+    overflow: hidden;
 }
 
 .game-card-track {
     display: flex;
     justify-content: space-evenly;
+    overflow: visible;
+}
+
+.game-card-track-new {
+    display: flex;
+    gap: 15px;
     overflow: visible;
 }
 
