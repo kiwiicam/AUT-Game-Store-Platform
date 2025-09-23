@@ -119,7 +119,7 @@ function Homepage() {
     function setId(slideshowID) {
         setMultiplayerIndex(
             slideshowID < 1 ? 0 :
-                slideshowID > 6 ? slideshowID - 2 :
+                slideshowID > 7 ? slideshowID - 2 :
                     slideshowID - 1
         );
     }
@@ -221,11 +221,17 @@ function Homepage() {
                     <h1>Multiplayer Games</h1>
                     <div className='split-line'></div>
                     <div className='recent-releases-slider' ref={sliderRef}>
-                        <div className='game-card-button-left' onClick={() => setMultiplayerIndex(multiplayerIndex === 0 ? 5 : multiplayerIndex - 1)}><IoIosArrowBack /></div>
+                        <div className='game-card-button-left' onClick={() => setMultiplayerIndex(multiplayerIndex === 0 ? 6 : multiplayerIndex - 1)}><IoIosArrowBack /></div>
                         <div className='game-cards'>
                             <div className='game-card-track-new'
-                                style={{ transform: `translateX(-${multiplayerIndex * (width + 15)}px)`, transition: 'transform 0.5s ease-in-out', width: (width * 8) + (8 * 15) }}
-
+                                style={{
+                                    transform: `translateX(-${multiplayerIndex === 6
+                                            ? (multiplayerGames.length * (width * 1.2 + 14)) - sliderRef.current.offsetWidth
+                                            : multiplayerIndex * (width * 1.2 + 15)
+                                        }px)`,
+                                    transition: 'transform 0.5s ease-in-out',
+                                    width: multiplayerGames.length * (width * 1.2) + (multiplayerGames.length - 1) * 15
+                                }}
                             >
                                 {multiplayerGames.map((game, i) => (
                                     <GamecardNew key={i} slideid={i} gameImage={game.image} gameName={game.title} TeamName={game.creator} width={width} size='1.5' release='20/12/2025' likes='442' genres={game.genres} setid={setId} />
@@ -233,7 +239,7 @@ function Homepage() {
                             </div>
                         </div>
                         {/*GONNA NEED SOME MAD CALCULATIONS FOR GETTING THIS TO WORK EVENLY CAN MAYBE DO TOTAL OF LENGTH OF ALL THE GAMECARDS / SOME NUMBER TO GET HOW MUCH YOU NEED TO SCROLL EACH TIME AND HOW MANY TIMES */}
-                        <div className='game-card-button-right' onClick={() => setMultiplayerIndex(multiplayerIndex === 5 ? 0 : multiplayerIndex + 1)}><IoIosArrowForward /></div>
+                        <div className='game-card-button-right' onClick={() => setMultiplayerIndex(multiplayerIndex === 6 ? 0 : multiplayerIndex + 1)}><IoIosArrowForward /></div>
                     </div>
                 </div>
             </div>

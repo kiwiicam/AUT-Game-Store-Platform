@@ -417,9 +417,41 @@ export async function denyGames(req, res) {
 
                 }
             }
-            await client.send(new DeleteItemCommand(params))
-            deleteFromS3(gameName);
+            const game = await client.send(new GetItemCommand(params));
+            const plainItems = unmarshall(game.Item);
+
+            const nowMs = Date.now();
+            const thirtyDaysLater = nowMs + 30 * 24 * 60 * 60 * 1000;
+
+            const putParams = {
+                TableName: "PendingDeletion",
+                Item: {
+                    gameName: { S: plainItems.gameName },
+                    gameDesc: { S: plainItems.gameDesc },
+                    teamName: { S: plainItems.teamName },
+                    projectTimeframe: { S: plainItems.projectTimeframe },
+                    projectType: { S: plainItems.projectType },
+                    selectedGenres: { SS: Array.from(plainItems.selectedGenres) },
+                    likes: { N: "0" },
+                    releaseDate: { S: plainItems.releaseDate },
+                    fileSize: { N: plainItems.fileSize.toString() },
+                    expires: { N: thirtyDaysLater.toString() }
+                }
+            }
+
+            await client.send(new PutItemCommand(putParams))
+            
+            const delParams = {
+                TableName: "AwaitingGames",
+                Key: {
+                    gameName: { S: gameName }
+
+                }
+            }
+            await client.send(new DeleteItemCommand(delParams))
+            // deleteFromS3(gameName);
         }
+        console.log("success")
         res.status(200).json({ message: "Success" });
     }
     catch (error) {
@@ -700,5 +732,32 @@ export async function removeLike(req, res) {
     } catch (error) {
         console.log(error.message);
         res.status(500).json({ error: "Failed to remove like" });
+    }
+}
+
+export async function getPendingDeletionGames(req, res) {
+    try {
+
+    }
+    catch (error) {
+        console.log(error.message);
+        res.status(500).json({ error: "Failed to restore game" });
+    }
+}
+
+export async function restoreGame(req, res) {
+    try {
+        const { gameName } = req.body;
+
+        const getParams = {}
+
+        const putParams = {}
+
+        const deleteParams = {}
+
+        res.status(200).json({ message: "Restore game endpoint hit", gameName });
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ error: "Failed to restore game" });
     }
 }
