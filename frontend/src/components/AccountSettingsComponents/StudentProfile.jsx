@@ -1,5 +1,9 @@
-import react from "react"
-import '../css/StudentProfile.css';
+import React, { useEffect, useState } from "react";
+import '../../css/StudentProfile.css';
+import { MdOutlineModeEditOutline } from "react-icons/md";
+import axios from "axios";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function StudentProfile() {
     const [aboutMe, setAboutMe] = useState('');
