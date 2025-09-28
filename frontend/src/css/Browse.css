@@ -190,3 +190,30 @@
     font-size: 1rem;
 
 }
+
+.date-range-selectors {
+    display: flex;
+    gap: 20px; /* space between the two dropdowns */
+    align-items: flex-end; /* keeps labels aligned nicely */
+  }
+  
+.date-select {
+    display: flex;
+    flex-direction: column;
+}
+
+.date-select select {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    height: 35px;
+    background-color: #D9D9D966;
+    margin: 0 !important;
+    width: fit-content;
+    padding: 5px;
+}
+
+.date-select h2 {
+    font-size: 1.0rem;
+}
