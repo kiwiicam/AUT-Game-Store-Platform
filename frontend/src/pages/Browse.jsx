@@ -9,15 +9,16 @@ function Browse() {
 
   const backend_url = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000/api';
 
-  const [selectedGenre, setSelectedGenre] = useState(false)
-  const [selectedType, setSelectedType] = useState(false)
-  const [selectedDate, setSelectedDate] = useState(false)
-  const [selectedOther, setSelectedOther] = useState(false)
+  const [selectedGenre, setSelectedGenre] = useState(false);
+  const [selectedType, setSelectedType] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(false);
+  const [selectedOther, setSelectedOther] = useState(false);
 
-  const [gameArray, setGameArray] = useState([])
+  const [gameArray, setGameArray] = useState([]);
   const [allGames, setAllGames] = useState([]);
-  const [theSelectedGenre, setTheSelectedGenre] = useState(null)
-  const [search, setSearch] = useState("")
+  const [theSelectedGenre, setTheSelectedGenre] = useState(null);
+  const [theSelectedType, setTheSelectedType] = useState(null);
+  const [search, setSearch] = useState("");
 
 
   const [width, setWidth] = useState(null);
@@ -56,6 +57,11 @@ function Browse() {
     "Interactive Story",
     "Text Adventure"
   ];
+
+  const projectTypes = [
+    "Individual Game Project",
+    "Group Game Project"
+  ];  
 
   const initialFetch = async () => {
     try {
@@ -191,7 +197,7 @@ function Browse() {
               </div>
               {selectedType ?
                 <div className='dropdown-genre-section'>
-                  <h2>Select up to 3 Genres</h2>
+                  <h2>Choose a Project Type</h2>
                 </div>
                 : <></>}
             </div>
