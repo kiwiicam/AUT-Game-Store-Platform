@@ -131,6 +131,14 @@
     user-select: none;
 }
 
+#type {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px 5px !important;
+    margin: 0;
+    user-select: none;
+}
+
 .genre-item-browse {
     cursor: pointer;
     display: flex;

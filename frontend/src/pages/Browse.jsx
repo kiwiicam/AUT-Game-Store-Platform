@@ -70,7 +70,8 @@ function Browse() {
         title: game.gameName,
         creator: game.teamName,
         image: game.imageUrl,
-        genres: game.selectedGenres
+        genres: game.selectedGenres,
+        type: game.projectType
       }));
 
       const bigList = [...mappedGames, ...mappedGames];
@@ -122,11 +123,15 @@ function Browse() {
     return
   }
 
-  const filterResults = (searchQuery, genre) => {
+  const filterResults = (searchQuery, genre, type) => {
     let filtered = allGames;
 
     if (genre) {
       filtered = filtered.filter(game => game.genres.includes(genre));
+    }
+
+    if (type) {
+      filtered = filtered.filter(game => game.type === type)
     }
 
     if (searchQuery.trim() !== "") {
@@ -139,18 +144,29 @@ function Browse() {
 
   const searchChange = (searchQuery) => {
     setSearch(searchQuery);
-    filterResults(searchQuery, theSelectedGenre);
+    filterResults(searchQuery, theSelectedGenre, theSelectedType);
   }
 
   const genreSelection = (genre) => {
     if (theSelectedGenre === genre) {
       setTheSelectedGenre(null);
-      filterResults(search, null);
+      filterResults(search, null, theSelectedType);
       return;
     }
     setTheSelectedGenre(genre);
-    filterResults(search, genre);
+    filterResults(search, genre, theSelectedType);
   }
+
+  const typeSelection = (type) => {
+    if (theSelectedType === type) {
+      setTheSelectedType(null);
+      filterResults(search, theSelectedGenre, null);
+      return;
+    }
+    setTheSelectedType(type);
+    filterResults(search, theSelectedGenre, type);
+  }
+  
 
   const sortByLike = () => {
 
@@ -198,6 +214,17 @@ function Browse() {
               {selectedType ?
                 <div className='dropdown-genre-section'>
                   <h2>Choose a Project Type</h2>
+                  <div id="type">
+                    {projectTypes.map((item, index) => (
+                      <div 
+                        key={index}
+                        className={theSelectedType === item ? 'genre-item-browse-selected' : 'genre-item-browse'} 
+                        onClick={() => typeSelection(item)}
+                      >
+                        <h2 className='genre-h2'>{item}</h2>
+                      </div>
+                    ))}
+                  </div>
                 </div>
                 : <></>}
             </div>
