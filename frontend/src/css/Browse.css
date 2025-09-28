@@ -212,6 +212,9 @@
     margin: 0 !important;
     width: fit-content;
     padding: 5px;
+    margin: 0 !important;
+    font-size: 0.8rem;
+    line-height: 1;
 }
 
 .date-select h2 {
