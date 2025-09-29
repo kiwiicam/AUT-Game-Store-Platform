@@ -81,7 +81,8 @@ function Browse() {
         image: game.imageUrl,
         genres: game.selectedGenres,
         type: game.projectType,
-        year: new Date(game.releaseDate).getFullYear()
+        year: new Date(game.releaseDate).getFullYear(),
+        likes: game.likes
       }));
 
       const bigList = [...mappedGames, ...mappedGames];
@@ -185,7 +186,10 @@ function Browse() {
   
 
   const sortByLike = () => {
-
+    const sorted = [...gameArray].sort((a, b) => {
+      return b.likes - a.likes;
+    });
+    setGameArray(sorted);
   }
 
   const sortByRandom = () => {
