@@ -302,10 +302,10 @@ function Browse() {
                   <h2>Sort by likes or randomise search.</h2>
                   <div className='sort-buttons'>
                     <div className='other-sort' onClick={() => sortByLike()}>
-                      <h4>Sort By Likes</h4>
+                      <h4>Sort by Most Liked</h4>
                     </div>
                     <div className='other-sort' onClick={() => sortByRandom()}>
-                      <h4>Randomize Sort</h4>
+                      <h4>Randomize the Search</h4>
                     </div>
                   </div>
                 </div>
