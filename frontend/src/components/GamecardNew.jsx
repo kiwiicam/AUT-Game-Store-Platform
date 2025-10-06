@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react'
 import "../css/GamecardNew.css"
+import "../css/Gamecard.css"
 import { BiSolidLike } from "react-icons/bi";
 
 function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, release, likes, slideid, setid }) {
@@ -8,7 +9,6 @@ function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, relea
 
     const handleMouseEnter = () => {
         setHover(true);
-        // Start a timeout
         hoverTimeout.current = setTimeout(() => {
             setid(slideid);
         }, 500);
@@ -30,6 +30,7 @@ function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, relea
             onMouseLeave={handleMouseLeave}
         >
             {hover ? (
+                // --- Hover version (unchanged)
                 <>
                     <div className='ncard-img-large'>
                         <img src={gameImage} alt='Game Cover' />
@@ -49,20 +50,17 @@ function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, relea
                     </div>
                 </>
             ) : (
-                <>
-                    <h3>{gameName}</h3>
-                    <h2>{TeamName}</h2>
-                    <div className='ncard-img'>
-                        <img src={gameImage} alt='Game Cover' />
+                // --- New non-hover version using gamecard.css
+                <div className="game-card">
+                    <div className="game-img">
+                        <img src={gameImage} alt={`${gameName} cover`} />
                     </div>
-                    <div className='ncard-genres'>
-                        {genres.map((genre, index) => (
-                            <div key={index} className='ncard-genre'>
-                                <p>{genre}</p>
-                            </div>
-                        ))}
+
+                    <div className="game-info">
+                        <h3>{gameName}</h3>
+                        <h2>{TeamName}</h2>
                     </div>
-                </>
+                </div>
             )}
         </div>
     )
