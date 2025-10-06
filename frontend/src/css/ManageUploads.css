@@ -3,7 +3,24 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-evenly;
+    padding: 10px;
+}
+
+.manage-uploads-main h1 {
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+.manage-uploads-main h2 {
+    font-size: 1.0rem;
+    margin-top: 15px;
+    justify-content: none;
+}
+
+.manage-uploads-main h3 {
+    margin-top: -0.6rem;
+    font-size: 1.4rem;
 }
 
 .top-uploads {
@@ -12,7 +29,7 @@
 }
 
 .bottom-uploads {
-
+    justify-content: space-evenly;
     height: 70%;
     width: 100%;
 }
