@@ -8,9 +8,19 @@
 .recent-main {
     display: flex;
     flex-direction: column;
-    gap: 10px;
     width: 100%;
     height: 100%;
+    justify-content: space-evenly;
+    padding: 10px;
+}
+
+.recent-main h1 {
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+.recent-main h2 {
+    font-size: 1.0rem;
 }
 
 .recent-content {
