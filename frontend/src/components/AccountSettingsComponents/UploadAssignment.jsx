@@ -353,7 +353,7 @@ function UploadAssignment() {
                 </div>
                 <div>
                     <h3>Folder Format</h3>
-                    <h2>Please use the folder format provided, this will keep it consistent and allow users to download and play the game easier. If your file format does not follow this format it is likely to be declinded by an admin.</h2>
+                    <h2>Please follow the provided file format. The file format MUST match for the project to be visible and downloadable. Incorrect file formats are likely to be declined by the admin.</h2>
                 </div>
                 {/*<div className="folder-format"></div>*/}
 
