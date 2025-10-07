@@ -14,13 +14,9 @@
     padding: 10px;
 }
 
-.recent-main h1 {
-    font-weight: bold;
-    margin-bottom: 0;
-}
-
 .recent-main h2 {
-    font-size: 1.0rem;
+    margin-top: 10px;
+    margin-bottom: 25px;
 }
 
 .recent-content {
@@ -38,12 +34,24 @@
     display: flex;
 }
 
+.recent-headers h2 {
+    margin-bottom: 0px;
+    font-size: 0.8rem;
+    font-weight: 400;
+    padding: 5px;
+}
+
 .recent-item{
-    padding: 9px;
+    padding: 5px;
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
+}
+
+.recent-item h4 {
+    font-size: 0.8rem;
+    font-weight: 400;
 }
 
 .recent-item-content{
@@ -55,10 +63,13 @@
 }
 
 #restore-button{
-    background-color: #4CAF50; /* Green */
+    background-color: #4CAF50;
     border-radius: 7px;
-    height: 35px;
-    margin-right: 8px;
+    height: 30px;
+    margin-right: 5px;
+    padding: 0 12px; /* controls horizontal size */
+    flex: 0.6; /* prevents stretching */
+    width: auto; /* button width adjusts to text */
 }
 
 .recent-item h4{

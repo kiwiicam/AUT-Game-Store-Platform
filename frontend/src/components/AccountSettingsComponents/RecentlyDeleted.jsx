@@ -57,8 +57,7 @@ function RecentlyDeleted() {
         <div className='recent-main'>
             <h1>Recently Deleted</h1>
             <div>
-                <h2>Recently Deleted games will lay here for 30 days before being deleted automatically.</h2>
-                <h2>You may restore games here which will move them back to manage uploads.</h2>
+                <h2>Recently deleted games will remain here for 30 days before being permanently wiped. Games located here can be restored and move to "Manage Uploads".</h2>
                 <div className='thin-grey-line'></div>
             </div>
 
@@ -70,7 +69,7 @@ function RecentlyDeleted() {
                         <div className='recent-headers'>
                             <h2 className='flex'>Account</h2>
                             <h2 className='flex'>Game Name</h2>
-                            <h2 className='flex'>Days before deletion</h2>
+                            <h2 className='flex'>Days till deletion</h2>
                             <div className='flex'></div>
                         </div>
                         <div className='thin-grey-line'></div>
