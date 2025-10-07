@@ -26,17 +26,6 @@ function RecentlyDeleted() {
         }
 
         fetchData();
-
-        setData([
-            { account: "Campbell", gameName: "Game 1", daysLeft: 15 },
-            { account: "Alice", gameName: "Game 2", daysLeft: 10 },
-            { account: "Bob", gameName: "Game 3", daysLeft: 5 },
-            { account: "Diana", gameName: "Game 4", daysLeft: 20 },
-            { account: "Eve", gameName: "Game 5", daysLeft: 25 },
-            { account: "Eve", gameName: "Game 5", daysLeft: 25 },
-            { account: "Eve", gameName: "Game 5", daysLeft: 25 },
-            { account: "Eve", gameName: "Game 5", daysLeft: 25 }
-        ])
     }, [])
 
     const restoreGame = async (gameName) => {

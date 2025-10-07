@@ -1,6 +1,6 @@
 import { client } from '../dynamoClient.js';
 import { PutItemCommand, GetItemCommand, UpdateItemCommand, ScanCommand, QueryCommand, DeleteItemCommand } from '@aws-sdk/client-dynamodb';
-import { retrieveGameImages } from './storagecontroller.js';
+import { retrieveGameImages, moveToPendingDeletion, moveBackFromPendingDeletion } from './storagecontroller.js';
 import { unmarshall } from '@aws-sdk/util-dynamodb';
 import { deleteFromS3 } from './storagecontroller.js';
 
@@ -454,14 +454,15 @@ export async function denyGames(req, res) {
 
             //copy to a special s3 prefix where it has a life cycle rule to delete after 30 days
 
+            moveToPendingDeletion(gameName);
 
 
-            await s3.send(new CopyObjectCommand({}))
+            //await s3.send(new CopyObjectCommand({}))
             // DO IT IN THE STORAGE CONTROLLER THO
-            await s3.send(new DeleteObjectCommand({}));
+            //await s3.send(new DeleteObjectCommand({}));
 
 
-            
+
             // deleteFromS3(gameName);
         }
         console.log("success")
@@ -801,9 +802,57 @@ export async function restoreGame(req, res) {
         }
         await client.send(new DeleteItemCommand(deleteParams))
 
+        moveBackFromPendingDeletion(gameName);
+
         res.status(200).json({ message: "Restore game endpoint hit", gameName });
     } catch (error) {
         console.log(error.message);
         res.status(500).json({ error: "Failed to restore game" });
+    }
+}
+
+export async function recentReleases(req, res) {
+    try {
+        const result = await client.send(new ScanCommand({ TableName: "gameInformation" }));
+        const items = result.Items.map(item => unmarshall(item));
+
+        // Get the 8 most recent games
+        const getMostRecentGames = (gamesArray, count = 8) => {
+            return [...gamesArray]
+                .filter(game => game.releaseDate)
+                .sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate))
+                .slice(0, count);
+        };
+
+        const recentGames = getMostRecentGames(items);
+
+        const gameNameArray = recentGames.map(game => game.gameName);
+
+
+        const gameImages = await retrieveGameImages(gameNameArray);
+        const recentGamesArr = [];
+
+        gameImages.forEach(image => {
+            const matchedGame = recentGames.find(game => game.gameName === image.gameName);
+            if (matchedGame) {
+                recentGamesArr.push({
+                    src: image.imageUrl,
+                    title: matchedGame.gameName,
+                    desc: matchedGame.gameDesc,
+                    creator: matchedGame.teamName,
+                    likes: matchedGame.likes,
+                    releaseDate: matchedGame.releaseDate,
+                    fileSize: matchedGame.fileSize,
+                });
+            }
+        });
+
+        console.log(recentGamesArr);
+
+        res.status(200).json({ recentGames: recentGamesArr });
+
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ error: "Failed to retrieve recent releases" });
     }
 }

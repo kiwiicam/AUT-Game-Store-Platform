@@ -1,5 +1,5 @@
 import express from 'express';
-import { addUser, changeName, getUserInfo, uploadGameInformation, retrieveFeaturedGames, getUserSearch, getGameInformation, getDeveloperInformation, uploadComment, retrieveComments, browseGames, retrieveGamesForAdmin, approveGames, denyGames, getAdminGameInfo, getAdminAllUsers, adminUpdateRole, checkAccessByUID, likeGame, hasLiked, removeLike, restoreGame, getPendingDeletionGames} from '../controllers/databasecontroller.js';
+import { addUser, changeName, getUserInfo, uploadGameInformation, retrieveFeaturedGames, getUserSearch, getGameInformation, getDeveloperInformation, uploadComment, retrieveComments, browseGames, retrieveGamesForAdmin, approveGames, denyGames, getAdminGameInfo, getAdminAllUsers, adminUpdateRole, checkAccessByUID, likeGame, hasLiked, removeLike, restoreGame, getPendingDeletionGames, recentReleases} from '../controllers/databasecontroller.js';
 
 const router = express.Router();
 
@@ -26,6 +26,7 @@ router.post('/hasliked', hasLiked);
 router.post('/removelike', removeLike);
 router.get('/getPendingDeletionGames', getPendingDeletionGames);
 router.post('/restoregame', restoreGame);
+router.get('/recentreleases', recentReleases); // Reusing browseGames controller for recent releases
 
 //router.post('/browsegamesbysearch', browseGamesBySearch);
 
