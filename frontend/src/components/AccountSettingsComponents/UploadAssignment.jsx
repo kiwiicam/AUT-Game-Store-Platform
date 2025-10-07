@@ -344,19 +344,18 @@ function UploadAssignment() {
                 <div>
                     <h1>Upload Assignments</h1>
                     <div>
-                        <h2>This page is where you can upload assignments to be displayed on your student profile, please ensure only one student uploads the assignment per group.</h2>
-                        <h2>Even if someone else uploads the assignment, aslong as they include you as a developer it will still show up on your profile.</h2>
+                        <h2>Upload your COMP710 projects here for public visibility. Ensure there is only one upload per group. Group members can be included during the upload phase.</h2>
                     </div>
                 </div>
                 <div>
                     <h3>Instructions</h3>
-                    <h2>Please enter any relevant details about your project into sections below. Please ensure you fill out all the sections and keep your answers appropriate as this will be shown publicy once approved by an admin.</h2>
+                    <h2>Please enter the relevant details about your project into sections below. Ensure you fill all sections and keep answers appropriate. Submissions will be reviewed by the admin before the upload is complete.</h2>
                 </div>
                 <div>
                     <h3>Folder Format</h3>
                     <h2>Please use the folder format provided, this will keep it consistent and allow users to download and play the game easier. If your file format does not follow this format it is likely to be declinded by an admin.</h2>
                 </div>
-                <div className="folder-format"></div>
+                {/*<div className="folder-format"></div>*/}
 
                 <div className="game-team-name">
                     <div>
