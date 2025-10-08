@@ -39,6 +39,22 @@ function Gamepage() {
 
     const navigate = useNavigate();
     const { gameName } = useParams();
+//pfp
+    const [pfp, setImage2] = useState();
+    const getImage2 = async () => {
+      try {
+        const image = await axios.post(`http://localhost:8000/api/storage/getpfp`,
+          {
+            type: 'uid',
+            id: localStorage.getItem('uid')
+          })
+        setImage2(image.data.imageUrl);
+      }
+      catch (err) {
+        console.log(err.message);
+      }
+  }
+    getImage2();
 
     useEffect(() => {
         if (!gameName) return;
@@ -67,12 +83,15 @@ function Gamepage() {
                 //const developerInfo = await axios.post('http://localhost:8000/api/database/getdeveloperinfo', { groupArray: databaseData.data.gameData.groupMembers })
 
                 const commentInfo = await axios.post(`${backend_url}/database/retrievecomments`, { gameName: databaseData.data.gameData.gameName })
+
                 const commentState = commentInfo.data.commentData.map(value => ({
                     text: value.comment,
                     name: value.userName,
+                    uid: value.uid,
                     picsrc: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
                     date: new Date(value.timestamp).toLocaleString('en-NZ')
                 }))
+     
                 setCommentCards(commentState)
             }
             catch (error) {
@@ -242,6 +261,7 @@ function Gamepage() {
             const newComment = {
                 text: comment,
                 name: response.data.userName,
+                uid: uid,
                 date: timestamp,
                 picsrc: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
             }
@@ -257,6 +277,9 @@ function Gamepage() {
                 position: 'top-center', autoClose: 3000,
             });
         }
+
+
+
     }
 
     const likeGame = async () => {
@@ -437,7 +460,7 @@ function Gamepage() {
                             {loggedIn ? (!commentUploaded ?
                                 <div className='logged-in-comment'>
                                     <div className='comment-pfp'>
-                                        <img src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'>
+                                        <img src={pfp}>
 
                                         </img>
                                     </div>
@@ -453,7 +476,7 @@ function Gamepage() {
                             <div className='comments-container'>
 
                                 {commentCards.slice(0, visibleCount).map((comment, index) => (
-                                    <Commentcard key={index} text={comment.text} name={comment.name} picsrc={comment.picsrc} date={comment.date} />
+                                    <Commentcard key={index} text={comment.text} name={comment.name} uid={comment.uid} picsrc={comment.picsrc} date={comment.date} />
                                 ))}
                                 {commentCards.length > 0 ?
                                     commentCards.length > 5 ?

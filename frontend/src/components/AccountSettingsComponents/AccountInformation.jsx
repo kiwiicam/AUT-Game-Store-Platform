@@ -10,6 +10,64 @@ function AccountInformation() {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
 
+    const [image, setImage] = useState();
+
+    const changepfp = () => {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*.png';
+        input.onchange = async () => {
+            const file = input.files[0];
+            if (!file) return;
+            const formData = new FormData();
+            formData.append('image', file, 'pfp.png');  
+                   // formData.append('image', fs.createReadStream('./default-pfp.png'), 'pfp.png');
+            
+            formData.append('uid', localStorage.getItem('uid'));
+            try {
+                const response = await axios.post(`http://localhost:8000/api/storage/setpfp`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+            }
+            catch (err) {
+                alert(err.message);
+            }
+        }
+        input.click();
+    }
+                // Handle success (e.g., show a success message)
+                // Optionally, refresh the profile picture
+             //   const image = await axios.post(`http://localhost:8000/api/storage/getpfp`,
+                 //   { type: 'uid',
+                 //       id: localStorage.getItem('uid')
+                 //   })
+              //  setImage(image.data.imageUrl);
+           // }
+  //  window.alert("testing");
+ //   }         input.click();
+      //  catch (err) {
+            //    alert(err.message);
+         //   }
+      //  }
+
+  useEffect(() => {
+    const getImage = async () => {
+      try {
+        const image = await axios.post(`http://localhost:8000/api/storage/getpfp`,
+          {
+            type: 'uid',
+            id: localStorage.getItem('uid')
+          })
+        setImage(image.data.imageUrl);
+      }
+      catch (err) {
+        alert(err.message);
+      }
+  }
+    getImage();
+  }, []);
 
     const [currentUsername, setCurrentUsername] = useState('');
     const [currentFirstName, setCurrentFirstName] = useState('');
@@ -127,7 +185,7 @@ function AccountInformation() {
             <h1 className="subheading">Profile details</h1>
             <h2>Change your profile details that others can view</h2>
 
-            <div className="profile-pics">{/*<img src="" alt="Profile picture" />*/}<div className="icon-containers"><MdOutlineModeEditOutline className="edit-icon" /></div></div>
+            <div className="profile-pics"><img src={image} alt="Profile picture" /><div className="icon-containers"><MdOutlineModeEditOutline onClick={() => changepfp()} className="edit-icon" /></div></div>
             <div className="username">
                 <h2>Username</h2>
                 <div className="username-input">

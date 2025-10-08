@@ -1,11 +1,37 @@
 import react from "react";
 import "../css/Commentcard.css"
-function Commentcard({ text, name, picsrc, date }) {
+import { useEffect, useState } from "react";
+import axios from "axios";
+function Commentcard({ text, name,uid ,picsrc, date }) {
+  console.log(uid);
+  console.log("-----------");
+  console.log("-----------");
+  console.log("-----------");
+  console.log("-----------");
+  console.log("-----------");
+
+        const [image, setImage] = useState();
+  useEffect(() => {
+    const getImage = async () => {
+      try {
+        const image = await axios.post(`http://localhost:8000/api/storage/getpfp`,
+          {
+            type: 'uid',
+            id: uid
+          })
+        setImage(image.data.imageUrl);
+      }
+      catch (err) {
+        alert(err.message);
+      }
+  }
+    getImage();
+  }, []);
     return (
         <div className="comment-card">
             <div className="left-section">
                 <div className="profile-pic">
-                    <img src={picsrc} alt={name} />
+                    <img src={image} alt={name} />
                 </div>
 
                 <h2 className="small">{name}</h2>
