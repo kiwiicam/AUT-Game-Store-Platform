@@ -9,14 +9,16 @@ function PasswordSecurity() {
 
     const backend_url = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000/api';
 
-    const [currentPassword, setCurrentPassword] = useState('');
+    const [passwordCode, setPasswordCode] = useState('');
     const [newPassword, setNewPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+
     const [currentEmail, setCurrentEmail] = useState('');
     const [currentPhone, setCurrentPhone] = useState('');
     const [editMode, setEditMode] = useState(false);
     const [editField, setEditField] = useState('');
     const [editValue, setEditValue] = useState('');
+
+    const [sentReset, setSentReset] = useState(false);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -96,37 +98,43 @@ function PasswordSecurity() {
     };
 
     const handlePasswordChange = async () => {
-        if (!currentPassword || !newPassword || !confirmPassword) {
-            toast.error("Please fill in all password fields");
-            return;
-        }
-
-        if (newPassword !== confirmPassword) {
-            toast.error("New passwords do not match");
-            return;
-        }
-
-        if (newPassword.length < 8) {
-            toast.error("Password must be at least 8 characters long");
-            return;
-        }
-
         try {
-            const uid = localStorage.getItem('uid');
-            await axios.post('http://localhost:8000/api/database/changepassword', {
-                uid: uid,
-                currentPassword: currentPassword,
-                newPassword: newPassword
-            });
 
-            setCurrentPassword('');
-            setNewPassword('');
-            setConfirmPassword('');
-            toast.success("Password updated successfully");
+            const uid = localStorage.getItem('uid');
+            const email = localStorage.getItem('email');
+            await axios.post('http://localhost:8000/api/auth/changepassword', {
+                uid: uid,
+                email: email
+            });
+            toast.success("Please check your email to reset your password.");
+            setSentReset(true);
         } catch (error) {
-            toast.error("Failed to update password. Please check your current password.");
+            toast.error("Failed to update password.");
         }
     };
+
+    const confirmPasswordChange = async () => {
+        try {
+
+
+            const uid = localStorage.getItem('uid');
+            const email = localStorage.getItem('email');
+            await axios.post('http://localhost:8000/api/auth/confirmchangepassword', {
+                uid: uid,
+                email: email,
+                passwordCode: passwordCode,
+                newPassword: newPassword
+            });
+            toast.success("Password updated successfully.");
+            setSentReset(false);
+            setNewPassword('');
+            setPasswordCode('');
+
+        }
+        catch (error) {
+            toast.error("Password must be 10 Characters in length, contain symbols and numbers");
+        }
+    }
 
     const handleSaveEdit = () => {
         if (editField === 'email') {
@@ -176,43 +184,49 @@ function PasswordSecurity() {
                     <p>Change your password here</p>
 
                     <div className="password-container">
-                        <div className="field-container">
-                            <label>Enter Current Password</label>
-                            <input
-                                type="password"
-                                placeholder="current password"
-                                value={currentPassword}
-                                onChange={(e) => setCurrentPassword(e.target.value)}
-                            />
-                        </div>
 
                         <div className="field-container">
-                            <label>Enter New Password</label>
-                            <input
-                                type="password"
-                                placeholder="new password"
-                                value={newPassword}
-                                onChange={(e) => setNewPassword(e.target.value)}
-                            />
-                        </div>
+                            <label>Request a password reset email.</label>
 
-                        <div className="field-container">
-                            <label>Confirm New Password</label>
-                            <input
-                                type="password"
-                                placeholder="confirm new password"
-                                value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                            />
                         </div>
 
                         <div className="update-button-container">
                             <div className="update-button">
-                            <button onClick={handlePasswordChange}>
-                                Update
-                            </button>
+                                <button onClick={handlePasswordChange}>
+                                    Request email
+                                </button>
                             </div>
                         </div>
+                        {sentReset &&
+                            <>
+                                <div className="field-container">
+                                    <label>Enter your password reset code</label>
+                                    <input
+                                        type="text"
+                                        placeholder="reset code"
+                                        value={passwordCode}
+                                        onChange={(e) => setPasswordCode(e.target.value)}
+                                    />
+                                </div>
+                                <div className="field-container">
+                                    <label>Enter New Password</label>
+                                    <input
+                                        type="password"
+                                        placeholder="new password"
+                                        value={newPassword}
+                                        onChange={(e) => setNewPassword(e.target.value)}
+                                    />
+                                </div>
+                                <div className="update-button-container">
+                                    <div className="update-button">
+                                        <button onClick={confirmPasswordChange}>
+                                            Change password
+                                        </button>
+                                    </div>
+                                </div>
+                            </>
+
+                        }
                     </div>
                 </div>
 

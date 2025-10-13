@@ -84,9 +84,20 @@ export async function changeName(req, res) {
 }
 
 export async function uploadGameInformation(req, res) {
-    const { gameName, teamName, projectType, projectTimeframe, gameDesc, selectedGenres, groupMembers, fileSize } = req.body;
+    const { gameName, teamName, projectType, projectTimeframe, gameDesc, selectedGenres, groupMembers, fileSize, uid } = req.body;
     const date = new Date();
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
+
+    const uname = {
+        TableName: "userTable",
+        Key: {
+            uid: { S: uid },
+        }
+    }
+
+    const user = await client.send(new GetItemCommand(uname));
+    const plainUser = unmarshall(user.Item);
+
     const formattedDate = date.toLocaleDateString('en-US', options);
     const params = {
         TableName: "AwaitingGames",
@@ -101,6 +112,8 @@ export async function uploadGameInformation(req, res) {
             downloads: { N: "0" },
             releaseDate: { S: formattedDate },
             fileSize: { N: fileSize },
+            username: { S: plainUser.username },
+            uid: { S: uid }
         }
     };
     if (projectType === "Group Game Project") {
