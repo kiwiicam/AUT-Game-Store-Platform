@@ -1,0 +1,157 @@
+.about-page {
+    background: linear-gradient(to bottom, #3E4C71, #191D31);
+    color: #fff;
+    min-height: 100vh;
+    font-family: "Inter", sans-serif;
+}
+
+.about-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 40px;
+}
+
+.about-hero {
+    text-align: left;
+    padding-top: 80px;
+    padding-bottom: 60px;
+}
+
+.about-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.about-divider {
+    border: none;
+    border-top: 2px solid rgba(255, 255, 255, 0.5);
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 600px;
+}
+
+.about-description {
+    max-width: 800px;
+    line-height: 1.6;
+    color: #cfcfcf;
+    font-size: 1rem;
+}
+
+.framework-section {
+    background-color: #14141499;
+    padding: 60px 0;
+}
+
+.framework-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: flex-start;
+    gap: 40px;
+}
+
+.framework-text h2 {
+    font-size: 1.5rem;
+    margin-bottom: 16px;
+}
+
+.framework-text p {
+    color: #cfcfcf;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.framework-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-placeholder {
+    background: #7a7a7a;
+    width: 100%;
+    height: 250px;
+    border-radius: 10px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.project-section {
+    padding: 80px 0;
+}
+
+.project-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 80px;
+}
+
+.project-card {
+    background-color: #14141499;
+    border-radius: 16px;
+    padding: 30px;
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.project-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 5px;
+}
+
+.project-sub {
+    color: #b0b0b0;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+}
+
+.project-card hr {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    margin-bottom: 15px;
+}
+
+.project-card p {
+    color: #d1d1d1;
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+.timeline {
+    position: relative;
+    height: 180px;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.timeline-line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: white;
+    transform: translateY(-50%);
+}
+
+.timeline-event {
+    position: absolute;
+    text-align: center;
+    color: white;
+}
+
+.timeline-event p {
+    margin-top: 8px;
+    font-size: 0.85rem;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    background: white;
+    border-radius: 50%;
+    margin: 0 auto;
+}
