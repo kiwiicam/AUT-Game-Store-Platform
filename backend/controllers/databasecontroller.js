@@ -139,31 +139,27 @@ export async function retrieveFeaturedGames(req, res) {
         const data = await client.send(new ScanCommand(params));
         const games = data.Items.map(item => unmarshall(item));
 
-        const topThree = games.reduce((acc, game) => {
-            acc.push(game);
-            acc.sort((a, b) => b.likes - a.likes);
+        // Sort all games by likes in descending order and take the top 8
+        const topEight = games
+            .sort((a, b) => b.likes - a.likes)
+            .slice(0, 8);
 
-            if (acc.length > 3) acc.pop();
-            return acc;
-        }, []);
-
-        const gameNameArray = [topThree[0].gameName, topThree[1].gameName, topThree[2].gameName];
+        // Get the game names for image retrieval
+        const gameNameArray = topEight.map(game => game.gameName);
         const gameImages = await retrieveGameImages(gameNameArray);
 
-        const featuredGames = []
-        gameImages.forEach(element => {
-            const name = element.gameName;
-            topThree.forEach(game => {
-                if (game.gameName === name) {
-                    featuredGames.push({
-                        src: element.imageUrl,
-                        title: game.gameName,
-                        desc: game.gameDesc,
-                        creator: game.teamName,
-                        likes: game.likes
-                    });
-                }
-            });
+        console.log(gameImages + " this is game images!!!!!!!!!!!!!!!!!!!!!!");
+
+        // Combine game info with image URLs
+        const featuredGames = topEight.map(game => {
+            const image = gameImages.find(img => img.gameName === game.gameName);
+            return {
+                src: image.imageUrl,
+                title: game.gameName,
+                desc: game.gameDesc,
+                creator: game.teamName,
+                likes: game.likes
+            };
         });
 
         console.log(featuredGames);
@@ -174,6 +170,7 @@ export async function retrieveFeaturedGames(req, res) {
         res.status(500).json({ error: "Failed to retrieve featured games" });
     }
 }
+
 
 export async function getUserSearch(req, res) {
     const { searchQuery } = req.body;
@@ -867,5 +864,102 @@ export async function recentReleases(req, res) {
     } catch (error) {
         console.log(error.message);
         res.status(500).json({ error: "Failed to retrieve recent releases" });
+    }
+}
+
+export async function randomGames(req, res) {
+    try {
+        const result = await client.send(new ScanCommand({ TableName: "gameInformation" }));
+        const items = result.Items.map(item => unmarshall(item));
+
+        // Get 8 random games
+        const getRandomGames = (gamesArray, count = 8) => {
+            const shuffled = [...gamesArray];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled.slice(0, count);
+        };
+
+        const randomGames = getRandomGames(items);
+
+        const gameNameArray = randomGames.map(game => game.gameName);
+
+        const gameImages = await retrieveGameImages(gameNameArray);
+        const randomGamesArr = [];
+
+        gameImages.forEach(image => {
+            const matchedGame = randomGames.find(game => game.gameName === image.gameName);
+            if (matchedGame) {
+                randomGamesArr.push({
+                    src: image.imageUrl,
+                    title: matchedGame.gameName,
+                    desc: matchedGame.gameDesc,
+                    creator: matchedGame.teamName,
+                    likes: matchedGame.likes,
+                    releaseDate: matchedGame.releaseDate,
+                    fileSize: matchedGame.fileSize,
+                });
+            }
+        });
+        console.log("this is random games arr");
+        console.log("this is random games arr");
+        console.log("this is random games arr");
+
+        console.log(randomGamesArr);
+
+        res.status(200).json({ randomGames: randomGamesArr });
+
+    }
+    catch (error) {
+        console.log(error.message);
+        res.status(500).json({ error: "Failed to retrieve classic games" });
+    }
+}
+
+export async function classicGames(req, res) {
+    try {
+        const result = await client.send(new ScanCommand({ TableName: "gameInformation" }));
+        const items = result.Items.map(item => unmarshall(item));
+
+        // Get the 8 oldest games
+        const getOldestGames = (gamesArray, count = 8) => {
+            return [...gamesArray]
+                .filter(game => game.releaseDate)
+                .sort((a, b) => new Date(a.releaseDate) - new Date(b.releaseDate))
+                .slice(0, count);
+        };
+
+        const oldestGames = getOldestGames(items);
+        const gameNameArray = oldestGames.map(game => game.gameName);
+
+        const gameImages = await retrieveGameImages(gameNameArray);
+        const oldestGamesArr = [];
+
+        gameImages.forEach(image => {
+            const matchedGame = oldestGames.find(game => game.gameName === image.gameName);
+            const genreArr = [...matchedGame.selectedGenres]
+            if (matchedGame) {
+                oldestGamesArr.push({
+                    src: image.imageUrl,
+                    title: matchedGame.gameName,
+                    desc: matchedGame.gameDesc,
+                    creator: matchedGame.teamName,
+                    likes: matchedGame.likes,
+                    releaseDate: matchedGame.releaseDate,
+                    fileSize: matchedGame.fileSize,
+                    genre: genreArr
+                });
+            }
+        });
+
+        console.log(oldestGamesArr);
+
+        res.status(200).json({ oldestGames: oldestGamesArr });
+
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ error: "Failed to retrieve oldest releases" });
     }
 }

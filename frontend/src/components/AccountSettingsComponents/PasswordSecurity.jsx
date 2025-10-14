@@ -63,7 +63,7 @@ function PasswordSecurity() {
 
         try {
             const uid = localStorage.getItem('uid');
-            await axios.post('http://localhost:8000/api/database/changeemail', {
+            await axios.post(`${backend_url}/database/changeemail`, {
                 uid: uid,
                 newEmail: editValue.trim()
             });
@@ -84,7 +84,7 @@ function PasswordSecurity() {
 
         try {
             const uid = localStorage.getItem('uid');
-            await axios.post('http://localhost:8000/api/database/changephone', {
+            await axios.post(`${backend_url}/database/changephone`, {
                 uid: uid,
                 newPhone: editValue.trim()
             });
@@ -102,7 +102,7 @@ function PasswordSecurity() {
 
             const uid = localStorage.getItem('uid');
             const email = localStorage.getItem('email');
-            await axios.post('http://localhost:8000/api/auth/changepassword', {
+            await axios.post(`${backend_url}/auth/changepassword`, {
                 uid: uid,
                 email: email
             });
@@ -119,7 +119,7 @@ function PasswordSecurity() {
 
             const uid = localStorage.getItem('uid');
             const email = localStorage.getItem('email');
-            await axios.post('http://localhost:8000/api/auth/confirmchangepassword', {
+            await axios.post(`${backend_url}/auth/confirmchangepassword`, {
                 uid: uid,
                 email: email,
                 passwordCode: passwordCode,
