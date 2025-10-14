@@ -447,6 +447,8 @@ export async function denyGames(req, res) {
                     likes: { N: "0" },
                     releaseDate: { S: plainItems.releaseDate },
                     fileSize: { N: plainItems.fileSize.toString() },
+                    username: { S: plainItems.username },
+                    uid: { S: plainItems.uid },
                     expires: { N: epochtime.toString() }
                 }
             }
@@ -798,6 +800,8 @@ export async function restoreGame(req, res) {
                 likes: { N: "0" },
                 releaseDate: { S: plainItems.releaseDate },
                 fileSize: { N: plainItems.fileSize.toString() },
+                username: { S: plainItems.username },
+                uid: { S: plainItems.uid }
             }
 
         }
