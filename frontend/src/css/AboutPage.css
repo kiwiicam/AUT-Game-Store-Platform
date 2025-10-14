@@ -1,12 +1,9 @@
 body {
   background: linear-gradient(to bottom, #3E4C71, #191D31);
-  padding-bottom: 670px;
+  min-height: 100vh;
 }
 
 @media only screen and (max-width: 600px) { /* For mobile users */
-  body {
-    padding-bottom: 670;
-  }
   .main {
     width: 90%;
   }
