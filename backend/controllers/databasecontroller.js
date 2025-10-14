@@ -848,6 +848,7 @@ export async function recentReleases(req, res) {
 
         gameImages.forEach(image => {
             const matchedGame = recentGames.find(game => game.gameName === image.gameName);
+            const genreArr = [...matchedGame.selectedGenres]
             if (matchedGame) {
                 recentGamesArr.push({
                     src: image.imageUrl,
@@ -857,6 +858,7 @@ export async function recentReleases(req, res) {
                     likes: matchedGame.likes,
                     releaseDate: matchedGame.releaseDate,
                     fileSize: matchedGame.fileSize,
+                    genres: genreArr
                 });
             }
         });
