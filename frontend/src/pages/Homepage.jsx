@@ -9,8 +9,6 @@ function Homepage() {
 
     const backend_url = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000/api';
 
-    const [hoverLocked, setHoverLocked] = useState(false);
-
     const [featuredGames, setFeaturedGames] = useState([]);
     const [recentReleases, setRecentReleases] = useState([]);
     const [mostLiked, setMostLiked] = useState([]);
@@ -27,9 +25,20 @@ function Homepage() {
 
     const [width, setWidth] = useState(null);
 
+    const [sliderHover, setSliderHover] = useState(false);
+
     const sliderRef = useRef(null);
     useEffect(() => {
-        // This is where you can fetch data for the homepage, like featured games
+
+        const scrollLargeSlider = () => {
+            if (sliderHover) return;
+            setTimeout(() => {
+                setIndex((prevIndex) => (prevIndex === 2 ? 0 : prevIndex + 1));
+                scrollLargeSlider();
+            }, 4000);
+
+        }
+        scrollLargeSlider();
         setWidth((sliderRef.current.offsetWidth - 45) / 3)
         const fetchFeaturedGames = async () => {
             try {
@@ -59,6 +68,15 @@ function Homepage() {
                             creator: featuredGamesReturn[2].creator
                         }
                     ]
+
+                );
+                setMostLiked(
+                    featuredGamesReturn.slice(0, 8).map(game => ({
+                        image: game.src,
+                        title: game.title,
+                        desc: game.desc,
+                        creator: game.creator
+                    }))
                 );
             }
             catch (error) {
@@ -66,53 +84,65 @@ function Homepage() {
                 console.error("Error fetching featured games:", error);
             }
         }
+
+
+
+        const fetchRecentReleases = async () => {
+            try {
+                const response = await axios.get(`${backend_url}/database/recentreleases`);
+                setRecentReleases(response.data.recentGames);
+
+
+            }
+            catch (error) {
+                alert(error.message)
+                console.error("Error fetching recent releases:", error);
+            }
+
+        }
+
+        const fetchClassicGames = async () => {
+            try {
+                const response = await axios.get(`${backend_url}/database/classicGames`);
+
+                const mappedMultiplayerGames = response.data.oldestGames.map((game, i) => ({
+                    image: game.src,           // image URL
+                    title: game.title,         // game name
+                    creator: game.creator,     // team name
+                    genres: game.genre || [],
+                    likes: game.likes || 0,
+                    releaseDate: game.releaseDate || 'TBA',
+                    fileSize: game.fileSize || 0
+                }));
+                console.log(response.data.oldestGames[0].genre)
+                setMultiplayerGames(mappedMultiplayerGames);
+
+            }
+            catch (error) {
+                alert(error.message)
+                console.error("Error fetching classic games:", error);
+            }
+
+        }
+
+        const fetchClassics = async () => {
+            try {
+                const response = await axios.get(`${backend_url}/database/randomGames`)
+                setTrendingGames(response.data.randomGames);
+            }
+            catch (error) {
+                alert(error.message)
+                console.error("Error fetching classic games:", error);
+            }
+        }
+
+
+        fetchClassics();
         fetchFeaturedGames();
+        fetchRecentReleases();
+        //fetchMultiplayerGames();
 
-
-
-        setRecentReleases([
-            { image: "https://i.redd.it/q4fjauk2ebc31.png", title: "Mincecraft LOL", creator: "Mojang" },
-            { image: "https://media.rockstargames.com/rockstargames/img/global/news/upload/1_gtavpc_03272015.jpg", title: "GTA 5", creator: "Rockstar Games" },
-            { image: "https://i.guim.co.uk/img/media/c15da9438dd16a3563e80b799f65554295b81769/40_0_1200_720/master/1200.jpg?width=700&quality=85&auto=format&fit=max&s=64f83bdbf0f8d4ce2f2bd2862f30a8cd", title: "Skyrim: The Elden Scrolls V", creator: "Bethesda Game Studios" },
-            { image: "http://localhost:3000/joshgame.png", title: "Josh's game", creator: "Joshua Knight" },
-            { image: "https://i.redd.it/q4fjauk2ebc31.png", title: "Mincecraft LOL", creator: "Mojang" },
-            { image: "https://media.rockstargames.com/rockstargames/img/global/news/upload/1_gtavpc_03272015.jpg", title: "GTA 5", creator: "Rockstar Games" },
-            { image: "https://i.guim.co.uk/img/media/c15da9438dd16a3563e80b799f65554295b81769/40_0_1200_720/master/1200.jpg?width=700&quality=85&auto=format&fit=max&s=64f83bdbf0f8d4ce2f2bd2862f30a8cd", title: "Skyrim: The Elden Scrolls V", creator: "Bethesda Game Studios" },
-            { image: "http://localhost:3000/joshgame.png", title: "Josh's game", creator: "Joshua Knight" }
-        ]);
-
-        setMostLiked([
-            { image: "https://i.redd.it/q4fjauk2ebc31.png", title: "Mincecraft LOL", creator: "Mojang" },
-            { image: "https://media.rockstargames.com/rockstargames/img/global/news/upload/1_gtavpc_03272015.jpg", title: "GTA 5", creator: "Rockstar Games" },
-            { image: "https://i.guim.co.uk/img/media/c15da9438dd16a3563e80b799f65554295b81769/40_0_1200_720/master/1200.jpg?width=700&quality=85&auto=format&fit=max&s=64f83bdbf0f8d4ce2f2bd2862f30a8cd", title: "Skyrim: The Elden Scrolls V", creator: "Bethesda Game Studios" },
-            { image: "http://localhost:3000/joshgame.png", title: "Josh's game", creator: "Joshua Knight" },
-            { image: "https://i.redd.it/q4fjauk2ebc31.png", title: "Mincecraft LOL", creator: "Mojang" },
-            { image: "https://media.rockstargames.com/rockstargames/img/global/news/upload/1_gtavpc_03272015.jpg", title: "GTA 5", creator: "Rockstar Games" },
-            { image: "https://i.guim.co.uk/img/media/c15da9438dd16a3563e80b799f65554295b81769/40_0_1200_720/master/1200.jpg?width=700&quality=85&auto=format&fit=max&s=64f83bdbf0f8d4ce2f2bd2862f30a8cd", title: "Skyrim: The Elden Scrolls V", creator: "Bethesda Game Studios" },
-            { image: "http://localhost:3000/joshgame.png", title: "Josh's game", creator: "Joshua Knight" }
-        ]);
-
-        setTrendingGames([
-            { image: "https://i.redd.it/q4fjauk2ebc31.png", title: "Mincecraft LOL", creator: "Mojang" },
-            { image: "https://media.rockstargames.com/rockstargames/img/global/news/upload/1_gtavpc_03272015.jpg", title: "GTA 5", creator: "Rockstar Games" },
-            { image: "https://i.guim.co.uk/img/media/c15da9438dd16a3563e80b799f65554295b81769/40_0_1200_720/master/1200.jpg?width=700&quality=85&auto=format&fit=max&s=64f83bdbf0f8d4ce2f2bd2862f30a8cd", title: "Skyrim: The Elden Scrolls V", creator: "Bethesda Game Studios" },
-            { image: "http://localhost:3000/joshgame.png", title: "Josh's game", creator: "Joshua Knight" },
-            { image: "https://i.redd.it/q4fjauk2ebc31.png", title: "Mincecraft LOL", creator: "Mojang" },
-            { image: "https://media.rockstargames.com/rockstargames/img/global/news/upload/1_gtavpc_03272015.jpg", title: "GTA 5", creator: "Rockstar Games" },
-            { image: "https://i.guim.co.uk/img/media/c15da9438dd16a3563e80b799f65554295b81769/40_0_1200_720/master/1200.jpg?width=700&quality=85&auto=format&fit=max&s=64f83bdbf0f8d4ce2f2bd2862f30a8cd", title: "Skyrim: The Elden Scrolls V", creator: "Bethesda Game Studios" },
-            { image: "http://localhost:3000/joshgame.png", title: "Josh's game", creator: "Joshua Knight" }
-        ]);
-
-        setMultiplayerGames([
-            { image: "https://i.redd.it/q4fjauk2ebc31.png", title: "Mincecraft LOL", creator: "Mojang", genres: ["Sandbox", "Survival", "Multiplayer"] },
-            { image: "https://media.rockstargames.com/rockstargames/img/global/news/upload/1_gtavpc_03272015.jpg", title: "GTA 5", creator: "Rockstar Games", genres: ["Sandbox", "Survival", "Multiplayer"] },
-            { image: "https://i.guim.co.uk/img/media/c15da9438dd16a3563e80b799f65554295b81769/40_0_1200_720/master/1200.jpg?width=700&quality=85&auto=format&fit=max&s=64f83bdbf0f8d4ce2f2bd2862f30a8cd", title: "Skyrim: The Elden Scrolls V", creator: "Bethesda Game Studios", genres: ["Sandbox", "Survival", "Multiplayer"] },
-            { image: "http://localhost:3000/joshgame.png", title: "Josh's game", creator: "Joshua Knight", genres: ["Sandbox", "Survival", "Multiplayer"] },
-            { image: "https://i.redd.it/q4fjauk2ebc31.png", title: "Mincecraft LOL", creator: "Mojang", genres: ["Sandbox", "Survival", "Multiplayer"] },
-            { image: "https://media.rockstargames.com/rockstargames/img/global/news/upload/1_gtavpc_03272015.jpg", title: "GTA 5", creator: "Rockstar Games", genres: ["Sandbox", "Survival", "Multiplayer"] },
-            { image: "https://i.guim.co.uk/img/media/c15da9438dd16a3563e80b799f65554295b81769/40_0_1200_720/master/1200.jpg?width=700&quality=85&auto=format&fit=max&s=64f83bdbf0f8d4ce2f2bd2862f30a8cd", title: "Skyrim: The Elden Scrolls V", creator: "Bethesda Game Studios", genres: ["Sandbox", "Survival", "Multiplayer"] },
-            { image: "https://i.guim.co.uk/img/media/c15da9438dd16a3563e80b799f65554295b81769/40_0_1200_720/master/1200.jpg?width=700&quality=85&auto=format&fit=max&s=64f83bdbf0f8d4ce2f2bd2862f30a8cd", title: "Skyrim: The Elden Scrolls V", creator: "Bethesda Game Studios", genres: ["Sandbox", "Survival", "Multiplayer"] },
-        ]);
+        fetchClassicGames();
     }, [])
 
 
@@ -123,8 +153,6 @@ function Homepage() {
                     slideshowID - 1
         );
     }
-
-
 
     return (
         <div className='homepage-background'>
@@ -142,7 +170,7 @@ function Homepage() {
                                 style={{ transform: `translateX(-${index * (1 / 3) * 100}%)`, transition: 'transform 0.5s ease-in-out' }}
                             >
                                 {featuredGames.map((game, i) => (
-                                    <div key={i} className="slideshow-slide" onClick={() => { navigate(`/games/${game.title}`) }}>
+                                    <div key={i} className="slideshow-slide" onClick={() => { navigate(`/games/${game.title}`) }} onMouseEnter={() => setSliderHover(true)} onMouseLeave={() => setSliderHover(false)} >
                                         <div className='slideshow-text-container'>
                                             <div className="vertical-line">
                                             </div>
@@ -173,7 +201,7 @@ function Homepage() {
 
                             >
                                 {recentReleases.map((game, i) => (
-                                    <Gamecard key={i} image={game.image} title={game.title} creator={game.creator} width={width} />
+                                    <Gamecard key={i} image={game.src} title={game.title} creator={game.creator} width={width} />
                                 ))}
                             </div>
                         </div>
@@ -200,7 +228,7 @@ function Homepage() {
                     </div>
                 </div>
                 <div className='trending-games'>
-                    <h1>Trending Student Games</h1>
+                    <h1>Random Games</h1>
                     <div className='split-line'></div>
                     <div className='recent-releases-slider' ref={sliderRef}>
                         <div className='game-card-button-left' onClick={() => setTrendingIndex(trendingIndex === 0 ? 5 : trendingIndex - 1)}><IoIosArrowBack /></div>                        <div className='game-cards'>
@@ -209,7 +237,7 @@ function Homepage() {
 
                             >
                                 {trendingGames.map((game, i) => (
-                                    <Gamecard key={i} image={game.image} title={game.title} creator={game.creator} width={width} />
+                                    <Gamecard key={i} image={game.src} title={game.title} creator={game.creator} width={width} />
                                 ))}
                             </div>
                         </div>
@@ -218,28 +246,28 @@ function Homepage() {
                     </div>
                 </div>
                 <div className='multiplayer-games'>
-                    <h1>Multiplayer Games</h1>
+                    <h1>Classic Games</h1>
                     <div className='split-line'></div>
                     <div className='recent-releases-slider' ref={sliderRef}>
-                        <div className='game-card-button-left' onClick={() => setMultiplayerIndex(multiplayerIndex === 0 ? 6 : multiplayerIndex - 1)}><IoIosArrowBack /></div>
+                        <div className='game-card-button-left' onClick={() => setMultiplayerIndex(multiplayerIndex === 0 ? 5 : multiplayerIndex - 1)}><IoIosArrowBack /></div>
                         <div className='game-cards'>
                             <div className='game-card-track-new'
                                 style={{
-                                    transform: `translateX(-${multiplayerIndex === 6
-                                            ? (multiplayerGames.length * (width * 1.2 + 14)) - sliderRef.current.offsetWidth
-                                            : multiplayerIndex * (width * 1.2 + 15)
+                                    transform: `translateX(-${multiplayerIndex === 7
+                                        ? (multiplayerGames.length * (width + 15)) - sliderRef.current.offsetWidth
+                                        : multiplayerIndex * (width + 15)
                                         }px)`,
                                     transition: 'transform 0.5s ease-in-out',
-                                    width: multiplayerGames.length * (width * 1.2) + (multiplayerGames.length - 1) * 15
+                                    width: multiplayerGames.length * (width * 1.09) + (multiplayerGames.length - 1) * 15
                                 }}
                             >
                                 {multiplayerGames.map((game, i) => (
-                                    <GamecardNew key={i} slideid={i} gameImage={game.image} gameName={game.title} TeamName={game.creator} width={width} size='1.5' release='20/12/2025' likes='442' genres={game.genres} setid={setId} />
+                                    <GamecardNew key={i} slideid={i} gameImage={game.image} gameName={game.title} TeamName={game.creator} width={width} size={game.fileSize || 0} release={game.releaseDate || 'TBA'} likes={game.likes || 0} genres={game.genres} setid={setId} />
                                 ))}
                             </div>
                         </div>
                         {/*GONNA NEED SOME MAD CALCULATIONS FOR GETTING THIS TO WORK EVENLY CAN MAYBE DO TOTAL OF LENGTH OF ALL THE GAMECARDS / SOME NUMBER TO GET HOW MUCH YOU NEED TO SCROLL EACH TIME AND HOW MANY TIMES */}
-                        <div className='game-card-button-right' onClick={() => setMultiplayerIndex(multiplayerIndex === 6 ? 0 : multiplayerIndex + 1)}><IoIosArrowForward /></div>
+                        <div className='game-card-button-right' onClick={() => setMultiplayerIndex(multiplayerIndex === 5 ? 0 : multiplayerIndex + 1)}><IoIosArrowForward /></div>
                     </div>
                 </div>
             </div>

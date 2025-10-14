@@ -273,6 +273,7 @@ function UploadAssignment() {
             !checkImageArray() ||
             !checkGameFile) return;
         try {
+            const uid = localStorage.getItem("uid");
             const sizeInMB = (gameFile.size / (1024 * 1024)).toFixed(2);
             const dataToSend = {
                 gameName,
@@ -281,7 +282,9 @@ function UploadAssignment() {
                 projectTimeframe: projectTimeframe.toString(),
                 gameDesc,
                 selectedGenres,
-                fileSize: sizeInMB
+                fileSize: sizeInMB,
+                uid
+
             };
 
             if (projectType === "Group Game Project") {

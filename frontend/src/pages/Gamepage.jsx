@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { BiSolidLike, BiLike} from "react-icons/bi";
+import { BiSolidLike, BiLike } from "react-icons/bi";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import Genrebox from '../components/Genrebox.jsx';
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +10,7 @@ import '../css/Gamepage.css'
 import Developercard from '../components/Developercard.jsx';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
+import { ClipLoader } from "react-spinners";
 
 function Gamepage() {
 
@@ -36,6 +37,8 @@ function Gamepage() {
     const [withinMonth, setWithinMonth] = useState(false);
     const [mostRecent, setMostRecent] = useState(true);
     const [leastRecent, setLeastRecent] = useState(false);
+
+    const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
     const { gameName } = useParams();
@@ -286,35 +289,28 @@ function Gamepage() {
 
     }
 
-   async function downloadGame()
-    {
-     //   try{
-  //          const response = await axios.get('http://localhost:8000/api/storage/test/${gameName}')
-      //      alert(response.data.message)
-  //      }
-   //     catch(err)
-  //      {
+    async function downloadGame() {
+        try {
+            setLoading(true);
+            const response = await axios.get(
+                `http://localhost:8000/api/storage/downloadGame/${gameName}`,
+                { responseType: 'blob' }
+            );
 
-//        }
-    try {
-        const response = await axios.get(
-            `http://localhost:8000/api/storage/downloadGame/${gameName}`,
-            { responseType: 'blob' } 
-        );
+            // Create a link element to trigger download
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `${gameName}.zip`);
+            document.body.appendChild(link);
+            setLoading(false);
+            link.click();
+            link.remove();
 
-        // Create a link element to trigger download
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', `${gameName}.zip`); 
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-
-    } catch (err) {
-        console.error("Download error:", err);
-        alert("Failed to download file");
-    }
+        } catch (err) {
+            console.error("Download error:", err);
+            alert("Failed to download file");
+        }
 
 
     }
@@ -322,6 +318,11 @@ function Gamepage() {
 
     return (
         <div className='gamepage-container'>
+            {loading && (
+                <div className="loader-container">
+                    <ClipLoader color="#3643d7ff" size={70} />
+                </div>
+            )}
             <ToastContainer />
             <div className='gamepage-inner'>
                 <div className='gamepage-header-container'>
@@ -331,7 +332,7 @@ function Gamepage() {
                     </div>
                     <div className='gamepage-likes'>
                         <p>{likes}</p>
-                        <div className='gamepage-like-icon' onClick={() => likeGame()}>{hasLiked ? <BiSolidLike style={{ fontSize: '22px'}} /> : <BiLike style={{ fontSize: '22px'}} />}</div>
+                        <div className='gamepage-like-icon' onClick={() => likeGame()}>{hasLiked ? <BiSolidLike style={{ fontSize: '22px' }} /> : <BiLike style={{ fontSize: '22px' }} />}</div>
                     </div>
                 </div>
                 <div className='gamepage-info'>

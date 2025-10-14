@@ -1,11 +1,12 @@
 import React, { useState, useRef } from 'react'
-import "../css/GamecardNew.css"
-import "../css/Gamecard.css"
+import "../css/GamecardNew.css";
+import { useNavigate } from 'react-router';
 import { BiSolidLike } from "react-icons/bi";
 
 function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, release, likes, slideid, setid }) {
     const [hover, setHover] = useState(false);
     const hoverTimeout = useRef(null);
+    const navigate = useNavigate();
 
     const handleMouseEnter = () => {
         setHover(true);
@@ -15,6 +16,9 @@ function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, relea
     };
 
     const handleMouseLeave = () => {
+        if (slideid === 7) {
+            setid(6);
+        }
         setHover(false);
         if (hoverTimeout.current) {
             clearTimeout(hoverTimeout.current);
@@ -28,6 +32,8 @@ function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, relea
             id={hover ? 'inner-id' : ''}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
+            style={{ maxWidth: hover ? 'none' : width }}
+            onClick={() => navigate(`/games/${gameName}`)}
         >
             {hover ? (
                 // --- Hover version (unchanged)
@@ -55,10 +61,12 @@ function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, relea
                     <div className="game-img">
                         <img src={gameImage} alt={`${gameName} cover`} />
                     </div>
-
-                    <div className="game-info">
-                        <h3>{gameName}</h3>
-                        <h2>{TeamName}</h2>
+                    <div className='ncard-genres'>
+                        {genres.map((genre, index) => (
+                            <div key={index} className='ncard-genre'>
+                                <p style={{ fontSize: hover ? '0.9rem' : '0.7rem' }}>{genre}</p>
+                            </div>
+                        ))}
                     </div>
                 </div>
             )}
