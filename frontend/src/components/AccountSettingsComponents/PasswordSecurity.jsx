@@ -167,7 +167,7 @@ function PasswordSecurity() {
 
                 <div className="email-section">
                     <h3>Email</h3>
-                    <p>Information about your email</p>
+                    <h2>Information about your email</h2>
                     <div className="email-container">
                         <label>Email Address</label>
                         <div className="email-input">
@@ -181,7 +181,7 @@ function PasswordSecurity() {
 
                 <div className="password-section">
                     <h3>Change Password</h3>
-                    <p>Change your password here</p>
+                    <h2>Change your password here</h2>
 
                     <div className="password-container">
 
@@ -232,7 +232,7 @@ function PasswordSecurity() {
 
                 <div className="phone-section">
                     <h3>Phone</h3>
-                    <p>Change your phone number here</p>
+                    <h2>Change your phone number here</h2>
 
                     <div className="phone-container">
                         <label>Phone</label>
