@@ -10,6 +10,7 @@ import '../css/Gamepage.css'
 import Developercard from '../components/Developercard.jsx';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
+import { ClipLoader } from "react-spinners";
 
 function Gamepage() {
 
@@ -40,6 +41,8 @@ function Gamepage() {
     const [withinMonth, setWithinMonth] = useState(false);
     const [mostRecent, setMostRecent] = useState(true);
     const [leastRecent, setLeastRecent] = useState(false);
+
+    const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
     const { gameName } = useParams();
@@ -416,15 +419,8 @@ function Gamepage() {
     }
 
     async function downloadGame() {
-        //   try{
-        //          const response = await axios.get('http://localhost:8000/api/storage/test/${gameName}')
-        //      alert(response.data.message)
-        //      }
-        //     catch(err)
-        //      {
-
-        //        }
         try {
+            setLoading(true);
             const response = await axios.get(
                 `http://localhost:8000/api/storage/downloadGame/${gameName}`,
                 { responseType: 'blob' }
@@ -436,6 +432,7 @@ function Gamepage() {
             link.href = url;
             link.setAttribute('download', `${gameName}.zip`);
             document.body.appendChild(link);
+            setLoading(false);
             link.click();
             link.remove();
 
@@ -450,6 +447,11 @@ function Gamepage() {
 
     return (
         <div className='gamepage-container'>
+            {loading && (
+                <div className="loader-container">
+                    <ClipLoader color="#3643d7ff" size={70} />
+                </div>
+            )}
             <ToastContainer />
             <div className='gamepage-inner'>
                 <div className='gamepage-header-container'>

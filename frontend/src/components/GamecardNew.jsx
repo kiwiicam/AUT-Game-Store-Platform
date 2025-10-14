@@ -1,10 +1,12 @@
 import React, { useState, useRef } from 'react'
-import "../css/GamecardNew.css"
+import "../css/GamecardNew.css";
+import { useNavigate } from 'react-router';
 import { BiSolidLike } from "react-icons/bi";
 
 function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, release, likes, slideid, setid }) {
     const [hover, setHover] = useState(false);
     const hoverTimeout = useRef(null);
+    const navigate = useNavigate();
 
     const handleMouseEnter = () => {
         setHover(true);
@@ -15,6 +17,9 @@ function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, relea
     };
 
     const handleMouseLeave = () => {
+        if (slideid === 7) {
+            setid(6);
+        }
         setHover(false);
         if (hoverTimeout.current) {
             clearTimeout(hoverTimeout.current);
@@ -28,6 +33,8 @@ function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, relea
             id={hover ? 'inner-id' : ''}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
+            style={{ maxWidth: hover ? 'none' : width }}
+            onClick={() => navigate(`/games/${gameName}`)}
         >
             {hover ? (
                 <>
@@ -40,6 +47,9 @@ function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, relea
                         {genres.map((genre, index) => (
                             <div key={index} className='ncard-genre'>
                                 <p>{genre}</p>
+                                <div className="genre-icon">
+                                    <img src={'http://localhost:3000/genre_icons/' + genre.toLowerCase().toString().replace(/\s+/g, '') + '.png'} />
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -58,7 +68,10 @@ function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, relea
                     <div className='ncard-genres'>
                         {genres.map((genre, index) => (
                             <div key={index} className='ncard-genre'>
-                                <p>{genre}</p>
+                                <p style={{ fontSize: hover ? '0.9rem' : '0.7rem' }}>{genre}</p>
+                                <div className="genre-icon">
+                                    <img src={'http://localhost:3000/genre_icons/' + genre.toLowerCase().toString().replace(/\s+/g, '') + '.png'} />
+                                </div>
                             </div>
                         ))}
                     </div>

@@ -7,6 +7,22 @@
     align-items: center;
 }
 
+.loader-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(20, 20, 20, 0.5);
+    /* optional: semi-transparent backdrop */
+    z-index: 9999;
+    /* keeps it above everything */
+}
+
+
 
 img {
     user-select: none;

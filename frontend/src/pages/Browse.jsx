@@ -64,7 +64,7 @@ function Browse() {
     "Individual Game Project",
     "Group Game Project"
   ];
-  
+
   const currentYear = new Date().getFullYear();
   const years = Array.from(
     { length: currentYear - 2024 + 1 },
@@ -183,7 +183,7 @@ function Browse() {
     setTheSelectedType(type);
     filterResults(search, theSelectedGenre, type);
   }
-  
+
 
   const sortByLike = () => {
     const sorted = [...gameArray].sort((a, b) => {
@@ -219,6 +219,9 @@ function Browse() {
                     {gameGenres.map((item, index) => (
                       <div className={theSelectedGenre === item ? 'genre-item-browse-selected' : 'genre-item-browse'} onClick={() => genreSelection(item)}>
                         <h2 className='genre-h2'>{item}</h2>
+                        <div className="genre-icon">
+                          <img src={'http://localhost:3000/genre_icons/' + item.toLowerCase().toString().replace(/\s+/g, '') + '.png'} />
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -236,12 +239,13 @@ function Browse() {
                   <h2>Choose a project type</h2>
                   <div id="type">
                     {projectTypes.map((item, index) => (
-                      <div 
+                      <div
                         key={index}
-                        className={theSelectedType === item ? 'genre-item-browse-selected' : 'genre-item-browse'} 
+                        className={theSelectedType === item ? 'genre-item-browse-selected' : 'genre-item-browse'}
                         onClick={() => typeSelection(item)}
                       >
                         <h2 className='genre-h2'>{item}</h2>
+
                       </div>
                     ))}
                   </div>
@@ -260,8 +264,8 @@ function Browse() {
                   <div className="date-range-selectors">
                     <div className="date-select">
                       <h2>Start Year</h2>
-                      <select 
-                        value={startYear || ""} 
+                      <select
+                        value={startYear || ""}
                         onChange={(e) => {
                           const year = parseInt(e.target.value);
                           setStartYear(year);
@@ -277,8 +281,8 @@ function Browse() {
 
                     <div className="date-select">
                       <h2>End Year</h2>
-                      <select 
-                        value={endYear || ""} 
+                      <select
+                        value={endYear || ""}
                         onChange={(e) => {
                           const year = parseInt(e.target.value);
                           setEndYear(year);
