@@ -10,7 +10,6 @@ function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, relea
 
     const handleMouseEnter = () => {
         setHover(true);
-        // Start a timeout
         hoverTimeout.current = setTimeout(() => {
             setid(slideid);
         }, 500);
@@ -37,6 +36,7 @@ function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, relea
             onClick={() => navigate(`/games/${gameName}`)}
         >
             {hover ? (
+                // --- Hover version (unchanged)
                 <>
                     <div className='ncard-img-large'>
                         <img src={gameImage} alt='Game Cover' />
@@ -56,11 +56,10 @@ function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, relea
                     </div>
                 </>
             ) : (
-                <>
-                    <h3>{gameName}</h3>
-                    <h2>{TeamName}</h2>
-                    <div className='ncard-img'>
-                        <img src={gameImage} alt='Game Cover' />
+                // --- New non-hover version using gamecard.css
+                <div className="game-card">
+                    <div className="game-img">
+                        <img src={gameImage} alt={`${gameName} cover`} />
                     </div>
                     <div className='ncard-genres'>
                         {genres.map((genre, index) => (
@@ -69,7 +68,7 @@ function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, relea
                             </div>
                         ))}
                     </div>
-                </>
+                </div>
             )}
         </div>
     )
