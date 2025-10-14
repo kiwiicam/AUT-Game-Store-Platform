@@ -15,6 +15,7 @@
     text-align: left;
     padding-top: 80px;
     padding-bottom: 60px;
+    padding-left: 60px;
 }
 
 .about-title {
@@ -50,6 +51,10 @@
     gap: 40px;
 }
 
+.framework-text {
+    padding-left: 30px;
+}
+
 .framework-text h2 {
     font-size: 1.5rem;
     margin-bottom: 16px;
@@ -80,6 +85,8 @@
 
 .project-section {
     padding: 80px 0;
+    padding-left: 60px;
+    padding-right: 60px;
 }
 
 .project-grid {
