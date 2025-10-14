@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { BiSolidLike, BiLike} from "react-icons/bi";
+import { BiSolidLike, BiLike } from "react-icons/bi";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import Genrebox from '../components/Genrebox.jsx';
 import { useNavigate } from 'react-router-dom';
@@ -43,36 +43,35 @@ function Gamepage() {
 
     const navigate = useNavigate();
     const { gameName } = useParams();
-//pfp
+    //pfp
     const [pfp, setImage2] = useState();
-    function getSize()  {
-var temp = 0;
-if (withinMonth === true)
-{
-    temp = commentCards.length;
-}
-        if (commentLen > visibleCount) {   
-     //   window.alert(visibleCount + " vok");
- 
-        return visibleCount+temp;
+    function getSize() {
+        var temp = 0;
+        if (withinMonth === true) {
+            temp = commentCards.length;
         }
-              //  window.alert(commentLen + " cok");
-        return commentLen+temp;
+        if (commentLen > visibleCount) {
+            //   window.alert(visibleCount + " vok");
+
+            return visibleCount + temp;
+        }
+        //  window.alert(commentLen + " cok");
+        return commentLen + temp;
     }
 
     const getImage2 = async () => {
-      try {
-        const image = await axios.post(`http://localhost:8000/api/storage/getpfp`,
-          {
-            type: 'uid',
-            id: localStorage.getItem('uid')
-          })
-        setImage2(image.data.imageUrl);
-      }
-      catch (err) {
-        console.log(err.message);
-      }
-  }
+        try {
+            const image = await axios.post(`http://localhost:8000/api/storage/getpfp`,
+                {
+                    type: 'uid',
+                    id: localStorage.getItem('uid')
+                })
+            setImage2(image.data.imageUrl);
+        }
+        catch (err) {
+            console.log(err.message);
+        }
+    }
     getImage2();
 
 
@@ -113,25 +112,25 @@ if (withinMonth === true)
                 }))
                 for (const comment of commentState) {
                     try {
-                      const image = await axios.post(`http://localhost:8000/api/storage/getpfp`,
-                    {
-                    type: 'uid',
-                    id: comment.uid
-                    });
-                comment.picsrc = image.data.imageUrl; 
+                        const image = await axios.post(`http://localhost:8000/api/storage/getpfp`,
+                            {
+                                type: 'uid',
+                                id: comment.uid
+                            });
+                        comment.picsrc = image.data.imageUrl;
 
                     }
-            
-            catch (err) {
+
+                    catch (err) {
                         alert(err.message);
 
-            }
-  
-}
+                    }
+
+                }
 
                 setCommentCards(commentState)
                 setCommentLen(commentCards.length);
-               // actualcommentLen = commentLen;
+                // actualcommentLen = commentLen;
             }
             catch (error) {
                 toast.error('Error retreiving the data for this game, please try again later.', {
@@ -267,95 +266,84 @@ if (withinMonth === true)
 
     useEffect(() => {
         if (!mostRecent && !leastRecent) {
-        //    setMostRecent(true);
-          //  setLeastRecent(false);
+            //    setMostRecent(true);
+            //  setLeastRecent(false);
             handleLeastRecentChange(false);
         }
     }, [mostRecent, leastRecent]);
     // setWithinMonth
     const handleDate = (isChecked) => {
-    
-            if (withinMonth == true)
-            {
-                setCommentLen(commentCards.length);
-               setWithinMonth(false);
-                setStartAt(0);
-                setEndAt(commentCards.length);
+
+        if (withinMonth == true) {
+            setCommentLen(commentCards.length);
+            setWithinMonth(false);
+            setStartAt(0);
+            setEndAt(commentCards.length);
         }
-            else if (withinMonth == false)
-            {
-  
-                const currentDate = new Date();
-                let count =  0;
-                for (var i = 0; i < commentCards.length; i++)
+        else if (withinMonth == false) {
+
+            const currentDate = new Date();
+            let count = 0;
+            for (var i = 0; i < commentCards.length; i++) {
+                if (currentDate.getTime() - commentCards[i].date <= 2592000000) //30 days in milliseconds 
                 {
-                    if (currentDate.getTime() - commentCards[i].date  <= 2592000000) //30 days in milliseconds 
-                    {
-                        count++
-                       // setCommentLen(commentLen + 1);
-                    }
+                    count++
+                    // setCommentLen(commentLen + 1);
                 }
-                setCommentLen(count);
-                setWithinMonth(true);
-            if (mostRecent == true)
-            {
+            }
+            setCommentLen(count);
+            setWithinMonth(true);
+            if (mostRecent == true) {
                 setStartAt(0);
                 setEndAt(count);
             }
-             if (leastRecent == true)
-            {
-                setStartAt(commentCards.length-count);
+            if (leastRecent == true) {
+                setStartAt(commentCards.length - count);
                 setEndAt(commentCards.length);
             }
-            }
-        
+        }
+
 
     };
     const handleMostRecentChange = (checked) => {
-        if (checked == true){
-        const sortArray = [...commentCards].sort((a, b) => b.date-a.date  );
-        setCommentCards(sortArray);
-        if( withinMonth == true)
-        {
-            setStartAt(0);
-            setEndAt(commentLen);
-        }
-        if ( withinMonth == false)
-        {
-            setStartAt(0);
-            setEndAt(commentCards.length)
-        }
-        setMostRecent(checked);
-        if (checked) setLeastRecent(false);
+        if (checked == true) {
+            const sortArray = [...commentCards].sort((a, b) => b.date - a.date);
+            setCommentCards(sortArray);
+            if (withinMonth == true) {
+                setStartAt(0);
+                setEndAt(commentLen);
+            }
+            if (withinMonth == false) {
+                setStartAt(0);
+                setEndAt(commentCards.length)
+            }
+            setMostRecent(checked);
+            if (checked) setLeastRecent(false);
 
-        }    else
-    {
-     handleLeastRecentChange(true);   
-    }
+        } else {
+            handleLeastRecentChange(true);
+        }
     };
     const handleLeastRecentChange = (checked) => {
-        if (checked == true){
-        const sortArray = [...commentCards].sort((a, b) => a.date-b.date  );
-        setCommentCards(sortArray);
-        if( withinMonth == true)
-        {
-            setStartAt(commentCards.length-commentLen);
-            setEndAt(commentCards.length);
-        }
-        else
-        {
-            setStartAt(0);
-            setEndAt(commentCards.length)
-        }
+        if (checked == true) {
+            const sortArray = [...commentCards].sort((a, b) => a.date - b.date);
+            setCommentCards(sortArray);
+            if (withinMonth == true) {
+                setStartAt(commentCards.length - commentLen);
+                setEndAt(commentCards.length);
+            }
+            else {
+                setStartAt(0);
+                setEndAt(commentCards.length)
+            }
             setLeastRecent(checked);
-        if (checked) setMostRecent(false);
-    }
-    else
-    {
-     handleMostRecentChange(true);   
-    }
-                //   window.alert(sortArray);
-//window.alert(JSON.stringify(sortArray, null, 2));
+            if (checked) setMostRecent(false);
+        }
+        else {
+            handleMostRecentChange(true);
+        }
+        //   window.alert(sortArray);
+        //window.alert(JSON.stringify(sortArray, null, 2));
 
     };
 
@@ -427,35 +415,34 @@ if (withinMonth === true)
 
     }
 
-   async function downloadGame()
-    {
-     //   try{
-  //          const response = await axios.get('http://localhost:8000/api/storage/test/${gameName}')
-      //      alert(response.data.message)
-  //      }
-   //     catch(err)
-  //      {
+    async function downloadGame() {
+        //   try{
+        //          const response = await axios.get('http://localhost:8000/api/storage/test/${gameName}')
+        //      alert(response.data.message)
+        //      }
+        //     catch(err)
+        //      {
 
-//        }
-    try {
-        const response = await axios.get(
-            `http://localhost:8000/api/storage/downloadGame/${gameName}`,
-            { responseType: 'blob' } 
-        );
+        //        }
+        try {
+            const response = await axios.get(
+                `http://localhost:8000/api/storage/downloadGame/${gameName}`,
+                { responseType: 'blob' }
+            );
 
-        // Create a link element to trigger download
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', `${gameName}.zip`); 
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
+            // Create a link element to trigger download
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `${gameName}.zip`);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
 
-    } catch (err) {
-        console.error("Download error:", err);
-        alert("Failed to download file");
-    }
+        } catch (err) {
+            console.error("Download error:", err);
+            alert("Failed to download file");
+        }
 
 
     }
@@ -472,7 +459,7 @@ if (withinMonth === true)
                     </div>
                     <div className='gamepage-likes'>
                         <p>{likes}</p>
-                        <div className='gamepage-like-icon' onClick={() => likeGame()}>{hasLiked ? <BiSolidLike style={{ fontSize: '22px'}} /> : <BiLike style={{ fontSize: '22px'}} />}</div>
+                        <div className='gamepage-like-icon' onClick={() => likeGame()}>{hasLiked ? <BiSolidLike style={{ fontSize: '22px' }} /> : <BiLike style={{ fontSize: '22px' }} />}</div>
                     </div>
                 </div>
                 <div className='gamepage-info'>
@@ -579,7 +566,6 @@ if (withinMonth === true)
                                 <div className='logged-in-comment'>
                                     <div className='comment-pfp'>
                                         <img src={pfp}>
-
                                         </img>
                                     </div>
                                     <div className='comment-input'>
@@ -592,7 +578,7 @@ if (withinMonth === true)
                                 : <div><h2 style={{ textDecoration: "underline", cursor: "pointer" }} onClick={() => navigate('/signin')}>Please login to comment.</h2></div>}
 
                             <div className='comments-container'>
-                                {commentCards.slice(startAt,endAt).map((comment, index) => (
+                                {commentCards.slice(startAt, endAt).map((comment, index) => (
                                     <Commentcard key={index} text={comment.text} name={comment.name} uid={comment.uid} picsrc={comment.picsrc} date={comment.date} />
                                 ))}
                                 {commentLen > 0 ?
@@ -611,8 +597,8 @@ if (withinMonth === true)
                             <div className='skinny-white-line'></div>
                             <h4>Date added</h4>
                             <div className='within-month'>
-                                
-                                <input type='checkbox' checked={withinMonth} /*onChange={(e) =>searchOpt(0,e.target.checked) }*/onChange={(e) => { handleDate(e.target.checked)}}  />
+
+                                <input type='checkbox' checked={withinMonth} /*onChange={(e) =>searchOpt(0,e.target.checked) }*/ onChange={(e) => { handleDate(e.target.checked) }} />
                                 <h2>Within 30 days</h2>
                             </div>
                             <div className='skinny-white-line'></div>
@@ -620,16 +606,16 @@ if (withinMonth === true)
                             <div className='within-month'>
                                 <input type='checkbox'
                                     checked={mostRecent}
-                                 /*   onChange={(e) =>searchOpt(1,e.target.checked) }*/
+                                    /*   onChange={(e) =>searchOpt(1,e.target.checked) }*/
                                     onChange={(e) => handleMostRecentChange(e.target.checked)}
-                                        
+
                                 />
                                 <h2>Most Recent</h2>
                             </div>
                             <div className='within-month'> <input type='checkbox' checked={leastRecent}/* onChange={(e) =>searchOpt(2,e.target.checked) }*/
-                                    onChange={(e) => handleLeastRecentChange(e.target.checked)} 
-                                        
-                                />
+                                onChange={(e) => handleLeastRecentChange(e.target.checked)}
+
+                            />
                                 <h2>Least Recent</h2>
                             </div>
                         </div>

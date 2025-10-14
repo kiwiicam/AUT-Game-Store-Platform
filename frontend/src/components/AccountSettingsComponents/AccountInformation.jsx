@@ -20,15 +20,17 @@ function AccountInformation() {
             const file = input.files[0];
             if (!file) return;
             const formData = new FormData();
-            formData.append('image', file, 'pfp.png');  
-                   // formData.append('image', fs.createReadStream('./default-pfp.png'), 'pfp.png');
-            
+            formData.append('image', file, 'pfp.png');
+            // formData.append('image', fs.createReadStream('./default-pfp.png'), 'pfp.png');
+
             formData.append('uid', localStorage.getItem('uid'));
             try {
                 const response = await axios.post(`http://localhost:8000/api/storage/setpfp`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
+                }).then(() => {
+                    window.location.href = window.location.href;
                 });
             }
             catch (err) {
@@ -37,37 +39,37 @@ function AccountInformation() {
         }
         input.click();
     }
-                // Handle success (e.g., show a success message)
-                // Optionally, refresh the profile picture
-             //   const image = await axios.post(`http://localhost:8000/api/storage/getpfp`,
-                 //   { type: 'uid',
-                 //       id: localStorage.getItem('uid')
-                 //   })
-              //  setImage(image.data.imageUrl);
-           // }
-  //  window.alert("testing");
- //   }         input.click();
-      //  catch (err) {
-            //    alert(err.message);
-         //   }
-      //  }
+    // Handle success (e.g., show a success message)
+    // Optionally, refresh the profile picture
+    //   const image = await axios.post(`http://localhost:8000/api/storage/getpfp`,
+    //   { type: 'uid',
+    //       id: localStorage.getItem('uid')
+    //   })
+    //  setImage(image.data.imageUrl);
+    // }
+    //  window.alert("testing");
+    //   }         input.click();
+    //  catch (err) {
+    //    alert(err.message);
+    //   }
+    //  }
 
-  useEffect(() => {
-    const getImage = async () => {
-      try {
-        const image = await axios.post(`http://localhost:8000/api/storage/getpfp`,
-          {
-            type: 'uid',
-            id: localStorage.getItem('uid')
-          })
-        setImage(image.data.imageUrl);
-      }
-      catch (err) {
-        alert(err.message);
-      }
-  }
-    getImage();
-  }, []);
+    useEffect(() => {
+        const getImage = async () => {
+            try {
+                const image = await axios.post(`http://localhost:8000/api/storage/getpfp`,
+                    {
+                        type: 'uid',
+                        id: localStorage.getItem('uid')
+                    })
+                setImage(image.data.imageUrl);
+            }
+            catch (err) {
+                alert(err.message);
+            }
+        }
+        getImage();
+    }, []);
 
     const [currentUsername, setCurrentUsername] = useState('');
     const [currentFirstName, setCurrentFirstName] = useState('');
