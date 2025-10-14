@@ -26,17 +26,10 @@ const Aboutpage = () => {
           <div className="framework-text">
             <h2>Game Framework</h2>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sit amet
-              est nec felis cursus consequat in sed sem. Proin orci ante, dapibus at urna
-              nec, posuere sollicitudin diam. Curabitur ullamcorper metus odio, non
-              scelerisque justo egestas suscipit. Etiam sollicitudin nisl eu placerat
-              mattis. Pellentesque placerat leo et tortor vestibulum finibus. Donec et
-              lorem vel lectus aliquam accumsan. Suspendisse eget aliquet odio.
+              The game framework is a custom-built C++ engine design and expand as a class during the first few weeks of the course. Developed using SDL2, OpenGL, and GLEW, this framework forms the technical backbone for both game projects completed during the semester. 
             </p>
             <p>
-              Mauris sit amet est nec felis cursus consequat in sed sem. Proin orci ante,
-              dapibus at urna nec, posuere sollicitudin diam. Lorem ipsum dolor sit amet,
-              consectetur adipiscing elit.
+              By constructing the framework from the ground up, students gain hands-on experience in the fundamentals of game engine architecture, learning how rendering, inputs, textures, and resources work together to power real-time interactive games. Core components like the Renderer, TextureManager, and Game Loop are implemented in class, then extended to support unique gameplay features and mechanics.
             </p>
           </div>
           <div className="framework-image">
@@ -64,41 +57,6 @@ const Aboutpage = () => {
             <p>
               Groups of 4-5 students collaborate to design an original 2D game using the game framework and more additional supporting middleware. This project aims to simulate an authentic production environment, with each team member responsible for a distinct gameplay or technical feature. This project, unlike the project 1, follows a full production cycle – from pre-production design and documentation to weekly development milestones and a final build showcase.
             </p>
-          </div>
-        </div>
-
-        {/* Timeline */}
-        <div className="timeline">
-          <div className="timeline-line"></div>
-
-          <div className="timeline-event" style={{ left: "5%" }}>
-            <div className="dot"></div>
-            <p>Week 1</p>
-          </div>
-
-          <div className="timeline-event" style={{ left: "25%" }}>
-            <div className="dot"></div>
-            <p>Week 4</p>
-          </div>
-
-          <div className="timeline-event" style={{ left: "45%" }}>
-            <div className="dot"></div>
-            <p>Week 6</p>
-          </div>
-
-          <div className="timeline-event" style={{ left: "65%" }}>
-            <div className="dot"></div>
-            <p>Week 9</p>
-          </div>
-
-          <div className="timeline-event" style={{ left: "80%" }}>
-            <div className="dot"></div>
-            <p>Week 10</p>
-          </div>
-
-          <div className="timeline-event" style={{ left: "93%" }}>
-            <div className="dot"></div>
-            <p>Week 13</p>
           </div>
         </div>
       </section>

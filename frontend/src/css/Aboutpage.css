@@ -5,6 +5,11 @@
     font-family: "Inter", sans-serif;
 }
 
+.about-page h2 {
+    color: #fff !important;
+    font-weight: 600;
+}
+
 .about-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -41,7 +46,7 @@
 
 .framework-section {
     background-color: #14141499;
-    padding: 60px 0;
+    padding: 0px 0;
 }
 
 .framework-grid {
