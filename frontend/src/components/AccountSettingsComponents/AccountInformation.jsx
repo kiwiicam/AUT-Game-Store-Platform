@@ -125,7 +125,8 @@ function AccountInformation() {
             const response = await axios.post(`${backend_url}/database/changename`, {
                 uid: uid,
                 newName: newInputValue,
-                type: 'username'
+                type: 'username',
+                password: localStorage.getItem('password')
             });
             setCurrentUsername(newInputValue);
         }
@@ -144,7 +145,8 @@ function AccountInformation() {
             const response = await axios.post(`${backend_url}/database/changename`, {
                 uid: uid,
                 newName: newInputValue,
-                type: 'firstname'
+                type: 'firstname',
+                password: localStorage.getItem('password')
             });
             setCurrentFirstName(newInputValue);
         }
@@ -157,12 +159,13 @@ function AccountInformation() {
 
     async function handleLastNameChange(newInputValue) {
         const uid = localStorage.getItem('uid');
-        alert(newInputValue)
         try {
             const response = await axios.post(`${backend_url}/database/changename`, {
                 uid: uid,
                 newName: newInputValue,
-                type: 'lastname'
+                type: 'lastname',
+                password: localStorage.getItem('password')
+
             });
             setCurrentLastName(newInputValue);
         }

@@ -31,8 +31,8 @@ function PasswordSecurity() {
                     uid
                 });
 
-                setCurrentEmail(response.data.email || "user@example.com");
-                setCurrentPhone(response.data.phone || "+64 ** *** ****");
+                setCurrentEmail(response.data.email || localStorage.getItem('email') || "user@example.com");
+                setCurrentPhone(response.data.phone || localStorage.getItem('phone')  || "+64 ** *** ****");
             } catch (error) {
                 toast.error("Failed to load user data");
             }
@@ -61,11 +61,14 @@ function PasswordSecurity() {
 
         try {
             const uid = localStorage.getItem('uid');
-            await axios.post('http://localhost:8000/api/database/changeemail', {
+            await axios.post(`${backend_url}/database/changename`, {
                 uid: uid,
-                newEmail: editValue.trim()
+                newName: editValue.trim(),
+                type: 'email',
+                email: localStorage.getItem('email'),
+                password: localStorage.getItem('password')
             });
-
+            localStorage.setItem('email', editValue.trim());
             setCurrentEmail(editValue.trim());
             setEditMode(false);
             toast.success("Email updated successfully");

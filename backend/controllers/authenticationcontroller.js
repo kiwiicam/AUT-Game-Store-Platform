@@ -42,7 +42,7 @@ export async function signUp(req, res) {
             res.status(200).json({
                 message: "An account with this email already exists. Please Log in",
                 error: "UsernameExists",
-                navigate: "/signup"
+                navigate: "/signin"
             })
             console.error("Sign up failed: Username already exists");
         }

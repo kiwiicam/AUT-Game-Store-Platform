@@ -98,8 +98,10 @@ export async function getUserInfo(req, res) {
 }
 
 export async function changeName(req, res) {
+    //cambell ive added a password parameter so u can do the auth verification for changing details securely
     try {
-        const { uid, newName, type } = req.body;
+        const { uid, newName, type, password } = req.body;//password works
+        if (password === password){
         const params = {
             TableName: "userTable",
             Key: {
@@ -114,6 +116,11 @@ export async function changeName(req, res) {
         const response = await client.send(new UpdateItemCommand(params));
         res.status(200).json({ message: "User info fetched successfully" });
         console.log("successfully changed name:");
+    }
+    else
+    {
+        res.status(500).json({ error: "Invaild password, potiental session timeout" });
+    }
 
     }
     catch (err) {
@@ -306,8 +313,18 @@ export async function retrieveComments(req, res) {
 
         const response = await client.send(new QueryCommand(params));
         const items = response.Items.map(item => unmarshall(item));
-        console.log(items)
+        if (req.body.searchBy === "mostRecent") {
         res.status(200).json({ commentData: items });
+
+        }
+        else if (req.body.searchBy === "leastRecent") {
+            items.sort((a, b) => a.timestamp - b.timestamp);
+            res.status(200).json({ commentData: items });
+        }
+
+      //  items.sort(a,b) => a.timestamp.compare  b.timestamp 
+      //  console.log(items)
+     //   res.status(200).json({ commentData: items });
     } catch (err) {
         console.log(err);
         res.status(500).json({ error: err.message });
