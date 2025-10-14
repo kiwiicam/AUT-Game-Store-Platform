@@ -130,4 +130,16 @@
     background-color: #303950;
     display: flex;
     align-items: center;
+}.pfp-manage{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.pfp-manage img{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
 }

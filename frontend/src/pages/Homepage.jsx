@@ -154,6 +154,14 @@ function Homepage() {
         );
     }
 
+    function setRecentId(slideshowID) {
+        setRecentIndex(
+            slideshowID < 1 ? 0 :
+                slideshowID > 7 ? slideshowID - 2 :
+                    slideshowID - 1
+        );
+    }
+
     return (
         <div className='homepage-background'>
             <div className='homepage-content'>
@@ -196,12 +204,18 @@ function Homepage() {
                     <div className='split-line'></div>
                     <div className='recent-releases-slider' ref={sliderRef}>
                         <div className='game-card-button-left' onClick={() => setRecentIndex(recentIndex === 0 ? 5 : recentIndex - 1)}><IoIosArrowBack /></div>                        <div className='game-cards'>
-                            <div className='game-card-track'
-                                style={{ transform: `translateX(-${recentIndex * (width + 15)}px)`, transition: 'transform 0.5s ease-in-out', width: (width * 8) + (8 * 15) }}
-
+                            <div className='game-card-track-new'
+                                style={{
+                                    transform: `translateX(-${recentIndex === 7
+                                        ? (recentReleases.length * (width + 15)) - sliderRef.current.offsetWidth
+                                        : recentIndex * (width + 15)
+                                        }px)`,
+                                    transition: 'transform 0.5s ease-in-out',
+                                    width: recentReleases.length * (width * 1.09) + (recentReleases.length - 1) * 15
+                                }}
                             >
                                 {recentReleases.map((game, i) => (
-                                    <Gamecard key={i} image={game.src} title={game.title} creator={game.creator} width={width} />
+                                    <GamecardNew key={i} slideid={i} gameImage={game.src} gameName={game.title} TeamName={game.creator} width={width} size={game.fileSize || 67} release={game.releaseDate || 'TBA'} likes={game.likes || 0} genres={game.genres || []} setid={setRecentId} />
                                 ))}
                             </div>
                         </div>

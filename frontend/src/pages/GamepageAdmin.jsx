@@ -41,12 +41,17 @@ function GamepageAdmin() {
                     description: gameInfo.data.gameData.gameDesc,
                     genre: gameInfo.data.genreArray
                 })
-                const images = await axios.post(`${backend_url}/storage/getgameimages`, { gameName: gameData.gameName })
-                setGameImages([
-                    { src: images.data.gameImages[0].imageUrl },
-                    { src: images.data.gameImages[1].imageUrl },
-                    { src: images.data.gameImages[2].imageUrl }
-                ]);
+                try {
+                    const images = await axios.post(`${backend_url}/storage/getgameimages`, { gameName: gameData.gameName })
+                    setGameImages([
+                        { src: images.data.gameImages[0].imageUrl },
+                        { src: images.data.gameImages[1].imageUrl },
+                        { src: images.data.gameImages[2].imageUrl }
+                    ]);
+                } catch (err) {
+                    console.log(err)
+                    alert("Error fetching game images")
+                }
             }
             catch (error) {
                 alert(error.message)

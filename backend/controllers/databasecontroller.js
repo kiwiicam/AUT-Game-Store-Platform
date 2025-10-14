@@ -3,6 +3,38 @@ import { PutItemCommand, GetItemCommand, UpdateItemCommand, ScanCommand, QueryCo
 import { retrieveGameImages, moveToPendingDeletion, moveBackFromPendingDeletion } from './storagecontroller.js';
 import { unmarshall } from '@aws-sdk/util-dynamodb';
 import { deleteFromS3 } from './storagecontroller.js';
+import fetch from 'node-fetch';
+import FormData from 'form-data';
+import axios from 'axios';
+import fs from 'fs';
+export async function getuid(req,res)
+{
+    const username = req.body.username;
+    try{
+    const params = {
+        TableName: "userTable",
+        Key: {
+
+            "username": { S: username },
+        },
+
+    };
+       const response = await client.send(new GetItemCommand(params));
+        const plainItem = unmarshall(response.Item);
+        res.status(200).json({
+          //  message: "User info fetched successfully",
+            uid: plainItem.uid,
+            
+        });
+
+    }
+    catch (err) {
+        console.log("Error fetching user info:", err);
+        res.status(500).json({ error: "Failed to fetch user info" });
+    }
+
+
+}
 
 export async function addUser(req, res) {
     const { uid, username, email } = req.body;
@@ -21,7 +53,16 @@ export async function addUser(req, res) {
     };
     try {
         const data = await client.send(new PutItemCommand(params));
-        res.status(200).json({ message: "Item inserted successfully", data });
+        const formData = new FormData();
+        formData.append('uid',uid);
+        formData.append('image', fs.createReadStream('./default-pfp.png'), 'pfp.png');
+            const response = await axios.post(
+            'http://localhost:8000/api/storage/setpfp',
+            formData,
+            { headers: formData.getHeaders() } 
+        );
+                res.status(200).json({ message: "Item inserted successfully", data });
+
     } catch (err) {
         console.log("Error inserting item:", err);
         res.status(500).json({ error: "Failed to insert item" });
@@ -47,7 +88,7 @@ export async function getUserInfo(req, res) {
             firstname: plainItem.firstname,
             lastname: plainItem.lastname,
         });
-        console.log(plainItem.username, plainItem.firstname, plainItem.lastname);
+    //    console.log(plainItem.username, plainItem.firstname, plainItem.lastname);
 
     }
     catch (err) {
@@ -57,8 +98,10 @@ export async function getUserInfo(req, res) {
 }
 
 export async function changeName(req, res) {
+    //cambell ive added a password parameter so u can do the auth verification for changing details securely
     try {
-        const { uid, newName, type } = req.body;
+        const { uid, newName, type, password } = req.body;//password works
+        if (password === password){
         const params = {
             TableName: "userTable",
             Key: {
@@ -73,6 +116,11 @@ export async function changeName(req, res) {
         const response = await client.send(new UpdateItemCommand(params));
         res.status(200).json({ message: "User info fetched successfully" });
         console.log("successfully changed name:");
+    }
+    else
+    {
+        res.status(500).json({ error: "Invaild password, potiental session timeout" });
+    }
 
     }
     catch (err) {
@@ -275,8 +323,18 @@ export async function retrieveComments(req, res) {
 
         const response = await client.send(new QueryCommand(params));
         const items = response.Items.map(item => unmarshall(item));
-        console.log(items)
+        if (req.body.searchBy === "mostRecent") {
         res.status(200).json({ commentData: items });
+
+        }
+        else if (req.body.searchBy === "leastRecent") {
+            items.sort((a, b) => a.timestamp - b.timestamp);
+            res.status(200).json({ commentData: items });
+        }
+
+      //  items.sort(a,b) => a.timestamp.compare  b.timestamp 
+      //  console.log(items)
+     //   res.status(200).json({ commentData: items });
     } catch (err) {
         console.log(err);
         res.status(500).json({ error: err.message });
@@ -447,6 +505,8 @@ export async function denyGames(req, res) {
                     likes: { N: "0" },
                     releaseDate: { S: plainItems.releaseDate },
                     fileSize: { N: plainItems.fileSize.toString() },
+                    username: { S: plainItems.username },
+                    uid: { S: plainItems.uid },
                     expires: { N: epochtime.toString() }
                 }
             }
@@ -798,6 +858,8 @@ export async function restoreGame(req, res) {
                 likes: { N: "0" },
                 releaseDate: { S: plainItems.releaseDate },
                 fileSize: { N: plainItems.fileSize.toString() },
+                username: { S: plainItems.username },
+                uid: { S: plainItems.uid }
             }
 
         }
@@ -844,6 +906,7 @@ export async function recentReleases(req, res) {
 
         gameImages.forEach(image => {
             const matchedGame = recentGames.find(game => game.gameName === image.gameName);
+            const genreArr = [...matchedGame.selectedGenres]
             if (matchedGame) {
                 recentGamesArr.push({
                     src: image.imageUrl,
@@ -853,6 +916,7 @@ export async function recentReleases(req, res) {
                     likes: matchedGame.likes,
                     releaseDate: matchedGame.releaseDate,
                     fileSize: matchedGame.fileSize,
+                    genres: genreArr
                 });
             }
         });

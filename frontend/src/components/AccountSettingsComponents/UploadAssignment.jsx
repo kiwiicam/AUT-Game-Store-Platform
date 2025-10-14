@@ -177,7 +177,7 @@ function UploadAssignment() {
             });
             return false;
         }
-        
+
         return true;
     }
 
@@ -444,6 +444,9 @@ function UploadAssignment() {
                         {gameGenres.map((item, i) => (
                             <div className={selectedGenres.includes(item) ? "genre-item-selected" : "genre-item"} onClick={() => { addGenre(item) }} key={i}>
                                 <h5>{item}</h5>
+                                <div className="genre-icon">
+                                    <img src={'http://localhost:3000/genre_icons/' + item.toLowerCase().toString().replace(/\s+/g, '') + '.png'}/>
+                                </div>
                             </div>
                         ))}
                     </div>

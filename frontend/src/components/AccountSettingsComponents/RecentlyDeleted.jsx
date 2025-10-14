@@ -66,7 +66,7 @@ function RecentlyDeleted() {
                     {data.map((item, index) => (
                         <div>
                             <div className='recent-item' key={index}>
-                                <h4 className='flex'>campbell</h4>
+                                <h4 className='flex'>{item.username || "Unknown User"}</h4>
                                 <h4 className='flex'>{item.gameName}</h4>
                                 <h4 className='flex'>{Math.ceil((item.expires * 1000 - Date.now()) / (1000 * 60 * 60 * 24))} days left</h4>
                                 <button className='flex' id='restore-button' onClick={() => restoreGame(item.gameName)}>Restore</button>

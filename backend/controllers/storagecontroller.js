@@ -4,40 +4,84 @@ import fs from 'fs';
 import { PutObjectCommand, GetObjectCommand, ListObjectsV2Command, DeleteObjectsCommand, CopyObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import stream from 'stream';
+import { get } from 'http';
+import { getuid } from './databasecontroller.js';
+import axios from 'axios';
+export async function getpfp(req,res){
+const type = req.body.type;
+var uid = req.body.id;
 
+            uid = uid + '.png';
+            const command = new GetObjectCommand({
+                Bucket: process.env.AWS_BUCKET_NAME_PFP,
+                Key: uid,
+            });
+          //  const s3response = await S3.send(command);
 
-
-export async function downloadGame(req, res) {
-    console.log("-------------------------------------------------");
-    console.log("-------------------------------------------------");
-    console.log("-------------------------------------------------");
-    console.log("-------------------------------------------------");
-    console.log("-------------------------------------------------");
-    console.log("-------------------------------------------------");
-
-    const { gamename } = req.params || null;
-    const prefix = `Games/${gamename}/GameFiles/`;
-    const { game } = '';
-    try {
-        //gets the end of the folder name eg gold/gamefile/gold , to find/get gold
-        const getname = new ListObjectsV2Command({
-            Bucket: process.env.AWS_BUCKET_NAME,
-            Prefix: prefix,
-            Delimiter: "/",
+        const imageUrl = await getSignedUrl(S3, command, { expiresIn: 3600 });
+        res.status(200).json({
+            message: "file retrieved successful",
+            imageUrl
         });
-        const getfullprefix = await S3.send(getname);
-        const fullprefix = getfullprefix.Contents[0].Key;
-        console.log("First object key:", fullprefix);
-        const lastname = fullprefix.replace(prefix, '');
-        console.log(lastname);
 
-        const command = new GetObjectCommand({
-            Bucket: process.env.AWS_BUCKET_NAME,
-            Key: fullprefix,
+
+}
+export async function setpfp(req,res)
+{
+       try {
+        const  uid  = req.body.uid;
+        const  file  = req.file;
+        const fileStream = fs.createReadStream(file.path);
+        const uploadParams = {
+            Bucket: process.env.AWS_BUCKET_NAME_PFP,
+            Key: `${uid}.png`,
+            Body: fileStream,
+            ContentType: file.mimetype,
+        };
+
+        const result = await S3.send(new PutObjectCommand(uploadParams));
+        res.status(200).json({
+            message: "file recieved successful",
+            result: result.ETag
         });
-        const s3response = await S3.send(command);
-        res.setHeader("Content-Disposition", `attachment; filename="${lastname}"`);
-        res.setHeader("Content-Type", "application/zip");
+       // console.log("success");
+    }
+    catch (err) {
+        res.status(500).json({
+            error: "Failed to upload",
+            message: err.message
+        });
+        console.log(err.message);
+    }
+}
+
+
+
+export async function downloadGame(req,res)
+{
+   
+
+        const { gamename } = req.params || null;
+        const prefix  =`Games/${gamename}/GameFiles/`;
+        const { game } = '';
+        try
+        {
+            //gets the end of the folder name eg gold/gamefile/gold , to find/get gold
+            const getname = new ListObjectsV2Command({
+                Bucket: process.env.AWS_BUCKET_NAME,
+                Prefix: prefix,
+                Delimiter:"/",
+            });
+            const getfullprefix = await S3.send(getname);
+            const fullprefix  =  getfullprefix.Contents[0].Key;
+            const  lastname  = fullprefix.replace(prefix,'');            
+            const command = new GetObjectCommand({
+                Bucket: process.env.AWS_BUCKET_NAME,
+                Key: fullprefix,
+            });
+            const s3response = await S3.send(command);
+            res.setHeader("Content-Disposition", `attachment; filename="${lastname}"`);
+            res.setHeader("Content-Type", "application/zip");
 
         res.setHeader("Content-Type", /*s3response.ContentType ||*/ "application/octet-stream");
 
