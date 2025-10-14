@@ -1,8 +1,31 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../css/Header.css'
 import { useNavigate } from 'react-router';
 import { IoMdArrowDropdown } from "react-icons/io";
+import axios from 'axios';
 function Header() {
+
+  const [image, setImage] = useState();
+  useEffect(() => {
+    const getImage = async () => {
+      try {
+        const image = await axios.post(`http://localhost:8000/api/storage/getpfp`,
+          {
+            type: 'uid',
+            id: localStorage.getItem('uid')
+          })
+        setImage(image.data.imageUrl);
+      }
+      catch (err) {
+        console.log(err.message);
+      }
+  }
+    getImage();
+  }, []);
+
+
+
+
   const navigate = useNavigate();
   const loggedIn = localStorage.getItem('uid') ? true : false;
   const [dropdown, setDropdown] = useState(false)
@@ -23,16 +46,16 @@ function Header() {
             {loggedIn ?
               <>
                 <div className='pfp-header' onClick={() => navigate('/account')}>
-                  <div className='pfp-manage'><img src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' /> </div>
+                  <div className='pfp-manage'><img src={image} /> </div>
                   <h2>Account</h2>
                 </div>
-                  <IoMdArrowDropdown className={dropdown ? 'logout-dropdown-up' :'logout-dropdown'} onClick={() => setDropdown((prev) => !prev)} />
-                    {dropdown ? 
-                    <div onClick={() => {localStorage.removeItem('uid'); navigate('/')}} className='logout-container'>
-                      <h2>Logout</h2>
-                    </div>
-                    : <> </>
-                    }
+                <IoMdArrowDropdown className={dropdown ? 'logout-dropdown-up' : 'logout-dropdown'} onClick={() => setDropdown((prev) => !prev)} />
+                {dropdown ?
+                  <div onClick={() => { localStorage.removeItem('uid'); navigate('/') }} className='logout-container'>
+                    <h2>Logout</h2>
+                  </div>
+                  : <> </>
+                }
               </>
               :
               <button onClick={() => navigate('/signin')} className="login-button">Login</button>}
