@@ -38,10 +38,15 @@
 }
 
 .ncard-genres {
-    margin-top: 5px;
+    margin-top: 2px;
     display: flex;
-    justify-content: space-evenly;
+    flex-wrap: wrap;       /* allow items to go to next row */
+    justify-content: center; /* center items horizontally */
+    column-gap: 15px;
+    row-gap: 5px;
+                 /* space between items */
 }
+
 
 .ncard-genre {
     width: auto;
@@ -90,6 +95,7 @@
     align-items: center;
     gap: 8px;
     color: #fff;
+    margin-top: -18px !important;
 }
 
 .ncard-likes p{

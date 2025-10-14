@@ -9,14 +9,16 @@ function PasswordSecurity() {
 
     const backend_url = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000/api';
 
-    const [currentPassword, setCurrentPassword] = useState('');
+    const [passwordCode, setPasswordCode] = useState('');
     const [newPassword, setNewPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+
     const [currentEmail, setCurrentEmail] = useState('');
     const [currentPhone, setCurrentPhone] = useState('');
     const [editMode, setEditMode] = useState(false);
     const [editField, setEditField] = useState('');
     const [editValue, setEditValue] = useState('');
+
+    const [sentReset, setSentReset] = useState(false);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -32,8 +34,8 @@ function PasswordSecurity() {
                     uid
                 });
 
-                setCurrentEmail(response.data.email || "user@example.com");
-                setCurrentPhone(response.data.phone || "+64 ** *** ****");
+                setCurrentEmail(response.data.email || localStorage.getItem('email') || "user@example.com");
+                setCurrentPhone(response.data.phone || localStorage.getItem('phone')  || "+64 ** *** ****");
             } catch (error) {
                 toast.error("Failed to load user data",{
                     position: 'top-center', autoClose: 3000,});
@@ -67,11 +69,14 @@ function PasswordSecurity() {
 
         try {
             const uid = localStorage.getItem('uid');
-            await axios.post('http://localhost:8000/api/database/changeemail', {
+            await axios.post(`${backend_url}/database/changeemail`, {
                 uid: uid,
-                newEmail: editValue.trim()
+                newName: editValue.trim(),
+                type: 'email',
+                email: localStorage.getItem('email'),
+                password: localStorage.getItem('password')
             });
-
+            localStorage.setItem('email', editValue.trim());
             setCurrentEmail(editValue.trim());
             setEditMode(false);
             toast.success("Email updated successfully",{
@@ -93,7 +98,7 @@ function PasswordSecurity() {
 
         try {
             const uid = localStorage.getItem('uid');
-            await axios.post('http://localhost:8000/api/database/changephone', {
+            await axios.post(`${backend_url}/database/changephone`, {
                 uid: uid,
                 newPhone: editValue.trim()
             });
@@ -110,47 +115,43 @@ function PasswordSecurity() {
     };
 
     const handlePasswordChange = async () => {
-        if (!currentPassword || !newPassword || !confirmPassword) {
-            toast.error("Please fill in all password fields",{
-                position: 'top-center', autoClose: 3000,
-            });
-            return;
-        }
-
-        if (newPassword !== confirmPassword) {
-            toast.error("New passwords do not match",{
-                position: 'top-center', autoClose: 3000,
-            });
-            return;
-        }
-
-        if (newPassword.length < 8) {
-            toast.error("Password must be at least 8 characters long",{
-                position: 'top-center', autoClose: 3000,
-            });
-            return;
-        }
-
         try {
-            const uid = localStorage.getItem('uid');
-            await axios.post('http://localhost:8000/api/database/changepassword', {
-                uid: uid,
-                currentPassword: currentPassword,
-                newPassword: newPassword
-            });
 
-            setCurrentPassword('');
-            setNewPassword('');
-            setConfirmPassword('');
-            toast.success("Password updated successfully",{
-                position: 'top-center', autoClose: 3000,
+            const uid = localStorage.getItem('uid');
+            const email = localStorage.getItem('email');
+            await axios.post(`${backend_url}/auth/changepassword`, {
+                uid: uid,
+                email: email
             });
+            toast.success("Please check your email to reset your password.");
+            setSentReset(true);
         } catch (error) {
-            toast.error("Failed to update password. Please check your current password.",{
-                position: 'top-center', autoClose: 3000,
-            });
+            toast.error("Failed to update password.");
         }
     };
+
+    const confirmPasswordChange = async () => {
+        try {
+
+
+            const uid = localStorage.getItem('uid');
+            const email = localStorage.getItem('email');
+            await axios.post(`${backend_url}/auth/confirmchangepassword`, {
+                uid: uid,
+                email: email,
+                passwordCode: passwordCode,
+                newPassword: newPassword
+            });
+            toast.success("Password updated successfully.");
+            setSentReset(false);
+            setNewPassword('');
+            setPasswordCode('');
+
+        }
+        catch (error) {
+            toast.error("Password must be 10 Characters in length, contain symbols and numbers");
+        }
+    }
 
     const handleSaveEdit = () => {
         if (editField === 'email') {
@@ -178,7 +179,7 @@ function PasswordSecurity() {
 
                 <div className="email-section">
                     <h3>Email</h3>
-                    <p>Information about your email</p>
+                    <h2>Information about your email</h2>
                     <div className="email-container">
                         <label>Email Address</label>
                         <div className="email-input">
@@ -192,52 +193,58 @@ function PasswordSecurity() {
 
                 <div className="password-section">
                     <h3>Change Password</h3>
-                    <p>Change your password here</p>
+                    <h2>Change your password here</h2>
 
                     <div className="password-container">
-                        <div className="field-container">
-                            <label>Enter Current Password</label>
-                            <input
-                                type="password"
-                                placeholder="current password"
-                                value={currentPassword}
-                                onChange={(e) => setCurrentPassword(e.target.value)}
-                            />
-                        </div>
 
                         <div className="field-container">
-                            <label>Enter New Password</label>
-                            <input
-                                type="password"
-                                placeholder="new password"
-                                value={newPassword}
-                                onChange={(e) => setNewPassword(e.target.value)}
-                            />
-                        </div>
+                            <label>Request a password reset email.</label>
 
-                        <div className="field-container">
-                            <label>Confirm New Password</label>
-                            <input
-                                type="password"
-                                placeholder="confirm new password"
-                                value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                            />
                         </div>
 
                         <div className="update-button-container">
                             <div className="update-button">
-                            <button onClick={handlePasswordChange}>
-                                Update
-                            </button>
+                                <button onClick={handlePasswordChange}>
+                                    Request email
+                                </button>
                             </div>
                         </div>
+                        {sentReset &&
+                            <>
+                                <div className="field-container">
+                                    <label>Enter your password reset code</label>
+                                    <input
+                                        type="text"
+                                        placeholder="reset code"
+                                        value={passwordCode}
+                                        onChange={(e) => setPasswordCode(e.target.value)}
+                                    />
+                                </div>
+                                <div className="field-container">
+                                    <label>Enter New Password</label>
+                                    <input
+                                        type="password"
+                                        placeholder="new password"
+                                        value={newPassword}
+                                        onChange={(e) => setNewPassword(e.target.value)}
+                                    />
+                                </div>
+                                <div className="update-button-container">
+                                    <div className="update-button">
+                                        <button onClick={confirmPasswordChange}>
+                                            Change password
+                                        </button>
+                                    </div>
+                                </div>
+                            </>
+
+                        }
                     </div>
                 </div>
 
                 <div className="phone-section">
                     <h3>Phone</h3>
-                    <p>Change your phone number here</p>
+                    <h2>Change your phone number here</h2>
 
                     <div className="phone-container">
                         <label>Phone</label>

@@ -1,4 +1,4 @@
-import { CognitoIdentityProviderClient, SignUpCommand, ResendConfirmationCodeCommand, VerifyUserAttributeCommand, InitiateAuthCommand, ConfirmSignUpCommand } from '@aws-sdk/client-cognito-identity-provider';
+import { CognitoIdentityProviderClient, SignUpCommand, ResendConfirmationCodeCommand, ConfirmForgotPasswordCommand, VerifyUserAttributeCommand, InitiateAuthCommand, ConfirmSignUpCommand, ForgotPasswordCommand } from '@aws-sdk/client-cognito-identity-provider';
 import 'dotenv/config';
 import crypto from 'crypto';
 import { jwtDecode } from 'jwt-decode';
@@ -148,5 +148,62 @@ export async function resendConfirmationCode(req, res) {
             message: err.message,
         });
         console.error(err.message);
+    }
+}
+
+export const changePassword = async (req, res) => {
+    try {
+        const { uid, email } = req.body;
+        const clientId = process.env.CLIENT_ID;
+        const client = new CognitoIdentityProviderClient({ region: process.env.AWS_REGION });
+        const secret = getSecretHash(email, clientId, process.env.CLIENT_SECRET);
+        const command = new ForgotPasswordCommand({
+            ClientId: clientId,
+            Username: email,
+            SecretHash: secret,
+        });
+        const response = await client.send(command);
+        res.status(200).json({
+            message: "Password reset initiated. Check your email for further instructions.",
+        });
+    }
+    catch (err) {
+        res.status(500).json({
+            message: "Failed to initiate password reset",
+        });
+        console.log(err.message)
+    }
+}
+
+export const confirmPasswordChange = async (req, res) => {
+    try {
+        const { uid, email, passwordCode, newPassword } = req.body;
+        const clientId = process.env.CLIENT_ID;
+        const clientSecret = process.env.CLIENT_SECRET;
+
+        const client = new CognitoIdentityProviderClient({
+            region: process.env.AWS_REGION,
+        });
+
+        const secret = getSecretHash(email, clientId, clientSecret);
+
+        const command = new ConfirmForgotPasswordCommand({
+            ClientId: clientId,
+            Username: email,
+            ConfirmationCode: passwordCode,
+            Password: newPassword,
+            SecretHash: secret,
+        });
+
+        const response = await client.send(command);
+        res.status(200).json({
+            message: "Password changed successfully",
+        });
+    }
+    catch (err) {
+        res.status(500).json({
+            message: "Failed to change password",
+        });
+        console.log(err.message)
     }
 }

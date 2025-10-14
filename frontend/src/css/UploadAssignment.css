@@ -5,6 +5,11 @@
     overflow-x: hidden;
     padding: 10px;
     display: flex;
+    flex-direction: column;
+}
+
+.upload-div h2 {
+    margin-top: 10px;
 }
 
 .inner-upload-div {
@@ -367,10 +372,21 @@ select:focus {
     font-size: 1rem;
 }
 
-.loading-circle{
+.loading-circle {
     position: absolute;
     top: 50%;
     left: 65%;
     border-width: 6px !important;
 }
 
+.genre-icon {
+    width: 35px;
+    height: 35px;
+}
+
+.genre-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    margin-left: 5px;
+}

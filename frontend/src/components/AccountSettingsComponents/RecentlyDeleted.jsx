@@ -26,17 +26,6 @@ function RecentlyDeleted() {
         }
 
         fetchData();
-
-        setData([
-            { account: "Campbell", gameName: "Game 1", daysLeft: 15 },
-            { account: "Alice", gameName: "Game 2", daysLeft: 10 },
-            { account: "Bob", gameName: "Game 3", daysLeft: 5 },
-            { account: "Diana", gameName: "Game 4", daysLeft: 20 },
-            { account: "Eve", gameName: "Game 5", daysLeft: 25 },
-            { account: "Eve", gameName: "Game 5", daysLeft: 25 },
-            { account: "Eve", gameName: "Game 5", daysLeft: 25 },
-            { account: "Eve", gameName: "Game 5", daysLeft: 25 }
-        ])
     }, [])
 
     const restoreGame = async (gameName) => {
@@ -57,8 +46,7 @@ function RecentlyDeleted() {
         <div className='recent-main'>
             <h1>Recently Deleted</h1>
             <div>
-                <h2>Recently Deleted games will lay here for 30 days before being deleted automatically.</h2>
-                <h2>You may restore games here which will move them back to manage uploads.</h2>
+                <h2>Recently deleted games will remain here for 30 days before being permanently wiped. Games located here can be restored and move to "Manage Uploads".</h2>
                 <div className='thin-grey-line'></div>
             </div>
 
@@ -70,7 +58,7 @@ function RecentlyDeleted() {
                         <div className='recent-headers'>
                             <h2 className='flex'>Account</h2>
                             <h2 className='flex'>Game Name</h2>
-                            <h2 className='flex'>Days before deletion</h2>
+                            <h2 className='flex'>Days till deletion</h2>
                             <div className='flex'></div>
                         </div>
                         <div className='thin-grey-line'></div>
@@ -78,7 +66,7 @@ function RecentlyDeleted() {
                     {data.map((item, index) => (
                         <div>
                             <div className='recent-item' key={index}>
-                                <h4 className='flex'>campbell</h4>
+                                <h4 className='flex'>{item.username || "Unknown User"}</h4>
                                 <h4 className='flex'>{item.gameName}</h4>
                                 <h4 className='flex'>{Math.ceil((item.expires * 1000 - Date.now()) / (1000 * 60 * 60 * 24))} days left</h4>
                                 <button className='flex' id='restore-button' onClick={() => restoreGame(item.gameName)}>Restore</button>

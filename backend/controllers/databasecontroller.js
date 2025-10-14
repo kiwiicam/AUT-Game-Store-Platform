@@ -1,8 +1,40 @@
 import { client } from '../dynamoClient.js';
 import { PutItemCommand, GetItemCommand, UpdateItemCommand, ScanCommand, QueryCommand, DeleteItemCommand } from '@aws-sdk/client-dynamodb';
-import { retrieveGameImages } from './storagecontroller.js';
+import { retrieveGameImages, moveToPendingDeletion, moveBackFromPendingDeletion } from './storagecontroller.js';
 import { unmarshall } from '@aws-sdk/util-dynamodb';
 import { deleteFromS3 } from './storagecontroller.js';
+import fetch from 'node-fetch';
+import FormData from 'form-data';
+import axios from 'axios';
+import fs from 'fs';
+export async function getuid(req,res)
+{
+    const username = req.body.username;
+    try{
+    const params = {
+        TableName: "userTable",
+        Key: {
+
+            "username": { S: username },
+        },
+
+    };
+       const response = await client.send(new GetItemCommand(params));
+        const plainItem = unmarshall(response.Item);
+        res.status(200).json({
+          //  message: "User info fetched successfully",
+            uid: plainItem.uid,
+            
+        });
+
+    }
+    catch (err) {
+        console.log("Error fetching user info:", err);
+        res.status(500).json({ error: "Failed to fetch user info" });
+    }
+
+
+}
 
 export async function addUser(req, res) {
     const { uid, username, email } = req.body;
@@ -21,7 +53,16 @@ export async function addUser(req, res) {
     };
     try {
         const data = await client.send(new PutItemCommand(params));
-        res.status(200).json({ message: "Item inserted successfully", data });
+        const formData = new FormData();
+        formData.append('uid',uid);
+        formData.append('image', fs.createReadStream('./default-pfp.png'), 'pfp.png');
+            const response = await axios.post(
+            'http://localhost:8000/api/storage/setpfp',
+            formData,
+            { headers: formData.getHeaders() } 
+        );
+                res.status(200).json({ message: "Item inserted successfully", data });
+
     } catch (err) {
         console.log("Error inserting item:", err);
         res.status(500).json({ error: "Failed to insert item" });
@@ -47,7 +88,7 @@ export async function getUserInfo(req, res) {
             firstname: plainItem.firstname,
             lastname: plainItem.lastname,
         });
-        console.log(plainItem.username, plainItem.firstname, plainItem.lastname);
+    //    console.log(plainItem.username, plainItem.firstname, plainItem.lastname);
 
     }
     catch (err) {
@@ -57,8 +98,10 @@ export async function getUserInfo(req, res) {
 }
 
 export async function changeName(req, res) {
+    //cambell ive added a password parameter so u can do the auth verification for changing details securely
     try {
-        const { uid, newName, type } = req.body;
+        const { uid, newName, type, password } = req.body;//password works
+        if (password === password){
         const params = {
             TableName: "userTable",
             Key: {
@@ -73,6 +116,11 @@ export async function changeName(req, res) {
         const response = await client.send(new UpdateItemCommand(params));
         res.status(200).json({ message: "User info fetched successfully" });
         console.log("successfully changed name:");
+    }
+    else
+    {
+        res.status(500).json({ error: "Invaild password, potiental session timeout" });
+    }
 
     }
     catch (err) {
@@ -84,9 +132,20 @@ export async function changeName(req, res) {
 }
 
 export async function uploadGameInformation(req, res) {
-    const { gameName, teamName, projectType, projectTimeframe, gameDesc, selectedGenres, groupMembers, fileSize } = req.body;
+    const { gameName, teamName, projectType, projectTimeframe, gameDesc, selectedGenres, groupMembers, fileSize, uid } = req.body;
     const date = new Date();
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
+
+    const uname = {
+        TableName: "userTable",
+        Key: {
+            uid: { S: uid },
+        }
+    }
+
+    const user = await client.send(new GetItemCommand(uname));
+    const plainUser = unmarshall(user.Item);
+
     const formattedDate = date.toLocaleDateString('en-US', options);
     const params = {
         TableName: "AwaitingGames",
@@ -101,6 +160,8 @@ export async function uploadGameInformation(req, res) {
             downloads: { N: "0" },
             releaseDate: { S: formattedDate },
             fileSize: { N: fileSize },
+            username: { S: plainUser.username },
+            uid: { S: uid }
         }
     };
     if (projectType === "Group Game Project") {
@@ -126,31 +187,27 @@ export async function retrieveFeaturedGames(req, res) {
         const data = await client.send(new ScanCommand(params));
         const games = data.Items.map(item => unmarshall(item));
 
-        const topThree = games.reduce((acc, game) => {
-            acc.push(game);
-            acc.sort((a, b) => b.likes - a.likes);
+        // Sort all games by likes in descending order and take the top 8
+        const topEight = games
+            .sort((a, b) => b.likes - a.likes)
+            .slice(0, 8);
 
-            if (acc.length > 3) acc.pop();
-            return acc;
-        }, []);
-
-        const gameNameArray = [topThree[0].gameName, topThree[1].gameName, topThree[2].gameName];
+        // Get the game names for image retrieval
+        const gameNameArray = topEight.map(game => game.gameName);
         const gameImages = await retrieveGameImages(gameNameArray);
 
-        const featuredGames = []
-        gameImages.forEach(element => {
-            const name = element.gameName;
-            topThree.forEach(game => {
-                if (game.gameName === name) {
-                    featuredGames.push({
-                        src: element.imageUrl,
-                        title: game.gameName,
-                        desc: game.gameDesc,
-                        creator: game.teamName,
-                        likes: game.likes
-                    });
-                }
-            });
+        console.log(gameImages + " this is game images!!!!!!!!!!!!!!!!!!!!!!");
+
+        // Combine game info with image URLs
+        const featuredGames = topEight.map(game => {
+            const image = gameImages.find(img => img.gameName === game.gameName);
+            return {
+                src: image.imageUrl,
+                title: game.gameName,
+                desc: game.gameDesc,
+                creator: game.teamName,
+                likes: game.likes
+            };
         });
 
         console.log(featuredGames);
@@ -161,6 +218,7 @@ export async function retrieveFeaturedGames(req, res) {
         res.status(500).json({ error: "Failed to retrieve featured games" });
     }
 }
+
 
 export async function getUserSearch(req, res) {
     const { searchQuery } = req.body;
@@ -265,8 +323,18 @@ export async function retrieveComments(req, res) {
 
         const response = await client.send(new QueryCommand(params));
         const items = response.Items.map(item => unmarshall(item));
-        console.log(items)
+        if (req.body.searchBy === "mostRecent") {
         res.status(200).json({ commentData: items });
+
+        }
+        else if (req.body.searchBy === "leastRecent") {
+            items.sort((a, b) => a.timestamp - b.timestamp);
+            res.status(200).json({ commentData: items });
+        }
+
+      //  items.sort(a,b) => a.timestamp.compare  b.timestamp 
+      //  console.log(items)
+     //   res.status(200).json({ commentData: items });
     } catch (err) {
         console.log(err);
         res.status(500).json({ error: err.message });
@@ -437,6 +505,8 @@ export async function denyGames(req, res) {
                     likes: { N: "0" },
                     releaseDate: { S: plainItems.releaseDate },
                     fileSize: { N: plainItems.fileSize.toString() },
+                    username: { S: plainItems.username },
+                    uid: { S: plainItems.uid },
                     expires: { N: epochtime.toString() }
                 }
             }
@@ -454,14 +524,15 @@ export async function denyGames(req, res) {
 
             //copy to a special s3 prefix where it has a life cycle rule to delete after 30 days
 
+            moveToPendingDeletion(gameName);
 
 
-            await s3.send(new CopyObjectCommand({}))
+            //await s3.send(new CopyObjectCommand({}))
             // DO IT IN THE STORAGE CONTROLLER THO
-            await s3.send(new DeleteObjectCommand({}));
+            //await s3.send(new DeleteObjectCommand({}));
 
 
-            
+
             // deleteFromS3(gameName);
         }
         console.log("success")
@@ -787,6 +858,8 @@ export async function restoreGame(req, res) {
                 likes: { N: "0" },
                 releaseDate: { S: plainItems.releaseDate },
                 fileSize: { N: plainItems.fileSize.toString() },
+                username: { S: plainItems.username },
+                uid: { S: plainItems.uid }
             }
 
         }
@@ -801,9 +874,156 @@ export async function restoreGame(req, res) {
         }
         await client.send(new DeleteItemCommand(deleteParams))
 
+        moveBackFromPendingDeletion(gameName);
+
         res.status(200).json({ message: "Restore game endpoint hit", gameName });
     } catch (error) {
         console.log(error.message);
         res.status(500).json({ error: "Failed to restore game" });
+    }
+}
+
+export async function recentReleases(req, res) {
+    try {
+        const result = await client.send(new ScanCommand({ TableName: "gameInformation" }));
+        const items = result.Items.map(item => unmarshall(item));
+
+        // Get the 8 most recent games
+        const getMostRecentGames = (gamesArray, count = 8) => {
+            return [...gamesArray]
+                .filter(game => game.releaseDate)
+                .sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate))
+                .slice(0, count);
+        };
+
+        const recentGames = getMostRecentGames(items);
+
+        const gameNameArray = recentGames.map(game => game.gameName);
+
+
+        const gameImages = await retrieveGameImages(gameNameArray);
+        const recentGamesArr = [];
+
+        gameImages.forEach(image => {
+            const matchedGame = recentGames.find(game => game.gameName === image.gameName);
+            const genreArr = [...matchedGame.selectedGenres]
+            if (matchedGame) {
+                recentGamesArr.push({
+                    src: image.imageUrl,
+                    title: matchedGame.gameName,
+                    desc: matchedGame.gameDesc,
+                    creator: matchedGame.teamName,
+                    likes: matchedGame.likes,
+                    releaseDate: matchedGame.releaseDate,
+                    fileSize: matchedGame.fileSize,
+                    genres: genreArr
+                });
+            }
+        });
+
+        console.log(recentGamesArr);
+
+        res.status(200).json({ recentGames: recentGamesArr });
+
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ error: "Failed to retrieve recent releases" });
+    }
+}
+
+export async function randomGames(req, res) {
+    try {
+        const result = await client.send(new ScanCommand({ TableName: "gameInformation" }));
+        const items = result.Items.map(item => unmarshall(item));
+
+        // Get 8 random games
+        const getRandomGames = (gamesArray, count = 8) => {
+            const shuffled = [...gamesArray];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled.slice(0, count);
+        };
+
+        const randomGames = getRandomGames(items);
+
+        const gameNameArray = randomGames.map(game => game.gameName);
+
+        const gameImages = await retrieveGameImages(gameNameArray);
+        const randomGamesArr = [];
+
+        gameImages.forEach(image => {
+            const matchedGame = randomGames.find(game => game.gameName === image.gameName);
+            if (matchedGame) {
+                randomGamesArr.push({
+                    src: image.imageUrl,
+                    title: matchedGame.gameName,
+                    desc: matchedGame.gameDesc,
+                    creator: matchedGame.teamName,
+                    likes: matchedGame.likes,
+                    releaseDate: matchedGame.releaseDate,
+                    fileSize: matchedGame.fileSize,
+                });
+            }
+        });
+        console.log("this is random games arr");
+        console.log("this is random games arr");
+        console.log("this is random games arr");
+
+        console.log(randomGamesArr);
+
+        res.status(200).json({ randomGames: randomGamesArr });
+
+    }
+    catch (error) {
+        console.log(error.message);
+        res.status(500).json({ error: "Failed to retrieve classic games" });
+    }
+}
+
+export async function classicGames(req, res) {
+    try {
+        const result = await client.send(new ScanCommand({ TableName: "gameInformation" }));
+        const items = result.Items.map(item => unmarshall(item));
+
+        // Get the 8 oldest games
+        const getOldestGames = (gamesArray, count = 8) => {
+            return [...gamesArray]
+                .filter(game => game.releaseDate)
+                .sort((a, b) => new Date(a.releaseDate) - new Date(b.releaseDate))
+                .slice(0, count);
+        };
+
+        const oldestGames = getOldestGames(items);
+        const gameNameArray = oldestGames.map(game => game.gameName);
+
+        const gameImages = await retrieveGameImages(gameNameArray);
+        const oldestGamesArr = [];
+
+        gameImages.forEach(image => {
+            const matchedGame = oldestGames.find(game => game.gameName === image.gameName);
+            const genreArr = [...matchedGame.selectedGenres]
+            if (matchedGame) {
+                oldestGamesArr.push({
+                    src: image.imageUrl,
+                    title: matchedGame.gameName,
+                    desc: matchedGame.gameDesc,
+                    creator: matchedGame.teamName,
+                    likes: matchedGame.likes,
+                    releaseDate: matchedGame.releaseDate,
+                    fileSize: matchedGame.fileSize,
+                    genre: genreArr
+                });
+            }
+        });
+
+        console.log(oldestGamesArr);
+
+        res.status(200).json({ oldestGames: oldestGamesArr });
+
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ error: "Failed to retrieve oldest releases" });
     }
 }
