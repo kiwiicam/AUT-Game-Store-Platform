@@ -9,15 +9,18 @@ function Browse() {
 
   const backend_url = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000/api';
 
-  const [selectedGenre, setSelectedGenre] = useState(false)
-  const [selectedType, setSelectedType] = useState(false)
-  const [selectedDate, setSelectedDate] = useState(false)
-  const [selectedOther, setSelectedOther] = useState(false)
+  const [selectedGenre, setSelectedGenre] = useState(false);
+  const [selectedType, setSelectedType] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(false);
+  const [selectedOther, setSelectedOther] = useState(false);
 
-  const [gameArray, setGameArray] = useState([])
+  const [gameArray, setGameArray] = useState([]);
   const [allGames, setAllGames] = useState([]);
-  const [theSelectedGenre, setTheSelectedGenre] = useState(null)
-  const [search, setSearch] = useState("")
+  const [theSelectedGenre, setTheSelectedGenre] = useState(null);
+  const [theSelectedType, setTheSelectedType] = useState(null);
+  const [search, setSearch] = useState("");
+  const [startYear, setStartYear] = useState(null);
+  const [endYear, setEndYear] = useState(null);
 
 
   const [width, setWidth] = useState(null);
@@ -57,6 +60,18 @@ function Browse() {
     "Text Adventure"
   ];
 
+  const projectTypes = [
+    "Individual Game Project",
+    "Group Game Project"
+  ];
+
+  const currentYear = new Date().getFullYear();
+  const years = Array.from(
+    { length: currentYear - 2024 + 1 },
+    (_, i) => 2024 + i
+  );
+
+
   const initialFetch = async () => {
     try {
       const initialData = await axios.get(`${backend_url}/database/browsegames`)
@@ -64,7 +79,10 @@ function Browse() {
         title: game.gameName,
         creator: game.teamName,
         image: game.imageUrl,
-        genres: game.selectedGenres
+        genres: game.selectedGenres,
+        type: game.projectType,
+        year: new Date(game.releaseDate).getFullYear(),
+        likes: game.likes
       }));
 
       const bigList = [...mappedGames, ...mappedGames];
@@ -116,11 +134,21 @@ function Browse() {
     return
   }
 
-  const filterResults = (searchQuery, genre) => {
+  const filterResults = (searchQuery, genre, type) => {
     let filtered = allGames;
 
     if (genre) {
       filtered = filtered.filter(game => game.genres.includes(genre));
+    }
+
+    if (type) {
+      filtered = filtered.filter(game => game.type === type)
+    }
+
+    if (startYear && endYear) {
+      filtered = filtered.filter(game => {
+        return game.year >= startYear && game.year <= endYear;
+      })
     }
 
     if (searchQuery.trim() !== "") {
@@ -133,21 +161,35 @@ function Browse() {
 
   const searchChange = (searchQuery) => {
     setSearch(searchQuery);
-    filterResults(searchQuery, theSelectedGenre);
+    filterResults(searchQuery, theSelectedGenre, theSelectedType, startYear, endYear);
   }
 
   const genreSelection = (genre) => {
     if (theSelectedGenre === genre) {
       setTheSelectedGenre(null);
-      filterResults(search, null);
+      filterResults(search, null, theSelectedType);
       return;
     }
     setTheSelectedGenre(genre);
-    filterResults(search, genre);
+    filterResults(search, genre, theSelectedType);
   }
 
-  const sortByLike = () => {
+  const typeSelection = (type) => {
+    if (theSelectedType === type) {
+      setTheSelectedType(null);
+      filterResults(search, theSelectedGenre, null);
+      return;
+    }
+    setTheSelectedType(type);
+    filterResults(search, theSelectedGenre, type);
+  }
 
+
+  const sortByLike = () => {
+    const sorted = [...gameArray].sort((a, b) => {
+      return b.likes - a.likes;
+    });
+    setGameArray(sorted);
   }
 
   const sortByRandom = () => {
@@ -172,11 +214,14 @@ function Browse() {
               </div>
               {selectedGenre ?
                 <div className='dropdown-genre-section'>
-                  <h2>Please select a genre. </h2>
+                  <h2>Please select a genre </h2>
                   <div id="genre">
                     {gameGenres.map((item, index) => (
                       <div className={theSelectedGenre === item ? 'genre-item-browse-selected' : 'genre-item-browse'} onClick={() => genreSelection(item)}>
                         <h2 className='genre-h2'>{item}</h2>
+                        <div className="genre-icon">
+                          <img src={'http://localhost:3000/genre_icons/' + item.toLowerCase().toString().replace(/\s+/g, '') + '.png'} />
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -186,28 +231,23 @@ function Browse() {
             <div className="skinny-white-bar-browse"></div>
             <div className='dropdown-browse'>
               <div className='inner-genre'>
-                <h4>Project type</h4>
+                <h4>Project Type</h4>
                 <RiArrowDropDownLine className={`arrow-down ${selectedType ? 'rotate-up' : ''}`} onClick={() => handleSelected("Type")} />
               </div>
               {selectedType ?
                 <div className='dropdown-genre-section'>
-                  <h2>Select up to 3 Genres</h2>
-                </div>
-                : <></>}
-            </div>
-            <div className="skinny-white-bar-browse"></div>
-            <div className='dropdown-browse'>
-              <div className='inner-genre'>
-                <h4>Sort By Release date</h4>
-                <RiArrowDropDownLine className={`arrow-down ${selectedDate ? 'rotate-up' : ''}`} onClick={() => handleSelected("Date")} />
-              </div>
-              {selectedDate ?
-                <div className='dropdown-genre-section'>
-                  <h2>Sort by the least or most recent uploads</h2>
-                  <div className='date-sort'>
-                    <div className='date-div'><h4>Most Recent</h4></div>
-                    <div className='date-div'><h4>Least Recent</h4></div>
+                  <h2>Choose a project type</h2>
+                  <div id="type">
+                    {projectTypes.map((item, index) => (
+                      <div
+                        key={index}
+                        className={theSelectedType === item ? 'genre-item-browse-selected' : 'genre-item-browse'}
+                        onClick={() => typeSelection(item)}
+                      >
+                        <h2 className='genre-h2'>{item}</h2>
 
+                      </div>
+                    ))}
                   </div>
                 </div>
                 : <></>}
@@ -215,18 +255,65 @@ function Browse() {
             <div className="skinny-white-bar-browse"></div>
             <div className='dropdown-browse'>
               <div className='inner-genre'>
-                <h4>Other</h4>
+                <h4>Release Date</h4>
+                <RiArrowDropDownLine className={`arrow-down ${selectedDate ? 'rotate-up' : ''}`} onClick={() => handleSelected("Date")} />
+              </div>
+              {selectedDate ?
+                <div className='dropdown-genre-section'>
+                  <h2>Search by date range</h2>
+                  <div className="date-range-selectors">
+                    <div className="date-select">
+                      <h2>Start Year</h2>
+                      <select
+                        value={startYear || ""}
+                        onChange={(e) => {
+                          const year = parseInt(e.target.value);
+                          setStartYear(year);
+                          filterResults(search, theSelectedGenre, theSelectedType, year, endYear);
+                        }}
+                      >
+                        <option value="">--</option>
+                        {years.map((y, idx) => (
+                          <option key={idx} value={y}>{y}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="date-select">
+                      <h2>End Year</h2>
+                      <select
+                        value={endYear || ""}
+                        onChange={(e) => {
+                          const year = parseInt(e.target.value);
+                          setEndYear(year);
+                          filterResults(search, theSelectedGenre, theSelectedType, startYear, year);
+                        }}
+                      >
+                        <option value="">--</option>
+                        {years.map((y, idx) => (
+                          <option key={idx} value={y}>{y}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                : <></>}
+            </div>
+            <div className="skinny-white-bar-browse"></div>
+            <div className='dropdown-browse'>
+              <div className='inner-genre'>
+                <h4>Other Filters</h4>
                 <RiArrowDropDownLine className={`arrow-down ${selectedOther ? 'rotate-up' : ''}`} onClick={() => handleSelected("Other")} />
               </div>
               {selectedOther ?
                 <div className='dropdown-genre-section'>
-                  <h2>Sort by Likes, or randomise to discover new games.</h2>
+                  <h2>Sort by likes or randomise search.</h2>
                   <div className='sort-buttons'>
                     <div className='other-sort' onClick={() => sortByLike()}>
-                      <h4>Sort By Likes</h4>
+                      <h4>Sort by Most Liked</h4>
                     </div>
                     <div className='other-sort' onClick={() => sortByRandom()}>
-                      <h4>Randomize Sort</h4>
+                      <h4>Randomize the Search</h4>
                     </div>
                   </div>
                 </div>

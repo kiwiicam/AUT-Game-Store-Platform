@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { BiSolidLike, BiLike} from "react-icons/bi";
+import { BiSolidLike, BiLike } from "react-icons/bi";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import Genrebox from '../components/Genrebox.jsx';
 import { useNavigate } from 'react-router-dom';
@@ -10,11 +10,15 @@ import '../css/Gamepage.css'
 import Developercard from '../components/Developercard.jsx';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
+import { ClipLoader } from "react-spinners";
 
 function Gamepage() {
 
     const backend_url = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000/api';
+    var searchState = "leastRecent"; //default
+    var searchDState = "no"; //default
 
+    var searchNState = 0;
     const [index, setIndex] = useState(0);
     const [gameImages, setGameImages] = useState([]);
     const [gameInfo, setGameInfo] = useState({});
@@ -22,9 +26,10 @@ function Gamepage() {
 
     const [commentCards, setCommentCards] = useState([]);
     const [visibleCount, setVisibleCount] = useState(5);
-
+    const [commentLen, setCommentLen] = useState(5);
     const [comment, setComment] = useState("");
-
+    const [startAt, setStartAt] = useState(0);
+    const [endAt, setEndAt] = useState(5);
     const [loggedIn, setLoggedIn] = useState(false);
     const [commentUploaded, setCommentUploaded] = useState(true);
     const [role, setRole] = useState("");
@@ -37,8 +42,41 @@ function Gamepage() {
     const [mostRecent, setMostRecent] = useState(true);
     const [leastRecent, setLeastRecent] = useState(false);
 
+    const [loading, setLoading] = useState(false);
+
     const navigate = useNavigate();
     const { gameName } = useParams();
+    //pfp
+    const [pfp, setImage2] = useState();
+    function getSize() {
+        var temp = 0;
+        if (withinMonth === true) {
+            temp = commentCards.length;
+        }
+        if (commentLen > visibleCount) {
+            //   window.alert(visibleCount + " vok");
+
+            return visibleCount + temp;
+        }
+        //  window.alert(commentLen + " cok");
+        return commentLen + temp;
+    }
+
+    const getImage2 = async () => {
+        try {
+            const image = await axios.post(`${backend_url}/storage/getpfp`,
+                {
+                    type: 'uid',
+                    id: localStorage.getItem('uid')
+                })
+            setImage2(image.data.imageUrl);
+        }
+        catch (err) {
+            console.log(err.message);
+        }
+    }
+    getImage2();
+
 
     useEffect(() => {
         if (!gameName) return;
@@ -66,14 +104,36 @@ function Gamepage() {
 
                 //const developerInfo = await axios.post('http://localhost:8000/api/database/getdeveloperinfo', { groupArray: databaseData.data.gameData.groupMembers })
 
-                const commentInfo = await axios.post(`${backend_url}/database/retrievecomments`, { gameName: databaseData.data.gameData.gameName })
+                const commentInfo = await axios.post(`${backend_url}/database/retrievecomments`, { gameName: databaseData.data.gameData.gameName, searchBy: searchState, dateFilter: searchDState });
+
                 const commentState = commentInfo.data.commentData.map(value => ({
                     text: value.comment,
                     name: value.userName,
+                    uid: value.uid,
                     picsrc: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
-                    date: new Date(value.timestamp).toLocaleString('en-NZ')
+                    date: value.timestamp
                 }))
+                for (const comment of commentState) {
+                    try {
+                        const image = await axios.post(`http://localhost:8000/api/storage/getpfp`,
+                            {
+                                type: 'uid',
+                                id: comment.uid
+                            });
+                        comment.picsrc = image.data.imageUrl;
+
+                    }
+
+                    catch (err) {
+                        alert(err.message);
+
+                    }
+
+                }
+
                 setCommentCards(commentState)
+                setCommentLen(commentCards.length);
+                // actualcommentLen = commentLen;
             }
             catch (error) {
                 toast.error('Error retreiving the data for this game, please try again later.', {
@@ -209,17 +269,85 @@ function Gamepage() {
 
     useEffect(() => {
         if (!mostRecent && !leastRecent) {
-            setMostRecent(true);
+            //    setMostRecent(true);
+            //  setLeastRecent(false);
+            handleLeastRecentChange(false);
         }
     }, [mostRecent, leastRecent]);
+    // setWithinMonth
+    const handleDate = (isChecked) => {
 
+        if (withinMonth == true) {
+            setCommentLen(commentCards.length);
+            setWithinMonth(false);
+            setStartAt(0);
+            setEndAt(commentCards.length);
+        }
+        else if (withinMonth == false) {
+
+            const currentDate = new Date();
+            let count = 0;
+            for (var i = 0; i < commentCards.length; i++) {
+                if (currentDate.getTime() - commentCards[i].date <= 2592000000) //30 days in milliseconds 
+                {
+                    count++
+                    // setCommentLen(commentLen + 1);
+                }
+            }
+            setCommentLen(count);
+            setWithinMonth(true);
+            if (mostRecent == true) {
+                setStartAt(0);
+                setEndAt(count);
+            }
+            if (leastRecent == true) {
+                setStartAt(commentCards.length - count);
+                setEndAt(commentCards.length);
+            }
+        }
+
+
+    };
     const handleMostRecentChange = (checked) => {
-        setMostRecent(checked);
-        if (checked) setLeastRecent(false);
+        if (checked == true) {
+            const sortArray = [...commentCards].sort((a, b) => b.date - a.date);
+            setCommentCards(sortArray);
+            if (withinMonth == true) {
+                setStartAt(0);
+                setEndAt(commentLen);
+            }
+            if (withinMonth == false) {
+                setStartAt(0);
+                setEndAt(commentCards.length)
+            }
+            setMostRecent(checked);
+            if (checked) setLeastRecent(false);
+
+        } else {
+            handleLeastRecentChange(true);
+        }
     };
     const handleLeastRecentChange = (checked) => {
-        setLeastRecent(checked);
-        if (checked) setMostRecent(false);
+        if (checked == true) {
+            const sortArray = [...commentCards].sort((a, b) => a.date - b.date);
+            setCommentCards(sortArray);
+            if (withinMonth == true) {
+                setStartAt(commentCards.length - commentLen);
+                setEndAt(commentCards.length);
+            }
+            else {
+                setStartAt(0);
+                setEndAt(commentCards.length)
+            }
+            setLeastRecent(checked);
+            if (checked) setMostRecent(false);
+        }
+        else {
+            handleMostRecentChange(true);
+        }
+        //   window.alert(sortArray);
+        //window.alert(JSON.stringify(sortArray, null, 2));
+
     };
 
     async function uploadComment() {
@@ -242,6 +370,7 @@ function Gamepage() {
             const newComment = {
                 text: comment,
                 name: response.data.userName,
+                uid: uid,
                 date: timestamp,
                 picsrc: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
             }
@@ -257,6 +386,9 @@ function Gamepage() {
                 position: 'top-center', autoClose: 3000,
             });
         }
+
+
+
     }
 
     const likeGame = async () => {
@@ -286,10 +418,40 @@ function Gamepage() {
 
     }
 
+    async function downloadGame() {
+        try {
+            setLoading(true);
+            const response = await axios.get(
+                `${backend_url}/storage/downloadGame/${gameName}`,
+                { responseType: 'blob' }
+            );
+
+            // Create a link element to trigger download
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `${gameName}.zip`);
+            document.body.appendChild(link);
+            setLoading(false);
+            link.click();
+            link.remove();
+
+        } catch (err) {
+            console.error("Download error:", err);
+            alert("Failed to download file");
+        }
+
+
+    }
 
 
     return (
         <div className='gamepage-container'>
+            {loading && (
+                <div className="loader-container">
+                    <ClipLoader color="#3643d7ff" size={70} />
+                </div>
+            )}
             <ToastContainer />
             <div className='gamepage-inner'>
                 <div className='gamepage-header-container'>
@@ -299,7 +461,7 @@ function Gamepage() {
                     </div>
                     <div className='gamepage-likes'>
                         <p>{likes}</p>
-                        <div className='gamepage-like-icon' onClick={() => likeGame()}>{hasLiked ? <BiSolidLike style={{ fontSize: '22px'}} /> : <BiLike style={{ fontSize: '22px'}} />}</div>
+                        <div className='gamepage-like-icon' onClick={() => likeGame()}>{hasLiked ? <BiSolidLike style={{ fontSize: '22px' }} /> : <BiLike style={{ fontSize: '22px' }} />}</div>
                     </div>
                 </div>
                 <div className='gamepage-info'>
@@ -377,7 +539,7 @@ function Gamepage() {
 
                             </div>
                             <div className='gamepage-details-button-div'>
-                                <button onClick={() => alert('Downloading the game!')}>Download</button>
+                                <button type="submit" onClick={() => downloadGame()}>Download</button>
                             </div>
                         </div>
 
@@ -399,14 +561,13 @@ function Gamepage() {
                     <div className='inner-comment'>
                         <div className='comment-section-main'
                             style={{
-                                overflowY: commentCards.length > 2 ? "scroll" : "auto"
+                                overflowY: commentLen > 2 ? "scroll" : "auto"
                             }}
                         >
                             {loggedIn ? (!commentUploaded ?
                                 <div className='logged-in-comment'>
                                     <div className='comment-pfp'>
-                                        <img src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'>
-
+                                        <img src={pfp}>
                                         </img>
                                     </div>
                                     <div className='comment-input'>
@@ -419,13 +580,12 @@ function Gamepage() {
                                 : <div><h2 style={{ textDecoration: "underline", cursor: "pointer" }} onClick={() => navigate('/signin')}>Please login to comment.</h2></div>}
 
                             <div className='comments-container'>
-
-                                {commentCards.slice(0, visibleCount).map((comment, index) => (
-                                    <Commentcard key={index} text={comment.text} name={comment.name} picsrc={comment.picsrc} date={comment.date} />
+                                {commentCards.slice(startAt, endAt).map((comment, index) => (
+                                    <Commentcard key={index} text={comment.text} name={comment.name} uid={comment.uid} picsrc={comment.picsrc} date={comment.date} />
                                 ))}
-                                {commentCards.length > 0 ?
-                                    commentCards.length > 5 ?
-                                        visibleCount < commentCards.length ?
+                                {commentLen > 0 ?
+                                    commentLen > 5 ?
+                                        visibleCount < commentLen ?
                                             <button onClick={() => { setVisibleCount(prevCount => prevCount + 5) }}>Show more Comments</button>
                                             :
                                             <button onClick={() => { setVisibleCount(5) }}>Show less comments</button>
@@ -439,7 +599,8 @@ function Gamepage() {
                             <div className='skinny-white-line'></div>
                             <h4>Date added</h4>
                             <div className='within-month'>
-                                <input type='checkbox' onChange={(e) => { setWithinMonth(e.target.checked) }} />
+
+                                <input type='checkbox' checked={withinMonth} /*onChange={(e) =>searchOpt(0,e.target.checked) }*/ onChange={(e) => { handleDate(e.target.checked) }} />
                                 <h2>Within 30 days</h2>
                             </div>
                             <div className='skinny-white-line'></div>
@@ -447,14 +608,16 @@ function Gamepage() {
                             <div className='within-month'>
                                 <input type='checkbox'
                                     checked={mostRecent}
+                                    /*   onChange={(e) =>searchOpt(1,e.target.checked) }*/
                                     onChange={(e) => handleMostRecentChange(e.target.checked)}
+
                                 />
                                 <h2>Most Recent</h2>
                             </div>
-                            <div className='within-month'>
-                                <input type='checkbox'
-                                    checked={leastRecent}
-                                    onChange={(e) => handleLeastRecentChange(e.target.checked)} />
+                            <div className='within-month'> <input type='checkbox' checked={leastRecent}/* onChange={(e) =>searchOpt(2,e.target.checked) }*/
+                                onChange={(e) => handleLeastRecentChange(e.target.checked)}
+
+                            />
                                 <h2>Least Recent</h2>
                             </div>
                         </div>

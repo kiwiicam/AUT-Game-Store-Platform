@@ -66,7 +66,7 @@ function ManageUsers() {
                 <select
                     value={role}
                     onChange={(e) => setRole(e.target.value)}
-                    style={{ color: '#0000006B' }}>
+                    style={{ color: '#0000006B'}}>
                     <option value="all">All users</option>
                     <option value="user">User</option>
                     <option value="student">Student</option>
