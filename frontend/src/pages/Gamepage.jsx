@@ -64,7 +64,7 @@ function Gamepage() {
 
     const getImage2 = async () => {
         try {
-            const image = await axios.post(`http://localhost:8000/api/storage/getpfp`,
+            const image = await axios.post(`${backend_url}/storage/getpfp`,
                 {
                     type: 'uid',
                     id: localStorage.getItem('uid')
@@ -422,7 +422,7 @@ function Gamepage() {
         try {
             setLoading(true);
             const response = await axios.get(
-                `http://localhost:8000/api/storage/downloadGame/${gameName}`,
+                `${backend_url}/storage/downloadGame/${gameName}`,
                 { responseType: 'blob' }
             );
 

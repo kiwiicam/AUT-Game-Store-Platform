@@ -25,7 +25,7 @@ function AccountInformation() {
 
             formData.append('uid', localStorage.getItem('uid'));
             try {
-                const response = await axios.post(`http://localhost:8000/api/storage/setpfp`, formData, {
+                const response = await axios.post(`${backend_url}/storage/setpfp`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
@@ -57,7 +57,7 @@ function AccountInformation() {
     useEffect(() => {
         const getImage = async () => {
             try {
-                const image = await axios.post(`http://localhost:8000/api/storage/getpfp`,
+                const image = await axios.post(`${backend_url}/storage/getpfp`,
                     {
                         type: 'uid',
                         id: localStorage.getItem('uid')
