@@ -84,8 +84,7 @@ function Browse() {
         year: new Date(game.releaseDate).getFullYear(),
         likes: game.likes
       }));
-
-      const bigList = [...mappedGames, ...mappedGames];
+      const bigList = [...mappedGames];
       setAllGames(bigList);
       setGameArray(bigList);
 
