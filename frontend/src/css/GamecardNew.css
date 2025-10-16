@@ -40,11 +40,13 @@
 .ncard-genres {
     margin-top: 2px;
     display: flex;
-    flex-wrap: wrap;       /* allow items to go to next row */
-    justify-content: center; /* center items horizontally */
+    flex-wrap: wrap;
+    /* allow items to go to next row */
+    justify-content: center;
+    /* center items horizontally */
     column-gap: 15px;
     row-gap: 5px;
-                 /* space between items */
+    /* space between items */
 }
 
 
@@ -82,6 +84,13 @@
     object-fit: cover;
 }
 
+.ncard-img-large video {
+    width: 100%;
+    height: 100%;
+    object-fit: fill !important;
+    border-radius: 10px;
+}
+
 .ncard-genres-hover {
     width: auto;
     display: flex;
@@ -95,9 +104,14 @@
     align-items: center;
     gap: 8px;
     color: #fff;
-    margin-top: -18px !important;
 }
 
-.ncard-likes p{
+.ncard-likes p {
     margin: 0;
+}
+
+.align-ncard {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
