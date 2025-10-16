@@ -1,12 +1,16 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import "../css/GamecardNew.css";
 import { useNavigate } from 'react-router';
 import { BiSolidLike } from "react-icons/bi";
+import axios from 'axios';
 
 function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, release, likes, slideid, setid }) {
     const [hover, setHover] = useState(false);
     const hoverTimeout = useRef(null);
     const navigate = useNavigate();
+
+    const backend_url = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000/api';
+
 
     const handleMouseEnter = () => {
         setHover(true);
@@ -26,6 +30,15 @@ function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, relea
             hoverTimeout.current = null;
         }
     };
+    useEffect(() => {
+        const fetchTrailer = async () => {
+            try {
+                const gameTrailer = await axios.post(`${backend_url}/storage/getgametrailer`, { gameName });
+            } catch (error) {
+                alert("Error fetching trailer:", error.message);
+            }
+        }
+    }, []);
 
     return (
         <div
