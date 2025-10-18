@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter&display=swap');
 
 body {
     font-family: 'Inter', sans-serif;
@@ -29,6 +30,70 @@ body {
     font-weight: bold;
     margin-top: 50px;
 }
+
+/* ===== AUT COMP710 Banner ===== */
+
+.homepage-banner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.banner-text {
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+}
+
+.banner-aut {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 10rem !important;
+    color: white;
+    letter-spacing: 4px;
+    margin: 0;
+    border-right: 4px solid transparent;
+    -webkit-text-stroke: 0.02px white !important;
+    color: transparent;
+}
+
+.banner-comp {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    color: white;
+    line-height: 1.1;
+}
+
+.banner-comp h2 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.banner-comp h3 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: 1px;
+    opacity: 0.95;
+}
+
+@media (max-width: 900px) {
+    .banner-aut {
+        font-size: 4rem;
+    }
+    .banner-comp h2 {
+        font-size: 2.5rem;
+    }
+    .banner-comp h3 {
+        font-size: 1.4rem;
+    }
+    .homepage-banner {
+        margin-top: 40px;
+    }
+}
+
 
 .split-line {
     width: 100%;

@@ -165,6 +165,15 @@ function Homepage() {
     return (
         <div className='homepage-background'>
             <div className='homepage-content'>
+                <div className='homepage-banner'>
+                    <div className='banner-text'>
+                        <h1 className='banner-aut'>AUT</h1>
+                        <div className='banner-comp'>
+                            <h2>COMP710</h2>
+                            <h3>GAME PROGRAMMING</h3>
+                        </div>
+                    </div>
+                </div>
                 <div className='featured-games'>
                     <h1>Featured</h1>
                     <div className='split-line'></div>
