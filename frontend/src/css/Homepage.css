@@ -48,12 +48,12 @@ body {
 
 .banner-aut {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 10rem !important;
+    font-size: 12rem !important;
     color: white;
     letter-spacing: 4px;
     margin: 0;
     border-right: 4px solid transparent;
-    -webkit-text-stroke: 0.02px white !important;
+    -webkit-text-stroke: 1px white !important;
     color: transparent;
 }
 
@@ -77,21 +77,6 @@ body {
     margin: 0;
     letter-spacing: 1px;
     opacity: 0.95;
-}
-
-@media (max-width: 900px) {
-    .banner-aut {
-        font-size: 4rem;
-    }
-    .banner-comp h2 {
-        font-size: 2.5rem;
-    }
-    .banner-comp h3 {
-        font-size: 1.4rem;
-    }
-    .homepage-banner {
-        margin-top: 40px;
-    }
 }
 
 
