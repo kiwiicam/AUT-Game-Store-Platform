@@ -28,57 +28,57 @@ body {
 .homepage-content h1 {
     font-size: 1.4rem;
     font-weight: bold;
-    margin-top: 50px;
+    margin-top: 40px;
 }
 
 /* ===== AUT COMP710 Banner ===== */
 
 .homepage-banner {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: flex-end;
     width: 100%;
 }
 
-.banner-text {
-    display: flex;
-    align-items: flex-end;
-    gap: 20px;
+.banner-aut-svg {
+  width: auto;
+  height: 16rem; /* matches previous .banner-aut font-size */
+  margin: 0;
+  display: block;
 }
 
-.banner-aut {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 12rem !important;
-    color: white;
-    letter-spacing: 4px;
-    margin: 0;
-    border-right: 4px solid transparent;
-    -webkit-text-stroke: 1px white !important;
-    color: transparent;
+.banner-text {
+  display: flex;
+  align-items: flex-end;
 }
 
 .banner-comp {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    color: white;
-    line-height: 1.1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  color: white;
+  line-height: 1.1;
+  transform: translateY(-40px);
+  font-family: 'Bebas Neue', sans-serif;
 }
 
 .banner-comp h2 {
-    font-size: 3.5rem;
-    font-weight: 700;
-    margin: 0;
+  font-size: 7.5rem;
+  font-weight: 100;
+  margin: 0;
+  color: #fff !important;
 }
 
 .banner-comp h3 {
-    font-size: 2rem;
-    font-weight: 600;
-    margin: 0;
-    letter-spacing: 1px;
-    opacity: 0.95;
+  font-size: 5rem;
+  font-weight: 100;
+  margin: 0;
+  letter-spacing: 2px;
+  margin-top: -35px; /* manually tighten space */
+  margin-bottom: -37.5px;
+  margin-left: 2.5px;
 }
-
 
 .split-line {
     width: 100%;
