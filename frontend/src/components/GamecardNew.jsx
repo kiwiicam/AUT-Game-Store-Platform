@@ -15,9 +15,9 @@ function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, relea
 
 
     const handleMouseEnter = () => {
-        setHover(true);
         // Start a timeout
         hoverTimeout.current = setTimeout(() => {
+            setHover(true);
             setid(slideid);
         }, 500);
     };
