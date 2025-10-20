@@ -4,7 +4,7 @@
 }
 
 .inner-ncard {
-    height: 400px;
+    height: 57vh;
     background-color: #14141460;
     padding: 12px;
     border-radius: 15px;
@@ -28,7 +28,7 @@
 
 .ncard-img {
     width: 100%;
-    height: 200px;
+    height: 25vh;
 }
 
 .ncard-img img {
@@ -44,8 +44,8 @@
     /* allow items to go to next row */
     justify-content: center;
     /* center items horizontally */
-    column-gap: 15px;
-    row-gap: 5px;
+    column-gap: 7px;
+    row-gap: 7px;
     /* space between items */
 }
 
@@ -54,7 +54,7 @@
     width: auto;
     height: auto;
     padding: 9px;
-    border-radius: 8px;
+    border-radius: 5px;
     background-color: #413E7160;
     display: flex;
     align-items: center;
@@ -62,7 +62,7 @@
 }
 
 .ncard-genre p {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     margin: 0;
 }
 
@@ -94,7 +94,7 @@
 .ncard-genres-hover {
     width: auto;
     display: flex;
-    gap: 10px;
+    gap: 7px;
 }
 
 .ncard-likes {

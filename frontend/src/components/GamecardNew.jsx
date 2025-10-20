@@ -106,9 +106,6 @@ function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, relea
                         {genres.map((genre, index) => (
                             <div key={index} className='ncard-genre'>
                                 <p style={{ fontSize: hover ? '0.9rem' : '0.7rem' }}>{genre}</p>
-                                <div className="genre-icon">
-                                    <img src={'http://localhost:3000/genre_icons/' + genre.toLowerCase().toString().replace(/\s+/g, '') + '.png'} />
-                                </div>
                             </div>
                         ))}
                     </div>
