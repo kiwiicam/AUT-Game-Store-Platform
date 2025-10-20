@@ -60,7 +60,7 @@ function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, relea
             id={hover ? 'inner-id' : ''}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            style={{ maxWidth: hover ? 1.58*width : width }}
+            style={{ maxWidth: hover ? 1.5*width : width }}
             onClick={() => navigate(`/games/${gameName}`)}
         >
             {hover ? (

@@ -81,6 +81,7 @@
 .ncard-img-large {
     width: 100%;
     height: 200px !important;
+    aspect-ratio: 16 / 9;
 }
 
 .ncard-img-large img {
@@ -98,9 +99,13 @@
 
 .ncard-genres-hover {
     width: auto;
-    height: 7.0vh;
+    height: 6.0vh;
     display: flex;
     gap: 7px;
+}
+
+.ncard-genres-hover p{
+    font-size: 0.8rem;
 }
 
 .ncard-likes {
@@ -110,6 +115,7 @@
     align-items: center;
     gap: 8px;
     color: #fff;
+    margin-top: -10px;
 }
 
 .ncard-likes p {
@@ -123,6 +129,11 @@
 }
 
 .align-ncard h2{
-    font-size: 1.0rem;
+    font-size: 0.9rem;
     margin-top: -10px !important;
+}
+
+.genre-icon img{
+    width: 80%;
+    height: 80%;
 }
