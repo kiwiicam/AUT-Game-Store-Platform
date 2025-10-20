@@ -1,12 +1,18 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import "../css/GamecardNew.css";
 import { useNavigate } from 'react-router';
 import { BiSolidLike } from "react-icons/bi";
+import axios from 'axios';
 
 function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, release, likes, slideid, setid }) {
     const [hover, setHover] = useState(false);
     const hoverTimeout = useRef(null);
+    const [trailer, setTrailer] = useState(null);
+    const [video, setVideo] = useState(false);
     const navigate = useNavigate();
+
+    const backend_url = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000/api';
+
 
     const handleMouseEnter = () => {
         setHover(true);
@@ -26,6 +32,24 @@ function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, relea
             hoverTimeout.current = null;
         }
     };
+    useEffect(() => {
+        const fetchTrailer = async () => {
+            try {
+                const gameTrailer = await axios.post(`${backend_url}/storage/getgametrailer`, { gameName });
+                if (gameTrailer.data.trailerUrl === "nothing") {
+                    setVideo(false);
+                    setTrailer(gameImage);
+                }
+                else {
+                    setVideo(true);
+                    setTrailer(gameTrailer.data.trailerUrl);
+                }
+            } catch (error) {
+                alert("Error fetching trailer:", error.message);
+            }
+        }
+        fetchTrailer();
+    }, []);
 
     return (
         <div
@@ -39,7 +63,15 @@ function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, relea
             {hover ? (
                 <>
                     <div className='ncard-img-large'>
-                        <img src={gameImage} alt='Game Cover' />
+                        {video ?
+                            <video src={trailer}
+                                autoPlay
+                                loop
+                                muted
+                            />
+                            :
+                            <img src={trailer} alt='Game Cover' />
+                        }
                     </div>
                     <h3>{gameName}</h3>
                     <h2>{TeamName}</h2>
@@ -53,9 +85,11 @@ function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, relea
                             </div>
                         ))}
                     </div>
-                    <h2>File Size: {size}GB | Release Date: {release}</h2>
-                    <div className='ncard-likes'>
-                        <BiSolidLike style={{ fontSize: '2rem' }} /> <p>{likes}</p>
+                    <div className='align-ncard'>
+                        <h2>File Size: {size}GB | Release Date: {release}</h2>
+                        <div className='ncard-likes'>
+                            <BiSolidLike style={{ fontSize: '2rem' }} /> <p>{likes}</p>
+                        </div>
                     </div>
                 </>
             ) : (

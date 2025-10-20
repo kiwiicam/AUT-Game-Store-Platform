@@ -191,7 +191,7 @@ select:focus {
 }
 
 .file-upload-div {
-    height: 1200px;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;

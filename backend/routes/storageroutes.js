@@ -1,5 +1,5 @@
 import express from 'express';
-import { uploadGame, uploadGameImages, retrieveGameImagesGame, downloadGame, getpfp,setpfp } from '../controllers/storagecontroller.js';
+import { uploadGame, uploadGameImages, retrieveGameImagesGame, downloadGame, getpfp, setpfp, uploadTrailer, retrieveTrailer } from '../controllers/storagecontroller.js';
 import multer from 'multer';
 
 const router = express.Router();
@@ -11,4 +11,6 @@ router.post('/getgameimages', retrieveGameImagesGame)
 router.get('/downloadGame/:gamename', downloadGame);
 router.post('/getpfp', getpfp);
 router.post('/setpfp', upload.single('image'), setpfp);
+router.post('/uploadtrailer', upload.single('trailer'), uploadTrailer);
+router.post('/getgametrailer', retrieveTrailer)
 export default router;
