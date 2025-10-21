@@ -4,7 +4,7 @@
 }
 
 .inner-ncard {
-    height: 370px;
+    height: clamp(40vh, 70vh - 5vw, 55vh);
     background-color: #14141460;
     padding: 12px;
     border-radius: 15px;
