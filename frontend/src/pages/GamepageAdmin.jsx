@@ -1,7 +1,7 @@
 import React from 'react'
 import '../css/GamepageAdmin.css'
 import { useParams } from 'react-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import Developercard from '../components/Developercard';
 import Genrebox from '../components/Genrebox';
@@ -43,11 +43,23 @@ function GamepageAdmin() {
                 })
                 try {
                     const images = await axios.post(`${backend_url}/storage/getgameimages`, { gameName: gameData.gameName })
-                    setGameImages([
-                        { src: images.data.gameImages[0].imageUrl },
-                        { src: images.data.gameImages[1].imageUrl },
-                        { src: images.data.gameImages[2].imageUrl }
-                    ]);
+                    const gameTrailer = await axios.post(`${backend_url}/storage/getgametrailer`, { gameName: gameData.gameName });
+                    if (gameTrailer.data.trailerUrl === "nothing") {
+                        setGameImages([
+                            { src: images.data.gameImages[0].imageUrl, type: 'image' },
+                            { src: images.data.gameImages[1].imageUrl, type: 'image' },
+                            { src: images.data.gameImages[2].imageUrl, type: 'image' }
+                        ]);
+
+                    }
+                    else {
+                        setGameImages([
+                            { src: images.data.gameImages[0].imageUrl, type: 'image' },
+                            { src: images.data.gameImages[1].imageUrl, type: 'image' },
+                            { src: images.data.gameImages[2].imageUrl, type: 'image' },
+                            { src: gameTrailer.data.trailerUrl, type: 'video' }
+                        ]);
+                    }
                 } catch (err) {
                     console.log(err)
                     alert("Error fetching game images")
@@ -146,6 +158,36 @@ function GamepageAdmin() {
         ])
     }, [gameName])
 
+    const videoRefs = useRef([]);
+
+
+    useEffect(() => {
+        gameImages.forEach((game, i) => {
+            if (game.type === 'video' && videoRefs.current[i]) {
+                const video = videoRefs.current[i];
+
+                if (index === i) {
+                    video.currentTime = 0;
+                    video.play();
+
+                    const loop = () => {
+                        video.currentTime = 0;
+                        video.play();
+                    };
+                    video.addEventListener('ended', loop);
+
+                    // Clean up event listener
+                    return () => {
+                        video.removeEventListener('ended', loop);
+                    };
+                } else {
+                    video.pause();
+                }
+            }
+        });
+    }, [index, gameImages]);
+
+
     return (
         <div className='gamepage-container' id='admin-gamepg'>
             <ToastContainer />
@@ -163,21 +205,37 @@ function GamepageAdmin() {
                     <div className='gamepage-slider'>
                         <div className='gamepage-slider-top'>
                             <div className='gamepage-slider-track'
-                                style={{ transform: `translateX(-${index * (1 / 3) * 100}%)`, transition: 'transform 0.5s ease-in-out' }}
+                                style={{
+                                    transform: `translateX(-${index * (1 / gameImages.length) * 100}%)`,
+                                    transition: 'transform 0.5s ease-in-out',
+                                    width: `calc(100% * ${gameImages.length})`
+                                }}
                             >
                                 {gameImages.map((game, i) => (
-                                    <div key={i} className="gamepage-slideshow-slide">
-                                        <img src={game.src} alt="gameimg" />
+                                    <div key={i} className="gamepage-slideshow-slide" style={{ width: `calc(100% / ${gameImages.length})` }}>
+                                        {game.type === 'image' ? (
+                                            <img src={game.src} alt="gameimg" />
+                                        ) : (
+                                            <video
+                                                ref={el => videoRefs.current[i] = el}
+                                                src={game.src}
+                                                className="slide"
+                                                style={{ maxHeight: '400px' }}
+                                                muted
+                                            />
+                                        )}
                                     </div>
                                 ))}
+
                             </div>
                         </div>
                         <div className='gamepage-slider-bottom'>
                             <div className='gamepage-slider-button-left' onClick={() => setIndex((index - 1 + gameImages.length) % gameImages.length)}><IoIosArrowBack style={{ margin: '0' }} /></div>
                             <div className='gamepage-slider-indicators'>
-                                <div onClick={() => setIndex(0)} className={`gamepage-slider-indicator ${index === 0 ? 'active' : ''}`}> </div>
-                                <div onClick={() => setIndex(1)} className={`gamepage-slider-indicator ${index === 1 ? 'active' : ''}`}> </div>
-                                <div onClick={() => setIndex(2)} className={`gamepage-slider-indicator ${index === 2 ? 'active' : ''}`}> </div>
+                                {gameImages.map((game, i) =>
+                                    <div onClick={() => setIndex(i)} className={`gamepage-slider-indicator ${index === i ? 'active' : ''}`}> </div>
+                                )}
+
                             </div>
                             <div className='gamepage-slider-button-right' onClick={() => setIndex((index + 1) % gameImages.length)}><IoIosArrowForward style={{ margin: '0' }} /></div>
                         </div>
