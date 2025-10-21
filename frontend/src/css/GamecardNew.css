@@ -4,7 +4,7 @@
 }
 
 .inner-ncard {
-    height: 57vh;
+    height: 55vh;
     background-color: #14141460;
     padding: 12px;
     border-radius: 15px;
@@ -52,7 +52,7 @@
     column-gap: 7px;
     row-gap: 7px;
     /* space between items */
-    height: 6vh !important;
+    height: 5vh !important;
 }
 
 
@@ -68,7 +68,7 @@
 }
 
 .ncard-genre p {
-    font-size: 0.9rem;
+    font-size: 0.8rem !important;
     margin: 0;
 }
 
