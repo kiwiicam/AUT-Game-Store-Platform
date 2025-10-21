@@ -7,24 +7,23 @@ import fetch from 'node-fetch';
 import FormData from 'form-data';
 import axios from 'axios';
 import fs from 'fs';
-export async function getuid(req,res)
-{
+export async function getuid(req, res) {
     const username = req.body.username;
-    try{
-    const params = {
-        TableName: "userTable",
-        Key: {
+    try {
+        const params = {
+            TableName: "userTable",
+            Key: {
 
-            "username": { S: username },
-        },
+                "username": { S: username },
+            },
 
-    };
-       const response = await client.send(new GetItemCommand(params));
+        };
+        const response = await client.send(new GetItemCommand(params));
         const plainItem = unmarshall(response.Item);
         res.status(200).json({
-          //  message: "User info fetched successfully",
+            //  message: "User info fetched successfully",
             uid: plainItem.uid,
-            
+
         });
 
     }
@@ -54,14 +53,14 @@ export async function addUser(req, res) {
     try {
         const data = await client.send(new PutItemCommand(params));
         const formData = new FormData();
-        formData.append('uid',uid);
+        formData.append('uid', uid);
         formData.append('image', fs.createReadStream('./default-pfp.png'), 'pfp.png');
-            const response = await axios.post(
+        const response = await axios.post(
             'http://localhost:8000/api/storage/setpfp',
             formData,
-            { headers: formData.getHeaders() } 
+            { headers: formData.getHeaders() }
         );
-                res.status(200).json({ message: "Item inserted successfully", data });
+        res.status(200).json({ message: "Item inserted successfully", data });
 
     } catch (err) {
         console.log("Error inserting item:", err);
@@ -88,7 +87,7 @@ export async function getUserInfo(req, res) {
             firstname: plainItem.firstname,
             lastname: plainItem.lastname,
         });
-    //    console.log(plainItem.username, plainItem.firstname, plainItem.lastname);
+        //    console.log(plainItem.username, plainItem.firstname, plainItem.lastname);
 
     }
     catch (err) {
@@ -101,26 +100,25 @@ export async function changeName(req, res) {
     //cambell ive added a password parameter so u can do the auth verification for changing details securely
     try {
         const { uid, newName, type, password } = req.body;//password works
-        if (password === password){
-        const params = {
-            TableName: "userTable",
-            Key: {
-                uid: { S: uid },
-            },
-            UpdateExpression: `SET ${type} = :newValue`,
-            ExpressionAttributeValues: {
-                ":newValue": { S: newName },
-            },
-            ReturnValues: "UPDATED_NEW",
-        };
-        const response = await client.send(new UpdateItemCommand(params));
-        res.status(200).json({ message: "User info fetched successfully" });
-        console.log("successfully changed name:");
-    }
-    else
-    {
-        res.status(500).json({ error: "Invaild password, potiental session timeout" });
-    }
+        if (password === password) {
+            const params = {
+                TableName: "userTable",
+                Key: {
+                    uid: { S: uid },
+                },
+                UpdateExpression: `SET ${type} = :newValue`,
+                ExpressionAttributeValues: {
+                    ":newValue": { S: newName },
+                },
+                ReturnValues: "UPDATED_NEW",
+            };
+            const response = await client.send(new UpdateItemCommand(params));
+            res.status(200).json({ message: "User info fetched successfully" });
+            console.log("successfully changed name:");
+        }
+        else {
+            res.status(500).json({ error: "Invaild password, potiental session timeout" });
+        }
 
     }
     catch (err) {
@@ -324,7 +322,7 @@ export async function retrieveComments(req, res) {
         const response = await client.send(new QueryCommand(params));
         const items = response.Items.map(item => unmarshall(item));
         if (req.body.searchBy === "mostRecent") {
-        res.status(200).json({ commentData: items });
+            res.status(200).json({ commentData: items });
 
         }
         else if (req.body.searchBy === "leastRecent") {
@@ -332,9 +330,9 @@ export async function retrieveComments(req, res) {
             res.status(200).json({ commentData: items });
         }
 
-      //  items.sort(a,b) => a.timestamp.compare  b.timestamp 
-      //  console.log(items)
-     //   res.status(200).json({ commentData: items });
+        //  items.sort(a,b) => a.timestamp.compare  b.timestamp 
+        //  console.log(items)
+        //   res.status(200).json({ commentData: items });
     } catch (err) {
         console.log(err);
         res.status(500).json({ error: err.message });
@@ -380,21 +378,36 @@ export async function mergeImageUrlWithGameName(array) {
 
 export async function browseGames(req, res) {
     try {
-        const result = await client.send(new ScanCommand({ TableName: "gameInformation" }));
-        const plainItems = result.Items.map(item => unmarshall(item));
-        const converted = plainItems.map(game => ({
+        let allItems = [];
+        let lastKey = undefined;
+
+        do {
+            const params = {
+                TableName: "gameInformation",
+                ExclusiveStartKey: lastKey
+            };
+
+            const result = await client.send(new ScanCommand(params));
+            const items = result.Items.map(item => unmarshall(item));
+            allItems = allItems.concat(items);
+            lastKey = result.LastEvaluatedKey;
+
+        } while (lastKey);
+
+        const converted = allItems.map(game => ({
             ...game,
             selectedGenres: Array.from(game.selectedGenres)
         }));
-        const mergedItems = await mergeImageUrlWithGameName(converted)
-        console.log(mergedItems)
-        res.status(200).json({
-            gameInfo: mergedItems
-        })
-    }
-    catch (err) {
-        console.log(err.message)
-        res.status(500).json({ error: err.message })
+        console.log("----------------------------------------------");
+        console.log("----------------------------------------------");
+        console.log("----------------------------------------------");
+        console.log("Total items retrieved from DynamoDB:", allItems.length);
+        const mergedItems = await mergeImageUrlWithGameName(converted);
+
+        res.status(200).json({ gameInfo: mergedItems });
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).json({ error: err.message });
     }
 }
 

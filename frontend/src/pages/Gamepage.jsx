@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useParams } from 'react-router-dom'
 import { BiSolidLike, BiLike } from "react-icons/bi";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
@@ -96,11 +96,24 @@ function Gamepage() {
                     developmentTeam: databaseData.data.gameData.groupMembers
                 });
                 const images = await axios.post(`${backend_url}/storage/getgameimages`, { gameName: databaseData.data.gameData.gameName })
-                setGameImages([
-                    { src: images.data.gameImages[0].imageUrl },
-                    { src: images.data.gameImages[1].imageUrl },
-                    { src: images.data.gameImages[2].imageUrl }
-                ]);
+
+                const gameTrailer = await axios.post(`${backend_url}/storage/getgametrailer`, { gameName: databaseData.data.gameData.gameName });
+                if (gameTrailer.data.trailerUrl === "nothing") {
+                    setGameImages([
+                        { src: images.data.gameImages[0].imageUrl, type: 'image' },
+                        { src: images.data.gameImages[1].imageUrl, type: 'image' },
+                        { src: images.data.gameImages[2].imageUrl, type: 'image' }
+                    ]);
+
+                }
+                else {
+                    setGameImages([
+                        { src: images.data.gameImages[0].imageUrl, type: 'image' },
+                        { src: images.data.gameImages[1].imageUrl, type: 'image' },
+                        { src: images.data.gameImages[2].imageUrl, type: 'image' },
+                        { src: gameTrailer.data.trailerUrl, type: 'video' }
+                    ]);
+                }
 
                 //const developerInfo = await axios.post('http://localhost:8000/api/database/getdeveloperinfo', { groupArray: databaseData.data.gameData.groupMembers })
 
@@ -444,6 +457,37 @@ function Gamepage() {
 
     }
 
+    const videoRefs = useRef([]);
+
+
+    useEffect(() => {
+        gameImages.forEach((game, i) => {
+            if (game.type === 'video' && videoRefs.current[i]) {
+                const video = videoRefs.current[i];
+
+                if (index === i) {
+                    video.currentTime = 0;
+                    video.play();
+
+                    const loop = () => {
+                        video.currentTime = 0;
+                        video.play();
+                    };
+                    video.addEventListener('ended', loop);
+
+                    // Clean up event listener
+                    return () => {
+                        video.removeEventListener('ended', loop);
+                    };
+                } else {
+                    video.pause();
+                }
+            }
+        });
+    }, [index, gameImages]);
+
+
+
 
     return (
         <div className='gamepage-container'>
@@ -468,27 +512,37 @@ function Gamepage() {
                     <div className='gamepage-slider'>
                         <div className='gamepage-slider-top'>
                             <div className='gamepage-slider-track'
-                                style={{ transform: `translateX(-${index * (1 / 3) * 100}%)`, transition: 'transform 0.5s ease-in-out' }}
+                                style={{
+                                    transform: `translateX(-${index * (1 / gameImages.length) * 100}%)`,
+                                    transition: 'transform 0.5s ease-in-out',
+                                    width: `calc(100% * ${gameImages.length})`
+                                }}
                             >
                                 {gameImages.map((game, i) => (
-                                    <div key={i} className="gamepage-slideshow-slide">
-                                        <img src={game.src} alt="gameimg" />
-                                        {/*
-                                        <video width="640" height="360" controls>
-                                            <source src="http://localhost:3000/46012-448062061_small.mp4" type="video/mp4"/>
-                                                Your browser does not support the video tag.
-                                        </video>
-                                        */}
+                                    <div key={i} className="gamepage-slideshow-slide" style={{ width: `calc(100% / ${gameImages.length})` }}>
+                                        {game.type === 'image' ? (
+                                            <img src={game.src} alt="gameimg" />
+                                        ) : (
+                                            <video
+                                                ref={el => videoRefs.current[i] = el}
+                                                src={game.src}
+                                                className="slide"
+                                                style={{ maxHeight: '400px' }}
+                                                muted
+                                            />
+                                        )}
                                     </div>
                                 ))}
+
                             </div>
                         </div>
                         <div className='gamepage-slider-bottom'>
                             <div className='gamepage-slider-button-left' onClick={() => setIndex((index - 1 + gameImages.length) % gameImages.length)}><IoIosArrowBack style={{ margin: '0' }} /></div>
                             <div className='gamepage-slider-indicators'>
-                                <div onClick={() => setIndex(0)} className={`gamepage-slider-indicator ${index === 0 ? 'active' : ''}`}> </div>
-                                <div onClick={() => setIndex(1)} className={`gamepage-slider-indicator ${index === 1 ? 'active' : ''}`}> </div>
-                                <div onClick={() => setIndex(2)} className={`gamepage-slider-indicator ${index === 2 ? 'active' : ''}`}> </div>
+                                {gameImages.map((game, i) =>
+                                    <div onClick={() => setIndex(i)} className={`gamepage-slider-indicator ${index === i ? 'active' : ''}`}> </div>
+                                )}
+
                             </div>
                             <div className='gamepage-slider-button-right' onClick={() => setIndex((index + 1) % gameImages.length)}><IoIosArrowForward style={{ margin: '0' }} /></div>
                         </div>

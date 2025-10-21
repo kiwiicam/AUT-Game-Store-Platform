@@ -22,9 +22,11 @@ function UploadAssignment() {
     const [gameDesc, setGameDesc] = useState("");
     const [projectType, setProjectType] = useState("Individual Game Project");
     const [projectTimeframe, setProjectTimeframe] = useState(1);
+
     const [gameFile, setGameFile] = useState(null);
     const [imageArray, setImageArray] = useState([])
     const [selectedGenres, setSelectedGenres] = useState([]);
+    const [trailerFile, setTrailerFile] = useState(null)
 
     const [groupMembers, setGroupMembers] = useState([])
     const [search, setSearch] = useState("");
@@ -70,6 +72,7 @@ function UploadAssignment() {
 
     const fileInputRef = useRef(null);
     const imageInputRef = useRef(null);
+    const trailerInputFileRef = useRef(null);
 
     useEffect(() => {
 
@@ -202,6 +205,20 @@ function UploadAssignment() {
             });
             return false
         }
+        if (gameFile.name.split('.').pop().toLowerCase() !== 'zip') {
+            toast.error('Your game file must be a .zip!', {
+                position: 'top-center',
+                autoClose: 3000,
+            });
+            return false
+        }
+        if (!trailerFile) {
+            toast.error('Please upload a trailer for your game!', {
+                position: 'top-center',
+                autoClose: 3000,
+            });
+            return false
+        }
         return true
     }
 
@@ -248,7 +265,17 @@ function UploadAssignment() {
                 {
                     headers: { 'Content-Type': 'multipart/form-data' },
                     timeout: 0,
-                })
+                });
+
+            const formDataTrailer = new FormData();
+            formDataTrailer.append('trailer', trailerFile);
+            formDataTrailer.append('gameName', gameName);
+
+            const responseTrailer = await axios.post(`${backend_url}/storage/uploadtrailer`, formDataTrailer,
+                {
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                    timeout: 0,
+                });
 
         }
         catch (error) {
@@ -271,7 +298,7 @@ function UploadAssignment() {
             !checkProjectType() ||
             !checkSelectedGenres() ||
             !checkImageArray() ||
-            !checkGameFile) return;
+            !checkGameFile()) return;
         try {
             const uid = localStorage.getItem("uid");
             const sizeInMB = (gameFile.size / (1024 * 1024)).toFixed(2);
@@ -445,7 +472,7 @@ function UploadAssignment() {
                             <div className={selectedGenres.includes(item) ? "genre-item-selected" : "genre-item"} onClick={() => { addGenre(item) }} key={i}>
                                 <h5>{item}</h5>
                                 <div className="genre-icon">
-                                    <img src={'http://localhost:3000/genre_icons/' + item.toLowerCase().toString().replace(/\s+/g, '') + '.png'}/>
+                                    <img src={'http://localhost:3000/genre_icons/' + item.toLowerCase().toString().replace(/\s+/g, '') + '.png'} />
                                 </div>
                             </div>
                         ))}
@@ -454,7 +481,7 @@ function UploadAssignment() {
                 <div className="file-upload-div">
                     <div className="center-stuff">
                         <div style={{ width: '95%' }}>
-                            <h2>Upload your game file here</h2>
+                            <h2>Upload your game in a .zip folder here</h2>
                         </div>
                         <div className="upload-box"
                             onDrop={(e) => { e.preventDefault(); setGameFile(e.dataTransfer.files[0]) }}
@@ -498,6 +525,25 @@ function UploadAssignment() {
                             }
                         </div>
                         <div className="clear-button" onClick={() => { setImageArray([]) }}><h2>Clear files</h2></div>
+                    </div>
+                    <div className="center-stuff">
+                        <div style={{ width: '95%' }}>
+                            <h2>Upload your game trailer here {"(.mp4 or .mov only)"}</h2>
+                        </div>
+                        <div className="upload-box"
+                            onDrop={(e) => { e.preventDefault(); setTrailerFile(e.dataTransfer.files[0]) }}
+                            onDragOver={(e) => e.preventDefault()}
+                        >
+                            {!trailerFile ?
+                                <>
+                                    <MdOutlineFileUpload className="upload-icon" />
+                                    <h2>Drag a file here or</h2>
+                                    <input ref={trailerInputFileRef} onChange={(e) => { setTrailerFile(e.target.files[0]) }} className="hidden-file" type="file"></input>
+                                    <div className="input-button" onClick={() => { trailerInputFileRef.current.click() }}><h2>Click to select a file</h2></div>
+                                </>
+                                : <><h2>{trailerFile.name}</h2></>}
+                        </div>
+                        <div className="clear-button" onClick={() => setTrailerFile(null)}><h2>Clear files</h2></div>
                     </div>
                     <div className="bottom-buttons">
                         <button onClick={() => { navigate("/") }}>Cancel Upload Request</button>

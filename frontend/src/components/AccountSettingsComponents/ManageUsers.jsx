@@ -11,6 +11,8 @@ function ManageUsers() {
     const [dateSort, setDateSort] = useState("none")
     const [users, setUsers] = useState([])
 
+    const [userCount, setUserCount] = useState(0)
+
     const [currentUserDisplay, setCurrentUserDisplay] = useState([])
     const [filteredResults, setFilteredResults] = useState([])
     const [searchResults, setSearchResults] = useState([])
@@ -20,7 +22,7 @@ function ManageUsers() {
         const fetchUsers = async () => {
             try {
                 const userInfo = await axios.get(`${backend_url}/database/adminallusers`)
-                console.log(userInfo.data.realData[0].uid)
+                setUserCount(userInfo.data.realData.length);
                 const users = userInfo.data.realData.map((item) => ({
                     email: item.email,
                     name: item.username,
@@ -46,7 +48,7 @@ function ManageUsers() {
     }
 
     const searchChange = () => {
-        
+
     }
 
     return (
@@ -66,7 +68,7 @@ function ManageUsers() {
                 <select
                     value={role}
                     onChange={(e) => setRole(e.target.value)}
-                    style={{ color: '#0000006B'}}>
+                    style={{ color: '#0000006B' }}>
                     <option value="all">All users</option>
                     <option value="user">User</option>
                     <option value="student">Student</option>
@@ -80,6 +82,7 @@ function ManageUsers() {
                     <option value="recent">Most recent</option>
                     <option value="oldest">Oldest</option>
                 </select>
+                <h2>Total users: {userCount}</h2>
             </div>
             <div className='user-outer-container'>
 
