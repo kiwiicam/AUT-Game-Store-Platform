@@ -80,8 +80,7 @@
 
 .ncard-img-large {
     width: 100%;
-    height: 200px !important;
-    aspect-ratio: 16 / 9;
+    height: 100% !important;
 }
 
 .ncard-img-large img {
