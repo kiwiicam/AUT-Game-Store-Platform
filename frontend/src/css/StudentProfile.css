@@ -45,13 +45,13 @@ h4 {
 
 .section p {
     color: lightgray !important;
-    font-size: 0.8rem;
+    font-size: 0.98rem;
     margin: 5px 0 15px 0;
 }
 
 /* Section Styles */
 .section {
-    margin-bottom: 30px;
+    margin-bottom: 5px;
 }
 
 .field-group {
@@ -60,9 +60,271 @@ h4 {
 
 .field-group label {
     color: white;
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.field-group-1 {
+    margin-bottom: 10px;
+}
+
+.field-group-1 label {
+    color: white;
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.field-group-2 {
+    margin-bottom: 30px;
+    margin-top: 40px;
+}
+
+.field-group-2 label {
+    color: white;
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* Field Container Styles - For inline editing fields */
+.field-container {
+    margin-bottom: 20px;
+    max-width: 510px;
+}
+
+.field-container label {
+    color: white;
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.field-container input[type="text"] {
+    width: 100%;
+    background-color: #D9D9D966;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    padding: 8px 10px;
+    height: 30px;
+    color: #020204;
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+.field-container input[type="text"]::placeholder {
+    color: #02022598;
+    font-size: 1rem;
+}
+
+.field-container input[type="text"]:focus {
+    outline: 2px solid #6366f1;
+    background-color: #D9D9D9AA;
+}
+
+.field-container textarea {
+    width: 100%;
+    background-color: #D9D9D966;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    padding: 10px;
+    min-height: 110px;
+    color: #020204;
+    font-size: 1rem;
+    margin-bottom: 8px;
+    resize: vertical;
+    font-family: inherit;
+    line-height: 1.4;
+}
+
+.field-container textarea::placeholder {
+    color: #02022598;
+    font-size: 1rem;
+}
+
+.field-container textarea:focus {
+    outline: 2px solid #6366f1;
+    background-color: #D9D9D9AA;
+}
+
+.field-container-2 {
+    margin-bottom: 20px;
+    max-width: 400px;
+}
+
+.field-container-2 label {
+    color: white;
     font-size: 1rem;
     margin-bottom: 8px;
     display: block;
+}
+
+.field-container-2 input[type="text"] {
+    width: 100%;
+    background-color: #D9D9D966;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    padding: 8px 10px;
+    height: 30px;
+    color: #020204;
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+.field-container-2 input[type="text"]::placeholder {
+    color: #02022598;
+    font-size: 1rem;
+}
+
+.field-container-2 input[type="text"]:focus {
+    outline: 2px solid #6366f1;
+    background-color: #D9D9D9AA;
+}
+
+.field-container-2 textarea {
+    width: 100%;
+    background-color: #D9D9D966;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    padding: 10px;
+    min-height: 110px;
+    color: #020204;
+    font-size: 1rem;
+    margin-bottom: 8px;
+    resize: vertical;
+    font-family: inherit;
+    line-height: 1.4;
+}
+
+.field-container-2 textarea::placeholder {
+    color: #02022598;
+    font-size: 1rem;
+}
+
+.field-container-2 textarea:focus {
+    outline: 2px solid #6366f1;
+    background-color: #D9D9D9AA;
+}
+
+/* Projects Section with inline inputs */
+.field-container-projects {
+    margin-bottom: 30px;
+    margin-top: 40px;
+    max-width: 510px;
+}
+
+.field-container-projects label {
+    color: white;
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.project-item {
+    background-color: #2a2f4a;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #3E4C71;
+    width: 100%;
+}
+
+.project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.project-title-container {
+    flex: 1;
+}
+
+.project-title-input {
+    width: 100%;
+    background-color: #D9D9D966;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    padding: 8px 10px;
+    height: 30px;
+    color: #020204;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.project-title-input::placeholder {
+    color: #02022598;
+    font-size: 1rem;
+}
+
+.project-title-input:focus {
+    outline: 2px solid #6366f1;
+    background-color: #D9D9D9AA;
+}
+
+.project-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.project-field-container {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.project-field-label {
+    color: lightgray;
+    font-size: 0.9rem;
+}
+
+.project-field-container input[type="text"] {
+    width: 100%;
+    background-color: #D9D9D966;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    padding: 8px 10px;
+    height: 30px;
+    color: #020204;
+    font-size: 1rem;
+    margin-bottom: 0;
+}
+
+.project-field-container input[type="text"]::placeholder {
+    color: #02022598;
+    font-size: 1rem;
+}
+
+.project-field-container input[type="text"]:focus {
+    outline: 2px solid #6366f1;
+    background-color: #D9D9D9AA;
+}
+
+.remove-project-btn {
+    background-color: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    width: 35px !important;
+    height: 25px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-left: 10px;
+}
+
+.remove-project-btn:hover {
+    background-color: #dc2626;
 }
 
 /* Personal Details Section */
@@ -72,17 +334,7 @@ h4 {
     width: 100%;
     align-items: center;
     gap: 10px;
-    max-width: 400px;
-}
-
-.personal-details-container-2 {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    align-items: center;
-    gap: 10px;
-    max-width: 400px;
-    margin-bottom: 7%;
+    max-width: 440px;
 }
 
 .personal-details-field {
@@ -96,9 +348,14 @@ h4 {
     display: flex;
     align-items: center;
     cursor: not-allowed;
+    /* Added text overflow handling */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: calc(100% - 40px);
 }
 
-/* About Me Section - Updated to match PasswordSecurity style */
+/* About Me Section */
 .about-me-container {
     display: flex;
     flex-direction: row;
@@ -123,7 +380,7 @@ h4 {
     align-items: flex-start;
 }
 
-/* Skills Section - Updated to match PasswordSecurity style */
+/* Skills Section */
 .skills-container {
     display: flex;
     flex-direction: column;
@@ -162,7 +419,7 @@ h4 {
     width: 100%;
     align-items: center;
     gap: 10px;
-    max-width: 400px;
+    max-width: 440px;
 }
 
 .contact-field {
@@ -176,6 +433,93 @@ h4 {
     display: flex;
     align-items: center;
     cursor: not-allowed;
+    /* Added text overflow handling */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: calc(100% - 40px);
+}
+
+/* Projects Section Styles */
+.projects-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.add-project-btn-container {
+    display: flex;
+}
+
+.add-project-btn-container button {
+    width: 40% !important;
+    height: 55px !important;
+    background-color: #6366f1;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s;
+}
+
+.add-project-btn-container button:hover {
+    background-color: #4f46e5;
+}
+
+.add-icon, .remove-icon {
+    font-size: 1rem;
+}
+
+/* Updated Project Image Styles */
+.project-image {
+    width: 80px;
+    height: 60px;
+    background-color: #555555;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+}
+
+.project-image.has-image {
+    background-color: transparent;
+}
+
+.project-image.clickable:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+
+.project-placeholder-content {
+    color: lightgray;
+    font-size: 0.7rem;
+    text-align: center;
+    padding: 5px;
+}
+
+.projects-grid {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+/* Skills Preview Update */
+.skills-preview {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    max-width: 200px;
 }
 
 /* Edit Icon */
@@ -202,7 +546,7 @@ h4 {
     border-radius: 8px;
     padding: 20px;
     max-width: 400px;
-    margin-top: 10px;
+    margin-bottom: 80px;
 }
 
 .preview-header {
@@ -253,19 +597,6 @@ h4 {
     margin: 5px 0;
 }
 
-.projects-grid {
-    display: flex;
-    gap: 10px;
-    margin-top: 8px;
-}
-
-.project-placeholder {
-    width: 80px;
-    height: 60px;
-    background-color: #555555;
-    border-radius: 4px;
-}
-
 .preview-contact {
     margin-top: 15px;
 }
@@ -289,13 +620,6 @@ h4 {
     color: lightgray;
     font-size: 0.9rem;
     text-align: right;
-}
-
-.skills-preview {
-    display: flex;
-    gap: 5px;
-    flex-wrap: wrap;
-    justify-content: flex-end;
 }
 
 .skill-tag {
@@ -436,6 +760,57 @@ h4 {
 .Toastify__toast--error {
     background-color: #f44336;
 }
+
+/* Removed old project field styles that are no longer needed */
+/*
+.project-field-with-edit {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.project-field {
+    background-color: #D9D9D966;
+    width: 100%;
+    height: 30px;
+    padding: 0 10px;
+    border-radius: 6px;
+    color: #020204;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    cursor: not-allowed;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: calc(100% - 40px);
+}
+
+.personal-details-container-2 {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    gap: 10px;
+    max-width: 530px;
+    margin-bottom: 7%;
+}
+
+.add-project-btn {
+    background-color: #6366f1;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.2s;
+}
+*/
 
 
 /* Extra CSS */
