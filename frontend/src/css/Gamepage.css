@@ -215,8 +215,8 @@ img {
     row-gap: 10px;
     justify-content: space-evenly;
     align-items: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .gamepage-details {
@@ -250,10 +250,14 @@ img {
 
 
 .dev-info-container {
-    margin-top: 10px;
+    margin-top: 40px;
+    margin-bottom: 40px;
     overflow-x: scroll;
     width: 100%;
-    height: auto;
+}
+
+.dev-info-container h1 {
+    margin-bottom: 10px;
 }
 
 .developer-info {

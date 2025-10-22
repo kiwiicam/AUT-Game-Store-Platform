@@ -594,8 +594,8 @@ function Gamepage() {
 
                     </div>
                 </div>
-                <h1>{gameInfo.developer}</h1>
                 <div className='dev-info-container'>
+                <h1>{gameInfo.developer}</h1>
                     <div className='developer-info'>
 
                         <div className='developer-cards'>
