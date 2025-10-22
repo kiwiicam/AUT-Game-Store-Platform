@@ -571,11 +571,6 @@ function Gamepage() {
                                 </div>
                                 <div className="skinny-white-bar"></div>
                                 <div className='gamepage-details-item'>
-                                    <h2>Timeframe</h2>
-                                    <h2>{gameInfo.timeframe}</h2>
-                                </div>
-                                <div className="skinny-white-bar"></div>
-                                <div className='gamepage-details-item'>
                                     <h2>Release Date</h2>
                                     <h2>{gameInfo.releaseDate}</h2>
                                 </div>
