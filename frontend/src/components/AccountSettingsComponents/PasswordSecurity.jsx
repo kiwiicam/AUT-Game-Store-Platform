@@ -25,7 +25,8 @@ function PasswordSecurity() {
             try {
                 const uid = localStorage.getItem('uid');
                 if (!uid) {
-                    toast.error("User not logged in");
+                    toast.error("User not logged in",{
+                        position: 'top-center', autoClose: 3000,});
                     return;
                 }
 
@@ -36,7 +37,8 @@ function PasswordSecurity() {
                 setCurrentEmail(response.data.email || localStorage.getItem('email') || "user@example.com");
                 setCurrentPhone(response.data.phone || localStorage.getItem('phone')  || "+64 ** *** ****");
             } catch (error) {
-                toast.error("Failed to load user data");
+                toast.error("Failed to load user data",{
+                    position: 'top-center', autoClose: 3000,});
             }
         };
 
@@ -51,13 +53,17 @@ function PasswordSecurity() {
 
     const handleEmailChange = async () => {
         if (!editValue || editValue.trim() === "") {
-            toast.error("Email cannot be blank");
+            toast.error("Email cannot be blank",{
+                position: 'top-center', autoClose: 3000,
+            });
             return;
         }
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(editValue)) {
-            toast.error("Please enter a valid email address");
+            toast.error("Please enter a valid email address",
+                {position: 'top-center', autoClose: 3000,}
+            );
             return;
         }
 
@@ -73,15 +79,20 @@ function PasswordSecurity() {
             localStorage.setItem('email', editValue.trim());
             setCurrentEmail(editValue.trim());
             setEditMode(false);
-            toast.success("Email updated successfully");
+            toast.success("Email updated successfully",{
+                position: 'top-center', autoClose: 3000,
+            });
         } catch (error) {
-            toast.error("Failed to update email");
+            toast.error("Failed to update email",{
+                position: 'top-center', autoClose: 3000,
+            });
         }
     };
 
     const handlePhoneChange = async () => {
         if (!editValue || editValue.trim() === "") {
-            toast.error("Phone number cannot be blank");
+            toast.error("Phone number cannot be blank",{
+                position: 'top-center', autoClose: 3000,});
             return;
         }
 
@@ -94,9 +105,12 @@ function PasswordSecurity() {
 
             setCurrentPhone(editValue.trim());
             setEditMode(false);
-            toast.success("Phone number updated successfully");
+            toast.success("Phone number updated successfully",{
+                position: 'top-center', autoClose: 3000,});
         } catch (error) {
-            toast.error("Failed to update phone number");
+            toast.error("Failed to update phone number",{
+                position: 'top-center', autoClose: 3000,
+            });
         }
     };
 
@@ -151,11 +165,6 @@ function PasswordSecurity() {
         setEditMode(false);
         setEditValue('');
         setEditField('');
-    };
-
-    const handleConfirmSave = () => {
-        setEditMode(false);
-        handleSaveEdit();
     };
 
     return (
@@ -251,7 +260,7 @@ function PasswordSecurity() {
                 {editMode && (
                     <div className="edit-bg-ps">
                         <div className="edit-box-ps">
-                            <h2>{editField === 'email' ? 'Edit Email Address' : 'Edit Phone Number'}</h2>
+                            <h2>Edit {editField === 'email' ? 'Email Address' : 'Phone Number'}</h2>
                             <input
                                 className="edit-input-ps"
                                 type={editField === 'email' ? 'email' : 'tel'}
@@ -261,7 +270,7 @@ function PasswordSecurity() {
                             />
                             <div className="button-container-ps">
                                 <button onClick={handleCancelEdit}>Cancel</button>
-                                <button onClick={handleConfirmSave}>Save</button>
+                                <button onClick={handleSaveEdit}>Save</button>
                             </div>
                         </div>
                     </div>
