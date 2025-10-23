@@ -8,7 +8,7 @@ function RecentlyDeleted() {
 
     const navigate = useNavigate();
 
-    const backend_url = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000/api/';
+    const backend_url = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000/api';
 
     const [data, setData] = useState([]);
 
@@ -16,7 +16,7 @@ function RecentlyDeleted() {
 
         const fetchData = async () => {
             try {
-                const response = await axios.get(`${backend_url}database/getPendingDeletionGames`);
+                const response = await axios.get(`${backend_url}/database/getPendingDeletionGames`);
                 setData(response.data.games);
                 console.table(response.data.games);
             }
@@ -32,7 +32,7 @@ function RecentlyDeleted() {
 
         try {
             //restore games
-            const repsonse = await axios.post(`${backend_url}database/restoregame`, { gameName: gameName });
+            const repsonse = await axios.post(`${backend_url}/database/restoregame`, { gameName: gameName });
             const newData = data.filter(item => item.gameName !== gameName);
             setData(newData);
         }
