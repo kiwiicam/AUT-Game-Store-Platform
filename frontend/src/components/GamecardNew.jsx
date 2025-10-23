@@ -22,7 +22,7 @@ function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, relea
             setTimeout(() => {
                 setid(slideid);
             }, 500)
-        }, 500);
+        }, 200);
     };
 
     const handleMouseLeave = () => {
@@ -60,7 +60,7 @@ function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, relea
             id={hover ? 'inner-id' : ''}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            style={{ maxWidth: hover ? 1.5*width : width }}
+            style={{ maxWidth: hover ? 1.5 * width : width }}
             onClick={() => navigate(`/games/${gameName}`)}
         >
             {hover ? (
@@ -106,8 +106,11 @@ function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, relea
                         {genres.map((genre, index) => (
                             <div key={index} className='ncard-genre'>
                                 <p style={{ fontSize: hover ? '0.9rem' : '0.7rem' }}>{genre}</p>
+                                <div id="smaller" className="genre-icon1">
+                                    <img src={'http://localhost:3000/genre_icons/' + genre.toLowerCase().toString().replace(/\s+/g, '') + '.png'} />
+                                </div>
                             </div>
-                            
+
                         ))}
                     </div>
                 </>

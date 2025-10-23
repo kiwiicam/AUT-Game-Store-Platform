@@ -41,43 +41,52 @@ body {
 }
 
 .banner-aut-svg {
-  width: auto;
-  height: 16rem; /* matches previous .banner-aut font-size */
-  margin: 0;
-  display: block;
+    width: auto;
+    height: 16rem;
+    /* matches previous .banner-aut font-size */
+    margin: 0;
+    display: block;
 }
 
 .banner-text {
-  display: flex;
-  align-items: flex-end;
+    display: flex;
+    align-items: flex-end;
 }
 
+.con-img img{
+    margin-bottom: 35px;
+    margin-left: 20px;
+    height: 500px;
+    width: 500px;
+    }
+
 .banner-comp {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-  color: white;
-  line-height: 1.1;
-  transform: translateY(-40px);
-  font-family: 'Bebas Neue', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    color: white;
+    line-height: 1.1;
+    transform: translateY(-40px);
+    font-family: 'Bebas Neue', sans-serif;
 }
 
 .banner-comp h2 {
-  font-size: 7.5rem;
-  font-weight: 100;
-  margin: 0;
-  color: #fff !important;
+    font-size: 7.5rem;
+    font-weight: 100;
+    margin: 0;
+    color: #fff !important;
 }
 
 .banner-comp h3 {
-  font-size: 5rem;
-  font-weight: 100;
-  margin: 0;
-  letter-spacing: 2px;
-  margin-top: -35px; /* manually tighten space */
-  margin-bottom: -37.5px;
-  margin-left: 2.5px;
+    font-size: 5rem;
+    font-weight: 100;
+    margin: 0;
+    letter-spacing: 2px;
+    margin-top: -35px;
+    /* manually tighten space */
+    margin-bottom: -37.5px;
+    margin-left: 2.5px;
 }
 
 .split-line {
@@ -124,7 +133,8 @@ body {
     width: 100%;
     height: 70vh;
     width: 70vw;
-    margin: 0 auto; /* ensure it’s centered */
+    margin: 0 auto;
+    /* ensure it’s centered */
 }
 
 .slideshow-container {
