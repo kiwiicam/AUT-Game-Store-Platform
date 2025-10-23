@@ -54,10 +54,10 @@ h3 {
 }
 
 /* Ranked Card*/
-   .ranked-card {
+.ranked-card {
     position: relative;
-    width: 260px;
-    height: 380px;
+    width: 21vw;
+    height: 62vh;
     border-radius: 12px;
     cursor: pointer;
     background-color: #2c2c2c;

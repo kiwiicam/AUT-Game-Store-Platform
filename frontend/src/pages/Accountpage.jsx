@@ -8,7 +8,7 @@ import PasswordSecurity from '../components/AccountSettingsComponents/PasswordSe
 import UploadAssignment from '../components/AccountSettingsComponents/UploadAssignment';
 import ManageUploads from '../components/AccountSettingsComponents/ManageUploads';
 import ManageUsers from '../components/AccountSettingsComponents/ManageUsers';
-import StudentProfile from '../components/StudentProfile';
+import StudentProfile from '../components/AccountSettingsComponents/StudentProfile';
 import RecentlyDeleted from '../components/AccountSettingsComponents/RecentlyDeleted';
 
 import axios from 'axios';

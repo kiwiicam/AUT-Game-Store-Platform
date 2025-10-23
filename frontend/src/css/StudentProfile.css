@@ -1,20 +1,816 @@
+/* Page Containers */
 .student-profile-container {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
     padding: 10px;
-    gap: 20px;              
+    display: flex;
+}
+
+.student-profile {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
     padding-bottom: 40px;
 }
 
+/* Text Styles */
 h1 {
     color: white;
     margin: 0;
     font-size: 1.8rem;
+    font-weight: bold;
 }
 
 h2 {
-
     color: lightgray !important;
     font-size: 0.8rem;
+    margin: 0;
 }
+
+h3 {
+    color: white;
+    font-size: 1.4rem;
+    margin: 0 0 5px 0;
+}
+
+h4 {
+    color: white;
+    font-size: 1.1rem;
+    margin: 10px 0 5px 0;
+}
+
+.section p {
+    color: lightgray !important;
+    font-size: 0.98rem;
+    margin: 5px 0 15px 0;
+}
+
+/* Section Styles */
+.section {
+    margin-bottom: 5px;
+}
+
+.field-group {
+    margin-bottom: 20px;
+}
+
+.field-group label {
+    color: white;
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.field-group-1 {
+    margin-bottom: 10px;
+}
+
+.field-group-1 label {
+    color: white;
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.field-group-2 {
+    margin-bottom: 30px;
+    margin-top: 40px;
+}
+
+.field-group-2 label {
+    color: white;
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* Field Container Styles - For inline editing fields */
+.field-container {
+    margin-bottom: 20px;
+    max-width: 510px;
+}
+
+.field-container label {
+    color: white;
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.field-container input[type="text"] {
+    width: 100%;
+    background-color: #D9D9D966;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    padding: 8px 10px;
+    height: 30px;
+    color: #020204;
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+.field-container input[type="text"]::placeholder {
+    color: #02022598;
+    font-size: 1rem;
+}
+
+.field-container input[type="text"]:focus {
+    outline: 2px solid #6366f1;
+    background-color: #D9D9D9AA;
+}
+
+.field-container textarea {
+    width: 100%;
+    background-color: #D9D9D966;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    padding: 10px;
+    min-height: 110px;
+    color: #020204;
+    font-size: 1rem;
+    margin-bottom: 8px;
+    resize: vertical;
+    font-family: inherit;
+    line-height: 1.4;
+}
+
+.field-container textarea::placeholder {
+    color: #02022598;
+    font-size: 1rem;
+}
+
+.field-container textarea:focus {
+    outline: 2px solid #6366f1;
+    background-color: #D9D9D9AA;
+}
+
+.field-container-2 {
+    margin-bottom: 20px;
+    max-width: 400px;
+}
+
+.field-container-2 label {
+    color: white;
+    font-size: 1rem;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.field-container-2 input[type="text"] {
+    width: 100%;
+    background-color: #D9D9D966;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    padding: 8px 10px;
+    height: 30px;
+    color: #020204;
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+.field-container-2 input[type="text"]::placeholder {
+    color: #02022598;
+    font-size: 1rem;
+}
+
+.field-container-2 input[type="text"]:focus {
+    outline: 2px solid #6366f1;
+    background-color: #D9D9D9AA;
+}
+
+.field-container-2 textarea {
+    width: 100%;
+    background-color: #D9D9D966;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    padding: 10px;
+    min-height: 110px;
+    color: #020204;
+    font-size: 1rem;
+    margin-bottom: 8px;
+    resize: vertical;
+    font-family: inherit;
+    line-height: 1.4;
+}
+
+.field-container-2 textarea::placeholder {
+    color: #02022598;
+    font-size: 1rem;
+}
+
+.field-container-2 textarea:focus {
+    outline: 2px solid #6366f1;
+    background-color: #D9D9D9AA;
+}
+
+/* Projects Section with inline inputs */
+.field-container-projects {
+    margin-bottom: 30px;
+    margin-top: 40px;
+    max-width: 510px;
+}
+
+.field-container-projects label {
+    color: white;
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.project-item {
+    background-color: #2a2f4a;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #3E4C71;
+    width: 100%;
+}
+
+.project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.project-title-container {
+    flex: 1;
+}
+
+.project-title-input {
+    width: 100%;
+    background-color: #D9D9D966;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    padding: 8px 10px;
+    height: 30px;
+    color: #020204;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.project-title-input::placeholder {
+    color: #02022598;
+    font-size: 1rem;
+}
+
+.project-title-input:focus {
+    outline: 2px solid #6366f1;
+    background-color: #D9D9D9AA;
+}
+
+.project-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.project-field-container {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.project-field-label {
+    color: lightgray;
+    font-size: 0.9rem;
+}
+
+.project-field-container input[type="text"] {
+    width: 100%;
+    background-color: #D9D9D966;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    padding: 8px 10px;
+    height: 30px;
+    color: #020204;
+    font-size: 1rem;
+    margin-bottom: 0;
+}
+
+.project-field-container input[type="text"]::placeholder {
+    color: #02022598;
+    font-size: 1rem;
+}
+
+.project-field-container input[type="text"]:focus {
+    outline: 2px solid #6366f1;
+    background-color: #D9D9D9AA;
+}
+
+.remove-project-btn {
+    background-color: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    width: 35px !important;
+    height: 25px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-left: 10px;
+}
+
+.remove-project-btn:hover {
+    background-color: #dc2626;
+}
+
+/* Personal Details Section */
+.personal-details-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    gap: 10px;
+    max-width: 440px;
+}
+
+.personal-details-field {
+    background-color: #D9D9D966;
+    width: 100%;
+    height: 30px;
+    padding: 0 10px;
+    border-radius: 6px;
+    color: #020204;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    cursor: not-allowed;
+    /* Added text overflow handling */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: calc(100% - 40px);
+}
+
+/* About Me Section */
+.about-me-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 7%;
+}
+
+.about-me-field {
+    background-color: #D9D9D966;
+    width: 60%;
+    min-height: 100px;
+    padding: 10px;
+    border-radius: 6px;
+    color: #020204;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    cursor: not-allowed;
+    max-width: 400px;
+    display: flex;
+    align-items: flex-start;
+}
+
+/* Skills Section */
+.skills-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 400px;
+    margin-bottom: 7%;
+}
+
+.skill-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.skill-field {
+    background-color: #D9D9D966;
+    width: 100%;
+    height: 30px;
+    padding: 0 10px;
+    border-radius: 6px;
+    color: #020204;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    cursor: not-allowed;
+    border: none;
+    outline: none;
+}
+
+/* Contact Fields */
+.contact-field-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    gap: 10px;
+    max-width: 440px;
+}
+
+.contact-field {
+    background-color: #D9D9D966;
+    width: 100%;
+    height: 30px;
+    padding: 0 10px;
+    border-radius: 6px;
+    color: #020204;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    cursor: not-allowed;
+    /* Added text overflow handling */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: calc(100% - 40px);
+}
+
+/* Projects Section Styles */
+.projects-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.add-project-btn-container {
+    display: flex;
+}
+
+.add-project-btn-container button {
+    width: 40% !important;
+    height: 55px !important;
+    background-color: #6366f1;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s;
+}
+
+.add-project-btn-container button:hover {
+    background-color: #4f46e5;
+}
+
+.add-icon, .remove-icon {
+    font-size: 1rem;
+}
+
+/* Updated Project Image Styles */
+.project-image {
+    width: 80px;
+    height: 60px;
+    background-color: #555555;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+}
+
+.project-image.has-image {
+    background-color: transparent;
+}
+
+.project-image.clickable:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+
+.project-placeholder-content {
+    color: lightgray;
+    font-size: 0.7rem;
+    text-align: center;
+    padding: 5px;
+}
+
+.projects-grid {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+/* Skills Preview Update */
+.skills-preview {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    max-width: 200px;
+}
+
+/* Edit Icon */
+.edit-icon-container {
+    cursor: pointer;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    background-color: #333333;
+    flex-shrink: 0;
+}
+
+.edit-icon {
+    color: white;
+    font-size: 18px;
+}
+
+/* Profile Preview Section */
+.preview-container {
+    background: linear-gradient(to bottom, #3E4C71, #191D31);
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 400px;
+    margin-bottom: 80px;
+}
+
+.preview-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.profile-picture {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #D9D9D9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #CCCCCC;
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.student-name {
+    color: white;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.student-age {
+    color: lightgray;
+    font-size: 0.9rem;
+}
+
+.preview-about p {
+    color: lightgray;
+    font-size: 0.85rem;
+    line-height: 1.3;
+    margin: 5px 0;
+}
+
+.preview-contact {
+    margin-top: 15px;
+}
+
+.contact-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    padding: 5px 0;
+}
+
+.contact-label {
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 500;
+    min-width: 60px;
+}
+
+.contact-value {
+    color: lightgray;
+    font-size: 0.9rem;
+    text-align: right;
+}
+
+.skill-tag {
+    background-color: #555555;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.75rem;
+}
+
+.view-portfolio-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.view-portfolio-btn {
+    background-color: #6366f1;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 30px;
+    font-size: 1rem;
+    cursor: pointer;
+    width: 100%;
+}
+
+.view-portfolio-btn:hover {
+    background-color: #4f46e5;
+}
+
+/* Edit Modal */
+.edit-bg-sp {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.edit-box-sp {
+    position: fixed;
+    width: 400px;
+    min-height: 150px;
+    background: linear-gradient(to bottom, #3E4C71, #191D31);
+    display: flex;
+    flex-direction: column;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    z-index: 999;
+}
+
+.edit-box-sp h2 {
+    color: white !important;
+    font-size: 1.2rem !important;
+    margin: 0 0 16px 0;
+}
+
+.edit-input-sp {
+    border-radius: 6px;
+    width: 100%;
+    background-color: #D9D9D966;
+    outline: none;
+    border: none;
+    padding: 8px 10px;
+    height: 30px;
+    color: #080808cf;
+    font-size: 1rem;
+    margin-bottom: 15px;
+}
+
+.edit-textarea-sp {
+    border-radius: 6px;
+    width: 100%;
+    background-color: #D9D9D966;
+    outline: none;
+    border: none;
+    padding: 10px;
+    min-height: 110px;
+    color: #080808cf;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+.edit-input-sp::placeholder,
+.edit-textarea-sp::placeholder {
+    color: #02022598;
+    font-size: 1rem;
+}
+
+.edit-input-sp:focus,
+.edit-textarea-sp:focus {
+    outline: none;
+    border: none;
+}
+
+.button-container-sp {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 10px;
+}
+
+.button-container-sp button {
+    width: 80px;
+    height: 35px;
+    background-color: #333333;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.button-container-sp button:hover {
+    background-color: #555555;
+}
+
+/* Toast Styling */
+.Toastify__toast-container {
+    z-index: 9999;
+}
+
+.Toastify__toast--success {
+    background-color: #4caf50;
+}
+
+.Toastify__toast--error {
+    background-color: #f44336;
+}
+
+/* Removed old project field styles that are no longer needed */
+/*
+.project-field-with-edit {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.project-field {
+    background-color: #D9D9D966;
+    width: 100%;
+    height: 30px;
+    padding: 0 10px;
+    border-radius: 6px;
+    color: #020204;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    cursor: not-allowed;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: calc(100% - 40px);
+}
+
+.personal-details-container-2 {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    gap: 10px;
+    max-width: 530px;
+    margin-bottom: 7%;
+}
+
+.add-project-btn {
+    background-color: #6366f1;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.2s;
+}
+*/
 
 
 /* Extra CSS */

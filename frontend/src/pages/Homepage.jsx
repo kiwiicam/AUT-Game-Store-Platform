@@ -165,6 +165,46 @@ function Homepage() {
     return (
         <div className='homepage-background'>
             <div className='homepage-content'>
+                <div className='homepage-banner'>
+                    <div className='banner-text'>
+                        {/* Replace the H1 with SVG */}
+                        <svg
+                            className='banner-aut-svg'
+                            viewBox='0 0 140 130'
+                            xmlns='http://www.w3.org/2000/svg'
+                        >
+                            <defs>
+                                <linearGradient id='autGradient' x1='0%' y1='0%' x2='0%' y2='100%'>
+                                    <stop offset='0%' stopColor='#00b4ff' />
+                                    <stop offset='100%' stopColor='#0061ff' />
+                                </linearGradient>
+                            </defs>
+
+                            <text
+                                x='50%'
+                                y='60%'
+                                textAnchor='middle'
+                                dominantBaseline='middle'
+                                fontFamily="'Bebas Neue', sans-serif"
+                                fontSize='110'
+                                fill='transparent'
+                                stroke='white'
+                                strokeWidth='2'
+                                paintOrder='stroke'
+                            >
+                                AUT
+                            </text>
+                        </svg>
+
+                        <div className='banner-comp'>
+                            <h2>COMP710</h2>
+                            <h3>GAME PROGRAMMING</h3>
+                        </div>
+                        <div className='con-img'>
+                            <img src='http://localhost:3000/controller3.png' alt="AUT Logo" />
+                        </div>
+                    </div>
+                </div>
                 <div className='featured-games'>
                     <h1>Featured</h1>
                     <div className='split-line'></div>

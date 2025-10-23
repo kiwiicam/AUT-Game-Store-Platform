@@ -4,7 +4,7 @@
 }
 
 .inner-ncard {
-    height: 400px;
+    height: 58vh;
     background-color: #14141460;
     padding: 12px;
     border-radius: 15px;
@@ -20,15 +20,27 @@
     cursor: pointer;
 }
 
+.inner-ncard h2 {
+    margin-top: -5px !important;
+    margin-bottom: 0px !important;
+}
+
 .inner-ncard:hover {
     position: relative;
     z-index: 10;
-    flex: 1.3;
+    flex: 1.3 !important;
 }
 
 .ncard-img {
     width: 100%;
-    height: 200px;
+    height: 25vh;
+}
+
+.genre-icon1 img{
+    margin: 0 !important;
+    width: 25px !important;
+    height: 25px !important;
+    padding: 0;
 }
 
 .ncard-img img {
@@ -38,23 +50,24 @@
 }
 
 .ncard-genres {
-    margin-top: 2px;
+    margin-top: 5px;
     display: flex;
     flex-wrap: wrap;
     /* allow items to go to next row */
     justify-content: center;
     /* center items horizontally */
-    column-gap: 15px;
-    row-gap: 5px;
+    column-gap: 7px;
+    row-gap: 7px;
     /* space between items */
+    height: 5vh !important;
 }
 
 
 .ncard-genre {
     width: auto;
     height: auto;
-    padding: 9px;
-    border-radius: 8px;
+    padding: 5px;
+    border-radius: 5px;
     background-color: #413E7160;
     display: flex;
     align-items: center;
@@ -62,7 +75,7 @@
 }
 
 .ncard-genre p {
-    font-size: 1.1rem;
+    font-size: 0.8rem !important;
     margin: 0;
 }
 
@@ -75,7 +88,8 @@
 
 .ncard-img-large {
     width: 100%;
-    height: 200px !important;
+    height: 100% !important;
+    overflow: hidden;
 }
 
 .ncard-img-large img {
@@ -87,14 +101,19 @@
 .ncard-img-large video {
     width: 100%;
     height: 100%;
-    object-fit: fill !important;
+    object-fit: cover !important;
     border-radius: 10px;
 }
 
 .ncard-genres-hover {
     width: auto;
+    height: 6.0vh;
     display: flex;
-    gap: 10px;
+    gap: 7px;
+}
+
+.ncard-genres-hover p{
+    font-size: 0.8rem;
 }
 
 .ncard-likes {
@@ -104,6 +123,7 @@
     align-items: center;
     gap: 8px;
     color: #fff;
+    margin-top: -10px;
 }
 
 .ncard-likes p {
@@ -114,4 +134,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.align-ncard h2{
+    font-size: 0.9rem;
+    margin-top: -10px !important;
+}
+
+.genre-icon img{
+    width: 80%;
+    height: 80%;
 }
