@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter&display=swap');
 
 body {
     font-family: 'Inter', sans-serif;
@@ -27,7 +28,56 @@ body {
 .homepage-content h1 {
     font-size: 1.4rem;
     font-weight: bold;
-    margin-top: 50px;
+    margin-top: 40px;
+}
+
+/* ===== AUT COMP710 Banner ===== */
+
+.homepage-banner {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    width: 100%;
+}
+
+.banner-aut-svg {
+  width: auto;
+  height: 16rem; /* matches previous .banner-aut font-size */
+  margin: 0;
+  display: block;
+}
+
+.banner-text {
+  display: flex;
+  align-items: flex-end;
+}
+
+.banner-comp {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  color: white;
+  line-height: 1.1;
+  transform: translateY(-40px);
+  font-family: 'Bebas Neue', sans-serif;
+}
+
+.banner-comp h2 {
+  font-size: 7.5rem;
+  font-weight: 100;
+  margin: 0;
+  color: #fff !important;
+}
+
+.banner-comp h3 {
+  font-size: 5rem;
+  font-weight: 100;
+  margin: 0;
+  letter-spacing: 2px;
+  margin-top: -35px; /* manually tighten space */
+  margin-bottom: -37.5px;
+  margin-left: 2.5px;
 }
 
 .split-line {
@@ -72,7 +122,9 @@ body {
     border-radius: 15px;
     position: relative;
     width: 100%;
-    height: 80vh;
+    height: 70vh;
+    width: 70vw;
+    margin: 0 auto; /* ensure it’s centered */
 }
 
 .slideshow-container {

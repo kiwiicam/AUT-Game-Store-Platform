@@ -15,10 +15,13 @@ function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, relea
 
 
     const handleMouseEnter = () => {
-        setHover(true);
         // Start a timeout
         hoverTimeout.current = setTimeout(() => {
-            setid(slideid);
+            setHover(true);
+
+            setTimeout(() => {
+                setid(slideid);
+            }, 500)
         }, 500);
     };
 
@@ -57,7 +60,7 @@ function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, relea
             id={hover ? 'inner-id' : ''}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            style={{ maxWidth: hover ? 'none' : width }}
+            style={{ maxWidth: hover ? 1.5*width : width }}
             onClick={() => navigate(`/games/${gameName}`)}
         >
             {hover ? (
@@ -88,7 +91,7 @@ function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, relea
                     <div className='align-ncard'>
                         <h2>File Size: {size}GB | Release Date: {release}</h2>
                         <div className='ncard-likes'>
-                            <BiSolidLike style={{ fontSize: '2rem' }} /> <p>{likes}</p>
+                            <BiSolidLike style={{ fontSize: '1.8rem' }} /> <p>{likes}</p>
                         </div>
                     </div>
                 </>
@@ -103,10 +106,8 @@ function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, relea
                         {genres.map((genre, index) => (
                             <div key={index} className='ncard-genre'>
                                 <p style={{ fontSize: hover ? '0.9rem' : '0.7rem' }}>{genre}</p>
-                                <div className="genre-icon">
-                                    <img src={'http://localhost:3000/genre_icons/' + genre.toLowerCase().toString().replace(/\s+/g, '') + '.png'} />
-                                </div>
                             </div>
+                            
                         ))}
                     </div>
                 </>
