@@ -6,7 +6,7 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import stream from 'stream';
 import { get } from 'http';
 import { getuid } from './databasecontroller.js';
-import axios from 'axios';
+
 export async function getpfp(req, res) {
     const type = req.body.type;
     var uid = req.body.id;

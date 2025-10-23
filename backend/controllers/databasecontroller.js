@@ -7,6 +7,9 @@ import fetch from 'node-fetch';
 import FormData from 'form-data';
 import axios from 'axios';
 import fs from 'fs';
+
+const backend_url = process.env.BACKEND_URL || 'http://localhost:8000/api';
+
 export async function getuid(req, res) {
     const username = req.body.username;
     try {
@@ -56,7 +59,7 @@ export async function addUser(req, res) {
         formData.append('uid', uid);
         formData.append('image', fs.createReadStream('./default-pfp.png'), 'pfp.png');
         const response = await axios.post(
-            'http://localhost:8000/api/storage/setpfp',
+            `${backend_url}/storage/setpfp`,
             formData,
             { headers: formData.getHeaders() }
         );
