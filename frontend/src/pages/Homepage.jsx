@@ -201,7 +201,7 @@ function Homepage() {
                             <h3>GAME PROGRAMMING</h3>
                         </div>
                         <div className='con-img'>
-                            <img src='http://localhost:3000/controller3.png' alt="AUT Logo" />
+                            <img src='https://deployment-test.d2mwlph9qkry2s.amplifyapp.com/controller3.png' alt="AUT Logo" />
                         </div>
                     </div>
                 </div>
