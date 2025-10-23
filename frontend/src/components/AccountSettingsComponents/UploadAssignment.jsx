@@ -322,7 +322,7 @@ function UploadAssignment() {
 
             }
             await handleAssignmentUploadFiles();
-            const response = await axios.post('http://localhost:8000/api/database/uploadgameinfo', dataToSend)
+            const response = await axios.post(`${backend_url}/database/uploadgameinfo`, dataToSend);
             setLoading(false);
             toast.success('Your game has been successfully uploaded!', {
                 position: 'top-center',
