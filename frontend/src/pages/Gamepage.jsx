@@ -128,12 +128,12 @@ function Gamepage() {
                 }))
                 for (const comment of commentState) {
                     try {
-                        const image = await axios.post(`http://localhost:8000/api/storage/getpfp`,
+                        const image = await axios.post(`${backend_url}/storage/getpfp`,
                             {
                                 type: 'uid',
                                 id: comment.uid
                             });
-                        comment.picsrc = image.data.imageUrl;
+                        comment.picsrc = image.data.imageUrl || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
 
                     }
 
@@ -595,7 +595,7 @@ function Gamepage() {
                     </div>
                 </div>
                 <div className='dev-info-container'>
-                <h1>{gameInfo.developer}</h1>
+                    <h1>{gameInfo.developer}</h1>
                     <div className='developer-info'>
 
                         <div className='developer-cards'>
