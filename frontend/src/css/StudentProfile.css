@@ -66,6 +66,7 @@ h4 {
 }
 
 .field-group-1 {
+    max-width: 440px;
     margin-bottom: 10px;
 }
 
@@ -347,7 +348,6 @@ h4 {
     font-size: 1rem;
     display: flex;
     align-items: center;
-    cursor: not-allowed;
     /* Added text overflow handling */
     white-space: nowrap;
     overflow: hidden;
@@ -374,7 +374,6 @@ h4 {
     color: #020204;
     font-size: 0.9rem;
     line-height: 1.4;
-    cursor: not-allowed;
     max-width: 400px;
     display: flex;
     align-items: flex-start;
@@ -407,7 +406,6 @@ h4 {
     font-size: 1rem;
     display: flex;
     align-items: center;
-    cursor: not-allowed;
     border: none;
     outline: none;
 }
@@ -432,7 +430,6 @@ h4 {
     font-size: 1rem;
     display: flex;
     align-items: center;
-    cursor: not-allowed;
     /* Added text overflow handling */
     white-space: nowrap;
     overflow: hidden;
@@ -469,7 +466,8 @@ h4 {
     background-color: #4f46e5;
 }
 
-.add-icon, .remove-icon {
+.add-icon,
+.remove-icon {
     font-size: 1rem;
 }
 
@@ -665,6 +663,7 @@ h4 {
     z-index: 999;
 }
 
+
 .edit-box-sp {
     position: fixed;
     width: 400px;
@@ -698,6 +697,11 @@ h4 {
     color: #080808cf;
     font-size: 1rem;
     margin-bottom: 15px;
+}
+
+.student-profile input:focus {
+    outline: 2px solid #6366f1;
+    background-color: #D9D9D9AA;
 }
 
 .edit-textarea-sp {
@@ -759,6 +763,11 @@ h4 {
 
 .Toastify__toast--error {
     background-color: #f44336;
+}
+
+.save-profile {
+    width: 200px !important;
+    border-radius: 8px !important;
 }
 
 /* Removed old project field styles that are no longer needed */

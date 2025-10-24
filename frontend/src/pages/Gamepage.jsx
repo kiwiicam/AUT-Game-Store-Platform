@@ -600,7 +600,7 @@ function Gamepage() {
 
                         <div className='developer-cards'>
                             {developerCard.map((card, i) => (
-                                <Developercard key={i} name={card.name} age={card.age} picture={card.picture} about={card.about} projects={card.projects} email={card.email} phone={card.phone} skills={card.skills} />
+                                <Developercard key={i} name={card.name} age={card.age} picture={card.picture} about={card.about} projects={card.projects} email={card.email} phone={card.phone} skills={card.skills} forGame={true} />
                             ))}
                         </div>
                     </div>

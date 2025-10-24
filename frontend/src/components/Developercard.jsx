@@ -1,6 +1,6 @@
 import React from "react";
 import "../css/Developercard.css"
-function Developercard({ name, age, picture, about, projects, email, phone, skills }) {
+function Developercard({ name, age, picture, about, projects, email, phone, skills, forGame }) {
     return (
         <div className="developer-card">
             <div className="upper-card">
@@ -18,13 +18,28 @@ function Developercard({ name, age, picture, about, projects, email, phone, skil
             <p>{about}</p>
             <h2>Projects</h2>
             <div className="skinny-grey-line"></div>
-            <div className="dev-project">
-                {projects.map((project, i) => (
-                    <div key={i} className="project">
-                        <img src={project.src} alt={project.name} />
+            {forGame ?
+                <div className="dev-project">
+                    {projects.map((project, i) => (
+                        <div key={i} className="project">
+                            <img src={project.src} alt={project.name} />
+                        </div>
+                    ))}
+                </div> :
+                <div className="dev-project">
+                    <div className="no">
+                        <h2>
+                            Games you are tagged in will appear on your developer cards
+                        </h2>
                     </div>
-                ))}
-            </div>
+                    <div className="no">
+                        <h2>
+                            Games you are tagged in will appear on your developer cards
+                        </h2>
+                    </div>
+                </div>
+
+            }
             <div className="email-div"><h2>Email</h2> <h2>{email}</h2></div>
             <div className="skinny-grey-line"></div>
             <div className="email-div"><h2>Phone</h2> <h2>{phone}</h2></div>

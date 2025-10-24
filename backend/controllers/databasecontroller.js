@@ -1043,3 +1043,71 @@ export async function classicGames(req, res) {
         res.status(500).json({ error: "Failed to retrieve oldest releases" });
     }
 }
+
+export async function updateStudentInfo(req, res) {
+    try {
+        const { uid, aboutMe, skills, contactEmail, contactPhone, portfolioLink, studentName, studentAge } = req.body;
+
+        const params = {
+            TableName: "userTable",
+            Key: {
+                uid: { S: uid },
+            },
+            UpdateExpression: "SET aboutMe = :aboutMe, skills = :skills, contactEmail = :contactEmail, contactPhone = :contactPhone, portfolioLink = :portfolioLink, studentName = :studentName, studentAge = :studentAge",
+            ExpressionAttributeValues: {
+                ":aboutMe": { S: aboutMe },
+                ":skills": { L: skills.map(skill => ({ S: skill })) },
+                ":contactEmail": { S: contactEmail },
+                ":contactPhone": { S: contactPhone },
+                ":portfolioLink": { S: portfolioLink },
+                ":studentName": { S: studentName },
+                ":studentAge": { N: studentAge.toString() },
+            },
+            ReturnValues: "ALL_NEW"
+        };
+
+        const command = new UpdateItemCommand(params);
+
+        await client.send(command);
+
+        res.status(200).json({ message: "Student info updated successfully" });
+    }
+    catch (error) {
+        console.log(error.message + " Student info update failed");
+        res.status(500).json({ error: "Failed to update student info" });
+    }
+}
+
+export async function getStudentInfo(req, res) {
+    try {
+
+        const { uid } = req.body;
+
+        const params = {
+            TableName: "userTable",
+            Key: {
+                uid: { S: uid },
+            },
+        };
+        const response = await client.send(new GetItemCommand(params));
+        const data = unmarshall(response.Item);
+
+        console.log(JSON.stringify(data, null, 2) + " This is student info data");
+
+        const correctData = {
+            aboutMe: data.aboutMe || "",
+            skills: data.skills ? data.skills.map(skill => skill) : [],
+            contactEmail: data.contactEmail || "",
+            contactPhone: data.contactPhone || "",
+            portfolioLink: data.portfolioLink || "",
+            studentName: data.studentName || "",
+            studentAge: data.studentAge || null,
+        }
+
+        res.status(200).json({ message: "Student info retrieved successfully", correctData });
+    }
+    catch (error) {
+        console.log(error.message);
+        res.status(500).json({ error: "Failed to retrieve student info" });
+    }
+}
