@@ -7,25 +7,19 @@ import fetch from 'node-fetch';
 import FormData from 'form-data';
 import axios from 'axios';
 import fs from 'fs';
+import { group } from 'console';
 
 const backend_url = process.env.BACKEND_URL || 'http://localhost:8000/api';
 
 export async function getuid(req, res) {
     const username = req.body.username;
     try {
-        const params = {
-            TableName: "userTable",
-            Key: {
-
-                "username": { S: username },
-            },
-
-        };
-        const response = await client.send(new GetItemCommand(params));
-        const plainItem = unmarshall(response.Item);
+        const data = await client.send(new ScanCommand({ TableName: "userTable" }));
+        const realData = data.Items.map(item => unmarshall(item));
+        const user = realData.find(u => u.username === username);
         res.status(200).json({
             //  message: "User info fetched successfully",
-            uid: plainItem.uid,
+            uid: user.uid,
 
         });
 
@@ -173,7 +167,8 @@ export async function uploadGameInformation(req, res) {
     try {
         const data = await client.send(new PutItemCommand(params));
         res.status(200).json({ message: "Game information uploaded successfully", data });
-        console.log("Game information uploaded successfully:", data);
+        console.log("----------------------------------------------");
+        console.log(groupMembers)
     } catch (err) {
         console.log("Error uploading game information:", err);
         res.status(500).json({ error: "Failed to upload game information" });
@@ -228,17 +223,19 @@ export async function getUserSearch(req, res) {
         TableName: "userTable"
     }
     try {
-        const result = await client.send(new ScanCommand(params))
+        const result = await client.send(new ScanCommand(params));
         const response = result.Items.map(item => unmarshall(item));
-        const regex = new RegExp(`^${searchQuery}`, 'i')
-        const searchResult = response.filter(item => regex.test(item.username));
+        const regex = new RegExp(`^${searchQuery}`, 'i');
 
-        const namelist = []
+        const searchResult = response.filter(item => regex.test(item.username) && item.accountType === 'student');
+
+        const namelist = [];
         for (var person of searchResult) {
             namelist.push({
                 name: person.username,
-                src: "https://wallpapers.com/images/hd/blank-default-pfp-wue0zko1dfxs9z2c.jpg"
-            })
+                src: "https://wallpapers.com/images/hd/blank-default-pfp-wue0zko1dfxs9z2c.jpg",
+                accountType: person.accountType
+            });
         }
         console.log(namelist)
         res.status(200).json({ namelist });
@@ -262,9 +259,11 @@ export async function getGameInformation(req, res) {
         const response = await client.send(new GetItemCommand(params))
         const data = unmarshall(response.Item)
         const genreArray = Array.from(data.selectedGenres);
+        const groupMembers = Array.from(data.groupMembers || []);
         res.status(200).json({
             gameData: data,
-            genreArray
+            genreArray,
+            groupMembers
         });
     } catch (err) {
         console.log("Error retrieving featured games:", err);
@@ -427,6 +426,40 @@ export async function retrieveGamesForAdmin(req, res) {
     }
 }
 
+export async function addGameToUser(userList, gameName) {
+    try {
+        console.log("adding game to users", userList, " ", gameName);
+        for (const user of userList) {
+            const params = {
+                TableName: "userTable",
+                Key: {
+                    uid: { S: user },
+                }
+            }
+            const response = await client.send(new GetItemCommand(params));
+            const plainItem = unmarshall(response.Item);
+            let userGames = Array.from(plainItem.games || []);
+            userGames.push(gameName);
+            const updateParams = {
+                TableName: "userTable",
+                Key: {
+                    uid: { S: user },
+                },
+                UpdateExpression: `SET games = :newValue`,
+                ExpressionAttributeValues: {
+                    ":newValue": { SS: userGames },
+                },
+            };
+            await client.send(new UpdateItemCommand(updateParams));
+            console.log("added game to user:", user.uid, " ", gameName);
+        }
+    }
+    catch (err) {
+        console.log(err.message, "error adding game to user");
+        throw new Error("Failed to add game to user");
+    }
+}
+
 export async function approveGames(req, res) {
     try {
         const approveList = req.body
@@ -446,12 +479,16 @@ export async function approveGames(req, res) {
 
             const items = await client.send(new GetItemCommand(getPararms))
 
-            const plainItems = unmarshall(items.Item);
 
-            console.log(plainItems)
+            const plainItems = unmarshall(items.Item);
+            const groupMembers = plainItems.groupMembers ? Array.from(plainItems.groupMembers) : [];
+
+            console.log(group.length)
             const putParams = {
                 TableName: "gameInformation",
                 Item: {
+                    username: { S: plainItems.username },
+                    uid: { S: plainItems.uid },
                     gameName: { S: plainItems.gameName },
                     gameDesc: { S: plainItems.gameDesc },
                     teamName: { S: plainItems.teamName },
@@ -463,6 +500,23 @@ export async function approveGames(req, res) {
                     fileSize: { N: plainItems.fileSize.toString() },
                 }
             }
+            if (plainItems.projectType === "Group Game Project" && groupMembers.length > 0) {
+                putParams.Item.groupMembers = { SS: groupMembers };
+            }
+
+            if (group.length > 0) {
+                let list = []
+                for (const member of group) {
+                    const response = await axios.post(`${backend_url}/database/getuid`, {
+                        username: member
+                    })
+                    list.push(response.data.uid)
+                }
+                list.push(plainItems.uid)
+                await addGameToUser(list, plainItems.gameName);
+            }
+
+
 
             await client.send(new PutItemCommand(putParams))
 
@@ -509,6 +563,8 @@ export async function denyGames(req, res) {
 
             const epochtime = thirtyDaysLater / 1000;
 
+            const groupMembers = plainItems.groupMembers ? Array.from(plainItems.groupMembers) : [];
+
             const putParams = {
                 TableName: "PendingDeletion",
                 Item: {
@@ -523,8 +579,11 @@ export async function denyGames(req, res) {
                     fileSize: { N: plainItems.fileSize.toString() },
                     username: { S: plainItems.username },
                     uid: { S: plainItems.uid },
-                    expires: { N: epochtime.toString() }
+                    expires: { N: epochtime.toString() },
                 }
+            }
+            if (plainItems.projectType === "Group Game Project" && groupMembers.length > 0) {
+                putParams.Item.groupMembers = { SS: groupMembers };
             }
 
             await client.send(new PutItemCommand(putParams))
@@ -555,7 +614,7 @@ export async function denyGames(req, res) {
         res.status(200).json({ message: "Success" });
     }
     catch (error) {
-        console.log(error.message)
+        console.log(error.message, "error denying game")
         res.status(500).json({ error: error.message });
     }
 
@@ -862,9 +921,13 @@ export async function restoreGame(req, res) {
 
         const plainItems = unmarshall(gameItem.Item);
 
+        const groupMembers = plainItems.groupMembers ? Array.from(plainItems.groupMembers) : [];
+
         const putParams = {
             TableName: "AwaitingGames",
             Item: {
+                username: { S: plainItems.username },
+                uid: { S: plainItems.uid },
                 gameName: { S: plainItems.gameName },
                 gameDesc: { S: plainItems.gameDesc },
                 teamName: { S: plainItems.teamName },
@@ -878,6 +941,9 @@ export async function restoreGame(req, res) {
                 uid: { S: plainItems.uid }
             }
 
+        }
+        if (plainItems.projectType === "Group Game Project" && groupMembers.length > 0) {
+            putParams.Item.groupMembers = { SS: groupMembers };
         }
 
         const data = await client.send(new PutItemCommand(putParams));
@@ -1092,8 +1158,6 @@ export async function getStudentInfo(req, res) {
         const response = await client.send(new GetItemCommand(params));
         const data = unmarshall(response.Item);
 
-        console.log(JSON.stringify(data, null, 2) + " This is student info data");
-
         const correctData = {
             aboutMe: data.aboutMe || "",
             skills: data.skills ? data.skills.map(skill => skill) : [],
@@ -1109,5 +1173,48 @@ export async function getStudentInfo(req, res) {
     catch (error) {
         console.log(error.message);
         res.status(500).json({ error: "Failed to retrieve student info" });
+    }
+}
+
+export async function getDevInfoGamePage(req, res) {
+    try {
+        let devarray = []
+        console.log("getting dev info")
+        console.log(req.body.groupArray);
+        const groupList = req.body.groupArray;
+        for (const member of groupList) {
+            const respo = await axios.post(`${backend_url}/database/getuid`, {
+                username: member
+            })
+
+
+
+            const params = {
+                TableName: "userTable",
+                Key: {
+                    uid: { S: respo.data.uid },
+                },
+            };
+            const response = await client.send(new GetItemCommand(params));
+            const data = unmarshall(response.Item);
+
+            const correctData = {
+                aboutMe: data.aboutMe || "",
+                skills: data.skills ? data.skills.map(skill => skill) : [],
+                contactEmail: data.contactEmail || "",
+                contactPhone: data.contactPhone || "",
+                portfolioLink: data.portfolioLink || "",
+                studentName: data.studentName || "",
+                studentAge: data.studentAge || null,
+            }
+            devarray.push(correctData);
+        }
+        res.status(200).json({ developerInfo: devarray });
+
+
+    }
+    catch (error) {
+        console.log(error.message);
+        res.status(500).json({ error: "Failed to retrieve developer info" });
     }
 }

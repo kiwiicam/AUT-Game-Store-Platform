@@ -15,7 +15,7 @@ const app = express();
 app.use(express.json());
 
 const allowedOrigins = [
-  'https://deployment-test.d2mwlph9qkry2s.amplifyapp.com',
+  'https://deployment-test.d2hgkx9fts023b.amplifyapp.com',
   'http://localhost:3000'
 ];
 

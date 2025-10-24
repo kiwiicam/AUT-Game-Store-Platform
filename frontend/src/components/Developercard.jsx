@@ -1,6 +1,6 @@
 import React from "react";
 import "../css/Developercard.css"
-function Developercard({ name, age, picture, about, projects, email, phone, skills, forGame }) {
+function Developercard({ name, age, picture, about, projects, email, phone, skills, link, forGame }) {
     return (
         <div className="developer-card">
             <div className="upper-card">
@@ -57,7 +57,7 @@ function Developercard({ name, age, picture, about, projects, email, phone, skil
                 </div>
             </div>
             <div className="skinny-grey-line"></div>
-            <div className="button-con">
+            <div className="button-con" onClick={() => window.open(link, '_blank').focus()}>
                 <button className="port-button">View portfolio</button>
             </div>
 

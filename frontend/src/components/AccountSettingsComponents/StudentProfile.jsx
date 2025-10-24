@@ -39,6 +39,7 @@ function StudentProfile() {
                 setPortfolioLink(response.data.correctData.portfolioLink || "Portfolio link not set");
                 setStudentName(response.data.correctData.studentName || "Name not set");
                 setStudentAge(response.data.correctData.studentAge || "Age not set");
+                console.log(response.data.correctData.skills);
             } catch (error) {
                 toast.error("Failed to load user data");
             }
@@ -199,6 +200,7 @@ function StudentProfile() {
                         email={contactEmail === '' ? 'Email not set' : contactEmail}
                         phone={contactPhone === '' ? 'Phone not set' : contactPhone}
                         skills={skills.length === 0 ? ['Skill not set'] : skills}
+                        link={portfolioLink === '' ? '' : portfolioLink}
                         forGame={false}
                     />
                 </div>
