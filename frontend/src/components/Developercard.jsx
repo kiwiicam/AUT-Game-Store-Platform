@@ -3,6 +3,8 @@ import "../css/Developercard.css";
 import { useNavigate } from 'react-router-dom';
 function Developercard({ name, age, picture, about, projects, email, phone, skills, link, forGame }) {
     const navigate = useNavigate();
+
+    console.log(projects);
     return (
         <div className="developer-card">
             <div className="upper-card">
@@ -23,7 +25,7 @@ function Developercard({ name, age, picture, about, projects, email, phone, skil
             {forGame ?
                 <div className="dev-project">
                     {projects.slice(0, 2).map((project, i) => (
-                        <div key={i} className="project" onClick={navigate(`/games/${project.name}`)}>
+                        <div key={i} className="project" onClick={() => navigate(`/games/${project.gameName}`)}>
                             <img src={project.imageUrl} alt={project.name} />
                         </div>
                     ))}

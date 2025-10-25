@@ -160,7 +160,6 @@ function Gamepage() {
             try {
                 devTeam.push(uploader);
                 const developerInfo = await axios.post(`${backend_url}/database/getdeveloperinfogame`, { groupArray: devTeam })
-                console.log(developerInfo.data.developerInfo);
                 setDeveloperCard(developerInfo.data.developerInfo || []);
             }
             catch (err) {
