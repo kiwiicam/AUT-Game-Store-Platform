@@ -31,9 +31,9 @@ function StudentProfile() {
                 const response = await axios.post(`${backend_url}/database/getstudentinfo`, {
                     uid
                 });
-
+                const skillsFromDb = response.data.correctData.skills;
                 setAboutMe(response.data.correctData.aboutMe || "About section not set");
-                setSkills(response.data.correctData.skills || ['Skill not set', 'Skill not set', 'Skill not set', 'Skill not set']);
+                setSkills(Array.isArray(skillsFromDb) && skillsFromDb.length > 0 ? skillsFromDb : ['Skill not set', 'Skill not set', 'Skill not set', 'Skill not set']);
                 setContactEmail(response.data.correctData.contactEmail || "Email not set");
                 setContactPhone(response.data.correctData.contactPhone || "Phone not set");
                 setPortfolioLink(response.data.correctData.portfolioLink || "Portfolio link not set");
@@ -117,13 +117,13 @@ function StudentProfile() {
                     </div>
 
                     <div className="field-container">
-                        <label>About Me (250 Character limit)</label>
+                        <label>About Me (200 Character limit)</label>
                         <textarea
                             placeholder="Write a small paragraph about yourself..."
                             value={aboutMe}
                             onChange={(e) => setAboutMe(e.target.value)}
                             onFocus={() => setAboutMe('')}
-                            maxLength={250}
+                            maxLength={200}
                         />
                     </div>
 

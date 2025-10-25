@@ -1,6 +1,8 @@
 import React from "react";
-import "../css/Developercard.css"
+import "../css/Developercard.css";
+import { useNavigate } from 'react-router-dom';
 function Developercard({ name, age, picture, about, projects, email, phone, skills, link, forGame }) {
+    const navigate = useNavigate();
     return (
         <div className="developer-card">
             <div className="upper-card">
@@ -20,9 +22,9 @@ function Developercard({ name, age, picture, about, projects, email, phone, skil
             <div className="skinny-grey-line"></div>
             {forGame ?
                 <div className="dev-project">
-                    {projects.map((project, i) => (
-                        <div key={i} className="project">
-                            <img src={project.src} alt={project.name} />
+                    {projects.slice(0, 2).map((project, i) => (
+                        <div key={i} className="project" onClick={navigate(`/games/${project.name}`)}>
+                            <img src={project.imageUrl} alt={project.name} />
                         </div>
                     ))}
                 </div> :

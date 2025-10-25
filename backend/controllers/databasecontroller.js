@@ -483,7 +483,6 @@ export async function approveGames(req, res) {
             const plainItems = unmarshall(items.Item);
             const groupMembers = plainItems.groupMembers ? Array.from(plainItems.groupMembers) : [];
 
-            console.log(group.length)
             const putParams = {
                 TableName: "gameInformation",
                 Item: {
@@ -504,9 +503,11 @@ export async function approveGames(req, res) {
                 putParams.Item.groupMembers = { SS: groupMembers };
             }
 
-            if (group.length > 0) {
+
+
+            if (groupMembers.length > 0) {
                 let list = []
-                for (const member of group) {
+                for (const member of groupMembers) {
                     const response = await axios.post(`${backend_url}/database/getuid`, {
                         username: member
                     })
@@ -515,7 +516,6 @@ export async function approveGames(req, res) {
                 list.push(plainItems.uid)
                 await addGameToUser(list, plainItems.gameName);
             }
-
 
 
             await client.send(new PutItemCommand(putParams))
@@ -1207,6 +1207,12 @@ export async function getDevInfoGamePage(req, res) {
                 studentName: data.studentName || "",
                 studentAge: data.studentAge || null,
             }
+
+            console.log("retrieving game images for dev info")
+
+            correctData.gameImg = await retrieveGameImages(Array.from(data.games) || []);
+
+
             devarray.push(correctData);
         }
         res.status(200).json({ developerInfo: devarray });
@@ -1214,7 +1220,7 @@ export async function getDevInfoGamePage(req, res) {
 
     }
     catch (error) {
-        console.log(error.message);
+        console.log(error.message, "error --------------------------------");
         res.status(500).json({ error: "Failed to retrieve developer info" });
     }
 }

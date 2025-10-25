@@ -245,14 +245,13 @@ img {
 .developer-cards {
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    gap: 20px;
 }
 
 
 .dev-info-container {
     margin-top: 40px;
     margin-bottom: 40px;
-    overflow-x: scroll;
     width: 100%;
 }
 
@@ -261,7 +260,7 @@ img {
 }
 
 .developer-info {
-    width: 2025px;
+    width: auto;
 }
 
 

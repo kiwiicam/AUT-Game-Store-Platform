@@ -146,7 +146,7 @@ function Gamepage() {
                 setCommentCards(commentState)
                 setCommentLen(commentCards.length);
                 // actualcommentLen = commentLen;
-                retrieveDevInfo(databaseData.data.groupMembers, databaseData.data.gameData.username);
+                retrieveDevInfo(databaseData.data.groupMembers || [], databaseData.data.gameData.username);
 
             }
             catch (error) {
@@ -521,13 +521,16 @@ function Gamepage() {
 
                     </div>
                 </div>
-                <div className='dev-info-container'>
+                <div className='dev-info-container'
+                    style={{ overflowX: developerCard.length > 3 ? 'scroll' : 'none' }}
+                >
                     <h1>{gameInfo.developer}</h1>
                     <div className='developer-info'>
 
-                        <div className='developer-cards'>
+                        <div className='developer-cards'
+                        >
                             {developerCard.map((card, i) => (
-                                <Developercard key={i} name={card.studentName || ""} age={card.studentAge || ""} picture={card.picture || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"} about={card.aboutMe || ""} projects={card.projects || []} email={card.contactEmail || ""} phone={card.contactPhone || ""} skills={card.skills || ""} link={card.portfolioLink || ""} forGame={true} />
+                                <Developercard key={i} name={card.studentName || ""} age={card.studentAge || ""} picture={card.picture || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"} about={card.aboutMe || ""} projects={card.gameImg || []} email={card.contactEmail || ""} phone={card.contactPhone || ""} skills={card.skills || ""} link={card.portfolioLink || ""} forGame={true} />
                             ))}
                         </div>
                     </div>

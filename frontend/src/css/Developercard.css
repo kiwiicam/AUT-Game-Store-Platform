@@ -1,9 +1,13 @@
 .developer-card {
     width: 380px;
-    height: 670px;
+    height: 67vh;
     border-radius: 15px;
     background-color: #14141499;
     padding: 15px;
+}
+
+.developer-card p {
+    font-size: 0.7rem;
 }
 
 h2 {
@@ -39,11 +43,13 @@ h2 {
 }
 
 .dev-project {
+
     display: flex;
     justify-content: space-evenly;
 }
 
 .project {
+    cursor: pointer;
     width: 150px;
     height: 90px;
     border-radius: 15px;

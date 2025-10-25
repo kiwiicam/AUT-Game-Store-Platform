@@ -185,7 +185,7 @@ function UploadAssignment() {
     }
 
     function checkTeamMembers() {
-        if (groupMembers.length < 1 || groupMembers.length > 5) {
+        if (groupMembers.length < 1 || groupMembers.length > 4) {
             toast.error('Please select between 1 and 5 team members to add to your project!', {
                 position: 'top-center',
                 autoClose: 3000,
@@ -345,7 +345,7 @@ function UploadAssignment() {
 
 
     function addTeamMember(name) {
-        if (groupMembers.length >= 5) return
+        if (groupMembers.length >= 4) return
         setGroupMembers((prev) => [...prev, { name }]);
     }
 
