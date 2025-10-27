@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import axios from 'axios';
 import '../css/Signin.css';
+import { toast, ToastContainer } from 'react-toastify';
 
 function Signin() {
 
@@ -25,7 +26,6 @@ function Signin() {
       localStorage.setItem('email', email);
       localStorage.setItem('password', password);
       if (response.data.error === "UserNotConfirmed") {
-        alert(response.data.error);
         const verify = await axios.post(`${backend_url}/auth/resend`, {
           email: email,
         });
@@ -59,6 +59,7 @@ function Signin() {
 
   return (
     <div className='outer-background'>
+      <ToastContainer />
       <div className='inner-container'>
         <img src="http://localhost:3000/aut_logo.jpg" alt="aut logo" />
         <label className='title'>Log In</label>

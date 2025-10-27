@@ -3,6 +3,8 @@ import '../css/Signup.css'
 import { MdHelp } from "react-icons/md";
 import axios from 'axios';
 import { Navigate, useNavigate } from 'react-router';
+import { toast, ToastContainer } from 'react-toastify';
+
 function Signup() {
 
   const backend_url = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000/api';
@@ -29,11 +31,23 @@ function Signup() {
       return;
     }
     if (password !== confirmPassword) {
-      //set and display error message
+      toast.error('Passwords do not match.', {
+        position: 'top-center',
+        autoClose: 3000,
+      });
       return;
     }
-    if (password.length < 10 || !/\d/.test(password) || !/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
-      //set and display error message
+    if (
+      password.length < 10 ||
+      !/[A-Z]/.test(password) ||
+      !/[a-z]/.test(password) ||
+      !/\d/.test(password) ||
+      !/[!@#$%^&*(),.?":{}|<>]/.test(password)
+    ) {
+      toast.error('Password must be at least 10 characters long and contain numbers, special characters and upper and lowercase letters. e.g. Abcdef123!', {
+        position: 'top-center',
+        autoClose: 3000,
+      });
       return;
     }
 
@@ -76,6 +90,7 @@ function Signup() {
 
   return (
     <div className='outer-background'>
+      <ToastContainer />
       <div className='inner-container'>
         <img src="http://localhost:3000/aut_logo.jpg" alt="aut logo" />
         <label className='title'>Sign Up</label>
