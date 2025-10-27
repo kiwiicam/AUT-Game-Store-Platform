@@ -15,7 +15,10 @@ function Signin() {
 
   async function login() {
     if (email === '' || password === '') {
-      //display error message
+      toast.error('Please fill in all fields.', {
+        position: 'top-center',
+        autoClose: 3000,
+      });
       return;
     }
     try {
@@ -38,7 +41,10 @@ function Signin() {
       return;
     }
     catch (error) {
-      alert(error)
+      toast.error('Invalid email or password combination.', {
+        position: 'top-center',
+        autoClose: 3000,
+      });
       return;
     }
   }
