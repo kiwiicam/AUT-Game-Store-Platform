@@ -10,11 +10,11 @@ const Aboutpage = () => {
           <h1 className="about-title">About the Game Store</h1>
           <hr className="about-divider" />
           <p className="about-description">
-            The game store showcases projects developed within <strong>COMP710 - Game Programming</strong>, a third-year 
-            level 7 course offered at <strong>Auckland University of Technology (AUT)</strong>. This paper forms part of 
-            the <strong>Software Development</strong> major, following the <strong>Game Development</strong> pathway. Throughout the 
-            semester, students complete two core projects – an <strong>individual game (IGP)</strong> and a <strong>group 
-            project (TGP)</strong>. Both projects are built using a custom <strong>C++ game framework</strong>, collaboratively 
+            The game store showcases projects developed within <strong>COMP710 - Game Programming</strong>, a third-year
+            level 7 course offered at <strong>Auckland University of Technology (AUT)</strong>. This paper forms part of
+            the <strong>Software Development</strong> major, following the <strong>Game Development</strong> pathway. Throughout the
+            semester, students complete two core projects – an <strong>individual game (IGP)</strong> and a <strong>group
+              project (TGP)</strong>. Both projects are built using a custom <strong>C++ game framework</strong>, collaboratively
             developed during the first weeks of the course.
           </p>
         </div>
@@ -26,14 +26,13 @@ const Aboutpage = () => {
           <div className="framework-text">
             <h2>Game Framework</h2>
             <p>
-              The game framework is a custom-built C++ engine design and expand as a class during the first few weeks of the course. Developed using SDL2, OpenGL, and GLEW, this framework forms the technical backbone for both game projects completed during the semester. 
+              The game framework is a custom-built C++ engine design and expand as a class during the first few weeks of the course. Developed using SDL2, OpenGL, and GLEW, this framework forms the technical backbone for both game projects completed during the semester.
             </p>
             <p>
               By constructing the framework from the ground up, students gain hands-on experience in the fundamentals of game engine architecture, learning how rendering, inputs, textures, and resources work together to power real-time interactive games. Core components like the Renderer, TextureManager, and Game Loop are implemented in class, then extended to support unique gameplay features and mechanics.
             </p>
           </div>
           <div className="framework-image">
-            <div className="image-placeholder">Related Image</div>
           </div>
         </div>
       </section>

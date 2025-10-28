@@ -76,7 +76,7 @@ function Signin() {
         <div className='password'>
           <div className='forgot-password'>
             <label>Password</label>
-            <a onClick={() => { navigate("/forgotpw") }}>Forgot password?</a>
+            {/*<a onClick={() => { navigate("/forgotpw") }}>Forgot password?</a>*/}
           </div>
           <input className='inputs' type="password" placeholder='••••••••' onChange={(e) => setPassword(e.target.value)} />
         </div>

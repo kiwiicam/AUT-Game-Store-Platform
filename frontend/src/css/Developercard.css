@@ -1,6 +1,6 @@
 .developer-card {
     width: 380px;
-    height: 67vh;
+    height: auto;
     border-radius: 15px;
     background-color: #14141499;
     padding: 15px;
