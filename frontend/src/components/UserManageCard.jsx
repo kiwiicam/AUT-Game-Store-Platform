@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../css/UserManageCard.css'
 import { RiArrowDropDownLine } from "react-icons/ri";
 import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
 
 function UserManageCard({ name, email, date, firstn, lastn, role, pfp, uid }) {
 
@@ -32,7 +33,6 @@ function UserManageCard({ name, email, date, firstn, lastn, role, pfp, uid }) {
 
   const makeChanges = async () => {
     try {
-      alert(uid)
       const payload = {}
 
       if (newName.trim() !== oldName && newName.trim() !== "") {
@@ -66,7 +66,7 @@ function UserManageCard({ name, email, date, firstn, lastn, role, pfp, uid }) {
         payload.uid = uid
         // eslint-disable-next-line no-undef
         const response = await axios.post(`${backend_url}/database/adminupdaterole`, payload)
-        alert("Changes Saved!")
+        toast.success("User information updated successfully!");
       }
       else {
         return;
@@ -79,6 +79,7 @@ function UserManageCard({ name, email, date, firstn, lastn, role, pfp, uid }) {
 
   return (
     <div>
+      <ToastContainer />
       <div className='inner-user'>
         {selected ?
           <div className='user-change-box'>

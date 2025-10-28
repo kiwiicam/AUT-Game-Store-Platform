@@ -9,7 +9,7 @@
 }
 
 .upload-div h2 {
-    margin-top: 10px;
+    margin: 0  !important;
 }
 
 .inner-upload-div {

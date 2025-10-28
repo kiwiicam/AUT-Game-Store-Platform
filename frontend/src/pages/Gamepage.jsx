@@ -93,7 +93,6 @@ function Gamepage() {
                     fileSize: databaseData.data.gameData.fileSize + " MB",
                     projectType: databaseData.data.gameData.projectType,
                     genre: databaseData.data.genreArray,
-                    developmentTeam: databaseData.data.gameData.groupMembers
                 });
                 const images = await axios.post(`${backend_url}/storage/getgameimages`, { gameName: databaseData.data.gameData.gameName })
 
@@ -147,6 +146,8 @@ function Gamepage() {
                 setCommentCards(commentState)
                 setCommentLen(commentCards.length);
                 // actualcommentLen = commentLen;
+                retrieveDevInfo(databaseData.data.groupMembers || [], databaseData.data.gameData.username);
+
             }
             catch (error) {
                 toast.error('Error retreiving the data for this game, please try again later.', {
@@ -154,6 +155,20 @@ function Gamepage() {
                 });
             }
         }
+
+        async function retrieveDevInfo(devTeam, uploader) {
+            try {
+                devTeam.push(uploader);
+                const developerInfo = await axios.post(`${backend_url}/database/getdeveloperinfogame`, { groupArray: devTeam })
+                setDeveloperCard(developerInfo.data.developerInfo || []);
+            }
+            catch (err) {
+                console.log(err.message);
+            }
+
+        }
+
+
 
         retrieveGameData();
 
@@ -190,95 +205,6 @@ function Gamepage() {
 
     }, [gameName])
 
-    useEffect(() => {
-        setDeveloperCard([
-            {
-                name: 'Campbell',
-                age: '21',
-                email: 'cam@gmail.com',
-                phone: '022 044 3212',
-                picture: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
-                about: 'This is just a little paragraph about ya boy and you know im a guy and this is just me typing random crap hopefully this turns out okay what should the word limit be for this?',
-                skills:
-                    [
-                        "C++", "Teamwork", "Java", "Data structures"
-                    ],
-                projects:
-                    [
-                        { src: 'https://movingstory-prod.imgix.net/movies/headers/minecraft.jpg?w=1440&h=602&auto=compress,format&fit=crop', name: 'minecraft' },
-                        { src: 'https://www.minecraft.net/content/dam/minecraftnet/games/dungeons/key-art/Downloads_Box-Art_Dungeons_600x337.jpg', name: 'Minecraft Dungeons' }
-                    ]
-            },
-            {
-                name: 'Campbell',
-                age: '21',
-                email: 'cam@gmail.com',
-                phone: '022 044 3212',
-                picture: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
-                about: 'This is just a little paragraph about ya boy and you know im a guy and this is just me typing random crap hopefully this turns out okay what should the word limit be for this?',
-                skills:
-                    [
-                        "C++", "Teamwork", "Java", "Data structures"
-                    ],
-                projects:
-                    [
-                        { src: 'https://movingstory-prod.imgix.net/movies/headers/minecraft.jpg?w=1440&h=602&auto=compress,format&fit=crop', name: 'minecraft' },
-                        { src: 'https://www.minecraft.net/content/dam/minecraftnet/games/dungeons/key-art/Downloads_Box-Art_Dungeons_600x337.jpg', name: 'Minecraft Dungeons' }
-                    ]
-            }, {
-                name: 'Campbell',
-                age: '21',
-                email: 'cam@gmail.com',
-                phone: '022 044 3212',
-                picture: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
-                about: 'This is just a little paragraph about ya boy and you know im a guy and this is just me typing random crap hopefully this turns out okay what should the word limit be for this?',
-                skills:
-                    [
-                        "C++", "Teamwork", "Java", "Data structures"
-                    ],
-                projects:
-                    [
-                        { src: 'https://movingstory-prod.imgix.net/movies/headers/minecraft.jpg?w=1440&h=602&auto=compress,format&fit=crop', name: 'minecraft' },
-                        { src: 'https://www.minecraft.net/content/dam/minecraftnet/games/dungeons/key-art/Downloads_Box-Art_Dungeons_600x337.jpg', name: 'Minecraft Dungeons' }
-                    ]
-            },
-            {
-                name: 'Campbell',
-                age: '21',
-                email: 'cam@gmail.com',
-                phone: '022 044 3212',
-                picture: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
-                about: 'This is just a little paragraph about ya boy and you know im a guy and this is just me typing random crap hopefully this turns out okay what should the word limit be for this?',
-                skills:
-                    [
-                        "C++", "Teamwork", "Java", "Data structures"
-                    ],
-                projects:
-                    [
-                        { src: 'https://movingstory-prod.imgix.net/movies/headers/minecraft.jpg?w=1440&h=602&auto=compress,format&fit=crop', name: 'minecraft' },
-                        { src: 'https://www.minecraft.net/content/dam/minecraftnet/games/dungeons/key-art/Downloads_Box-Art_Dungeons_600x337.jpg', name: 'Minecraft Dungeons' }
-                    ]
-            },
-            {
-                name: 'Campbell',
-                age: '21',
-                email: 'cam@gmail.com',
-                phone: '022 044 3212',
-                picture: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
-                about: 'This is just a little paragraph about ya boy and you know im a guy and this is just me typing random crap hopefully this turns out okay what should the word limit be for this?',
-                skills:
-                    [
-                        "C++", "Teamwork", "Java", "Data structures"
-                    ],
-                projects:
-                    [
-                        { src: 'https://movingstory-prod.imgix.net/movies/headers/minecraft.jpg?w=1440&h=602&auto=compress,format&fit=crop', name: 'minecraft' },
-                        { src: 'https://www.minecraft.net/content/dam/minecraftnet/games/dungeons/key-art/Downloads_Box-Art_Dungeons_600x337.jpg', name: 'Minecraft Dungeons' }
-                    ]
-            }
-        ])
-
-    }, []);
 
     useEffect(() => {
         if (!mostRecent && !leastRecent) {
@@ -594,13 +520,16 @@ function Gamepage() {
 
                     </div>
                 </div>
-                <div className='dev-info-container'>
+                <div className='dev-info-container'
+                    style={{ overflowX: developerCard.length > 3 ? 'scroll' : 'none' }}
+                >
                     <h1>{gameInfo.developer}</h1>
                     <div className='developer-info'>
 
-                        <div className='developer-cards'>
+                        <div className='developer-cards'
+                        >
                             {developerCard.map((card, i) => (
-                                <Developercard key={i} name={card.name} age={card.age} picture={card.picture} about={card.about} projects={card.projects} email={card.email} phone={card.phone} skills={card.skills} />
+                                <Developercard key={i} name={card.studentName || ""} age={card.studentAge || ""} picture={card.picture || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"} about={card.aboutMe || ""} projects={card.gameImg || []} email={card.contactEmail || ""} phone={card.contactPhone || ""} skills={card.skills || ""} link={card.portfolioLink || ""} forGame={true} />
                             ))}
                         </div>
                     </div>

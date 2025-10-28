@@ -14,14 +14,16 @@ const app = express();
 
 app.use(express.json());
 
+const frontend_url = process.env.FRONTEND_URL;
+
 const allowedOrigins = [
-  'https://deployment-test.d2mwlph9qkry2s.amplifyapp.com',
+  frontend_url,
   'http://localhost:3000'
 ];
 
 app.use(cors({
-    origin: allowedOrigins,
-    methods: 'GET,POST,PUT,DELETE,OPTIONS'
+  origin: allowedOrigins,
+  methods: 'GET,POST,PUT,DELETE,OPTIONS'
 }));
 
 
@@ -32,5 +34,5 @@ app.use('/api/storage', storage);
 const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });

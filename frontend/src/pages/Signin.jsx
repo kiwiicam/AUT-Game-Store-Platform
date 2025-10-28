@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import axios from 'axios';
 import '../css/Signin.css';
+import { toast, ToastContainer } from 'react-toastify';
 
 function Signin() {
 
@@ -14,7 +15,10 @@ function Signin() {
 
   async function login() {
     if (email === '' || password === '') {
-      //display error message
+      toast.error('Please fill in all fields.', {
+        position: 'top-center',
+        autoClose: 3000,
+      });
       return;
     }
     try {
@@ -25,7 +29,6 @@ function Signin() {
       localStorage.setItem('email', email);
       localStorage.setItem('password', password);
       if (response.data.error === "UserNotConfirmed") {
-        alert(response.data.error);
         const verify = await axios.post(`${backend_url}/auth/resend`, {
           email: email,
         });
@@ -38,7 +41,10 @@ function Signin() {
       return;
     }
     catch (error) {
-      alert(error)
+      toast.error('Invalid email or password combination.', {
+        position: 'top-center',
+        autoClose: 3000,
+      });
       return;
     }
   }
@@ -59,6 +65,7 @@ function Signin() {
 
   return (
     <div className='outer-background'>
+      <ToastContainer />
       <div className='inner-container'>
         <img src="http://localhost:3000/aut_logo.jpg" alt="aut logo" />
         <label className='title'>Log In</label>
@@ -69,7 +76,7 @@ function Signin() {
         <div className='password'>
           <div className='forgot-password'>
             <label>Password</label>
-            <a onClick={() => { navigate("/forgotpw") }}>Forgot password?</a>
+            {/*<a onClick={() => { navigate("/forgotpw") }}>Forgot password?</a>*/}
           </div>
           <input className='inputs' type="password" placeholder='••••••••' onChange={(e) => setPassword(e.target.value)} />
         </div>

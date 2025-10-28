@@ -72,90 +72,83 @@ function GamepageAdmin() {
         getGameInfo();
         setDeveloperCard([
             {
-                name: 'Campbell',
-                age: '21',
-                email: 'cam@gmail.com',
-                phone: '022 044 3212',
+                name: 'Alice Johnson',
+                age: '25',
+                email: 'alice.johnson@example.com',
+                phone: '021 234 5678',
                 picture: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
-                about: 'This is just a little paragraph about ya boy and you know im a guy and this is just me typing random crap hopefully this turns out okay what should the word limit be for this?',
-                skills:
-                    [
-                        "C++", "Teamwork", "Java", "Data structures"
-                    ],
-                projects:
-                    [
-                        { src: 'https://movingstory-prod.imgix.net/movies/headers/minecraft.jpg?w=1440&h=602&auto=compress,format&fit=crop', name: 'minecraft' },
-                        { src: 'https://www.minecraft.net/content/dam/minecraftnet/games/dungeons/key-art/Downloads_Box-Art_Dungeons_600x337.jpg', name: 'Minecraft Dungeons' }
-                    ]
+                about: 'Alice is a passionate software developer with a love for gaming and AI. She loves exploring new technologies and building impactful solutions.',
+                skills: [
+                    "Python", "Machine Learning", "AI", "Data Analysis"
+                ],
+                projects: [
+                    { src: 'https://www.example.com/project1.jpg', name: 'AI Chatbot' },
+                    { src: 'https://www.example.com/project2.jpg', name: 'Data Visualizer' }
+                ]
             },
             {
-                name: 'Campbell',
-                age: '21',
-                email: 'cam@gmail.com',
-                phone: '022 044 3212',
+                name: 'John Smith',
+                age: '28',
+                email: 'john.smith@example.com',
+                phone: '022 876 5432',
                 picture: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
-                about: 'This is just a little paragraph about ya boy and you know im a guy and this is just me typing random crap hopefully this turns out okay what should the word limit be for this?',
-                skills:
-                    [
-                        "C++", "Teamwork", "Java", "Data structures"
-                    ],
-                projects:
-                    [
-                        { src: 'https://movingstory-prod.imgix.net/movies/headers/minecraft.jpg?w=1440&h=602&auto=compress,format&fit=crop', name: 'minecraft' },
-                        { src: 'https://www.minecraft.net/content/dam/minecraftnet/games/dungeons/key-art/Downloads_Box-Art_Dungeons_600x337.jpg', name: 'Minecraft Dungeons' }
-                    ]
-            }, {
-                name: 'Campbell',
-                age: '21',
-                email: 'cam@gmail.com',
-                phone: '022 044 3212',
-                picture: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
-                about: 'This is just a little paragraph about ya boy and you know im a guy and this is just me typing random crap hopefully this turns out okay what should the word limit be for this?',
-                skills:
-                    [
-                        "C++", "Teamwork", "Java", "Data structures"
-                    ],
-                projects:
-                    [
-                        { src: 'https://movingstory-prod.imgix.net/movies/headers/minecraft.jpg?w=1440&h=602&auto=compress,format&fit=crop', name: 'minecraft' },
-                        { src: 'https://www.minecraft.net/content/dam/minecraftnet/games/dungeons/key-art/Downloads_Box-Art_Dungeons_600x337.jpg', name: 'Minecraft Dungeons' }
-                    ]
+                about: 'John is a full-stack web developer with a strong background in front-end development. He enjoys working on modern web applications and user experiences.',
+                skills: [
+                    "JavaScript", "React", "Node.js", "CSS"
+                ],
+                projects: [
+                    { src: 'https://www.example.com/project3.jpg', name: 'E-commerce Website' },
+                    { src: 'https://www.example.com/project4.jpg', name: 'Portfolio Site' }
+                ]
             },
             {
-                name: 'Campbell',
-                age: '21',
-                email: 'cam@gmail.com',
-                phone: '022 044 3212',
+                name: 'Sophia Williams',
+                age: '22',
+                email: 'sophia.williams@example.com',
+                phone: '021 567 8901',
                 picture: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
-                about: 'This is just a little paragraph about ya boy and you know im a guy and this is just me typing random crap hopefully this turns out okay what should the word limit be for this?',
-                skills:
-                    [
-                        "C++", "Teamwork", "Java", "Data structures"
-                    ],
-                projects:
-                    [
-                        { src: 'https://movingstory-prod.imgix.net/movies/headers/minecraft.jpg?w=1440&h=602&auto=compress,format&fit=crop', name: 'minecraft' },
-                        { src: 'https://www.minecraft.net/content/dam/minecraftnet/games/dungeons/key-art/Downloads_Box-Art_Dungeons_600x337.jpg', name: 'Minecraft Dungeons' }
-                    ]
+                about: 'Sophia is a mobile app developer with a passion for building seamless user experiences. She specializes in iOS and Android app development.',
+                skills: [
+                    "Swift", "Kotlin", "React Native", "UI/UX Design"
+                ],
+                projects: [
+                    { src: 'https://www.example.com/project5.jpg', name: 'Fitness Tracker App' },
+                    { src: 'https://www.example.com/project6.jpg', name: 'Recipe Finder App' }
+                ]
             },
             {
-                name: 'Campbell',
-                age: '21',
-                email: 'cam@gmail.com',
-                phone: '022 044 3212',
+                name: 'Michael Brown',
+                age: '30',
+                email: 'michael.brown@example.com',
+                phone: '022 123 4567',
                 picture: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
-                about: 'This is just a little paragraph about ya boy and you know im a guy and this is just me typing random crap hopefully this turns out okay what should the word limit be for this?',
-                skills:
-                    [
-                        "C++", "Teamwork", "Java", "Data structures"
-                    ],
-                projects:
-                    [
-                        { src: 'https://movingstory-prod.imgix.net/movies/headers/minecraft.jpg?w=1440&h=602&auto=compress,format&fit=crop', name: 'minecraft' },
-                        { src: 'https://www.minecraft.net/content/dam/minecraftnet/games/dungeons/key-art/Downloads_Box-Art_Dungeons_600x337.jpg', name: 'Minecraft Dungeons' }
-                    ]
+                about: 'Michael is a backend engineer with experience in designing scalable systems and working with cloud services. He loves solving complex technical challenges.',
+                skills: [
+                    "Java", "Spring Boot", "AWS", "Docker"
+                ],
+                projects: [
+                    { src: 'https://www.example.com/project7.jpg', name: 'Weather Forecasting System' },
+                    { src: 'https://www.example.com/project8.jpg', name: 'Inventory Management System' }
+                ]
+            },
+            {
+                name: 'Emma Davis',
+                age: '24',
+                email: 'emma.davis@example.com',
+                phone: '022 765 4321',
+                picture: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+                about: 'Emma is a front-end developer with a strong focus on design and user experience. She is passionate about creating intuitive interfaces for web applications.',
+                skills: [
+                    "HTML", "CSS", "JavaScript", "React"
+                ],
+                projects: [
+                    { src: 'https://www.example.com/project9.jpg', name: 'Personal Blog Website' },
+                    { src: 'https://www.example.com/project10.jpg', name: 'Task Management App' }
+                ]
             }
-        ])
+        ]);
+
+
     }, [gameName])
 
     const videoRefs = useRef([]);
@@ -293,10 +286,12 @@ function GamepageAdmin() {
                     </div>
                 </div>
                 <h1>{gameInfo.developer}</h1>
-                <div className='dev-info-container'>
+                <div className='dev-info-container'
+                    style={{ overflowX: developerCard.length > 3 ? 'scroll' : 'none' }}
+                >
                     <div className='developer-info'>
 
-                        <div className='developer-cards'>
+                        <div className='developer-cards' >
                             {developerCard.map((card, i) => (
                                 <Developercard key={i} name={card.name} age={card.age} picture={card.picture} about={card.about} projects={card.projects} email={card.email} phone={card.phone} skills={card.skills} />
                             ))}
