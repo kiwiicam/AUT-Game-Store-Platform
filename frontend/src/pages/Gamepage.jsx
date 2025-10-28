@@ -300,7 +300,7 @@ function Gamepage() {
             const uid = localStorage.getItem('uid');
             if (!uid) return;
             const timestamp = Date.now()
-            const response = await axios.post('http://localhost:8000/api/database/uploadcomment', {
+            const response = await axios.post(`${backend_url}/database/uploadcomment`, {
                 gameName,
                 comment,
                 uid,

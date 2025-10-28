@@ -472,7 +472,7 @@ function UploadAssignment() {
                             <div className={selectedGenres.includes(item) ? "genre-item-selected" : "genre-item"} onClick={() => { addGenre(item) }} key={i}>
                                 <h5>{item}</h5>
                                 <div className="genre-icon">
-                                    <img src={'http://localhost:3000/genre_icons/' + item.toLowerCase().toString().replace(/\s+/g, '') + '.png'} />
+                                    <img src={'https://deployment-test.d2mwlph9qkry2s.amplifyapp.com/genre_icons/' + item.toLowerCase().toString().replace(/\s+/g, '') + '.png'} />
                                 </div>
                             </div>
                         ))}

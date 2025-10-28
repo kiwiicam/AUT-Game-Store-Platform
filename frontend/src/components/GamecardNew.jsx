@@ -83,7 +83,7 @@ function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, relea
                             <div key={index} className='ncard-genre'>
                                 <p>{genre}</p>
                                 <div className="genre-icon">
-                                    <img src={'http://localhost:3000/genre_icons/' + genre.toLowerCase().toString().replace(/\s+/g, '') + '.png'} />
+                                    <img src={'https://deployment-test.d2mwlph9qkry2s.amplifyapp.com/genre_icons/' + genre.toLowerCase().toString().replace(/\s+/g, '') + '.png'} />
                                 </div>
                             </div>
                         ))}
