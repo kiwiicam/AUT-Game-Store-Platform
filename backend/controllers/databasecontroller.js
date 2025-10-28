@@ -1037,6 +1037,7 @@ export async function randomGames(req, res) {
 
         gameImages.forEach(image => {
             const matchedGame = randomGames.find(game => game.gameName === image.gameName);
+            const genreArr = [...matchedGame.selectedGenres]
             if (matchedGame) {
                 randomGamesArr.push({
                     src: image.imageUrl,
@@ -1046,6 +1047,7 @@ export async function randomGames(req, res) {
                     likes: matchedGame.likes,
                     releaseDate: matchedGame.releaseDate,
                     fileSize: matchedGame.fileSize,
+                    genres: genreArr
                 });
             }
         });

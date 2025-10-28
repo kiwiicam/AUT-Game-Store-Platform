@@ -89,7 +89,7 @@ function GamecardNew({ gameName, TeamName, gameImage, genres, width, size, relea
                         ))}
                     </div>
                     <div className='align-ncard'>
-                        <h2>File Size: {size}GB | Release Date: {release}</h2>
+                        <h2>File Size: {size}MB | Release Date: {release}</h2>
                         <div className='ncard-likes'>
                             <BiSolidLike style={{ fontSize: '1.8rem' }} /> <p>{likes}</p>
                         </div>

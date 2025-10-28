@@ -125,7 +125,7 @@ function Homepage() {
 
         }
 
-        const fetchClassics = async () => {
+        const fetchRandom = async () => {
             try {
                 const response = await axios.get(`${backend_url}/database/randomGames`)
                 setTrendingGames(response.data.randomGames);
@@ -137,7 +137,7 @@ function Homepage() {
         }
 
 
-        fetchClassics();
+        fetchRandom();
         fetchFeaturedGames();
         fetchRecentReleases();
         //fetchMultiplayerGames();
@@ -159,6 +159,14 @@ function Homepage() {
             slideshowID < 1 ? 0 :
                 slideshowID > 7 ? slideshowID - 2 :
                     slideshowID - 1
+        );
+    }
+
+    function set(slideid) {
+        setTrendingIndex(
+            slideid < 1 ? 0 :
+                slideid > 7 ? slideid - 2 :
+                    slideid - 1
         );
     }
 
@@ -286,12 +294,18 @@ function Homepage() {
                     <div className='split-line'></div>
                     <div className='recent-releases-slider' ref={sliderRef}>
                         <div className='game-card-button-left' onClick={() => setTrendingIndex(trendingIndex === 0 ? 5 : trendingIndex - 1)}><IoIosArrowBack /></div>                        <div className='game-cards'>
-                            <div className='game-card-track'
-                                style={{ transform: `translateX(-${trendingIndex * (width + 15)}px)`, transition: 'transform 0.5s ease-in-out', width: (width * 8) + (8 * 15) }}
-
+                            <div className='game-card-track-new'
+                                style={{
+                                    transform: `translateX(-${trendingIndex === 7
+                                        ? (trendingGames.length * (width + 15)) - sliderRef.current.offsetWidth
+                                        : trendingIndex * (width + 15)
+                                        }px)`,
+                                    transition: 'transform 0.5s ease-in-out',
+                                    width: trendingGames.length * (width * 1.09) + (trendingGames.length - 1) * 15
+                                }}
                             >
                                 {trendingGames.map((game, i) => (
-                                    <Gamecard key={i} image={game.src} title={game.title} creator={game.creator} width={width} />
+                                    <GamecardNew key={i} slideid={i} gameImage={game.src} gameName={game.title} TeamName={game.creator} width={width} size={game.fileSize || 67} release={game.releaseDate || 'TBA'} likes={game.likes || 0} genres={game.genres || []} setid={set} />
                                 ))}
                             </div>
                         </div>
