@@ -5,11 +5,13 @@ import { IoMdArrowDropdown } from "react-icons/io";
 import axios from 'axios';
 function Header() {
 
+  const backend_url = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000/api';
+
   const [image, setImage] = useState();
   useEffect(() => {
     const getImage = async () => {
       try {
-        const image = await axios.post(`http://localhost:8000/api/storage/getpfp`,
+        const image = await axios.post(`${backend_url}/storage/getpfp`,
           {
             type: 'uid',
             id: localStorage.getItem('uid')
@@ -19,7 +21,7 @@ function Header() {
       catch (err) {
         console.log(err.message);
       }
-  }
+    }
     getImage();
   }, []);
 
