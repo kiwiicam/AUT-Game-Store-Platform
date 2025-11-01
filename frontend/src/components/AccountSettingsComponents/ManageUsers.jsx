@@ -26,7 +26,9 @@ function ManageUsers() {
                 const users = userInfo.data.realData.map((item) => ({
                     email: item.email,
                     name: item.username,
-                    pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
+                    
+                    
+                 //   pfp: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
                     firstn: item.firstname || "Not set",
                     lastn: item.lastname || "Not set",
                     role: item.accountType || "Not Set",
@@ -34,6 +36,15 @@ function ManageUsers() {
                     dateJoined: item.dateJoined || 1193512123123
 
                 }));
+                for (const user of users)
+                {
+                const image = await axios.post(`${backend_url}/storage/getpfp`,
+                {
+                    type: 'uid',
+                    id: user.uid
+                });
+                user.pfp = image.data.imageUrl || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
+                }
                 setUsers(users);
                 setCurrentUserDisplay(users);
             } catch (error) {
@@ -44,12 +55,87 @@ function ManageUsers() {
     }, [])
 
     const filterChange = () => {
+        window.alert("hi");
 
     }
 
     const searchChange = () => {
+    
 
     }
+    useEffect(()=>{
+        const sortArray=[];
+        let t = 0;
+      //  window.alert(search);
+        if (search == "")
+        {
+        setCurrentUserDisplay(users);
+
+        }
+        else{
+        for (const user of users)
+        {
+            const name = user.name;
+            if (search.length <= name.length)
+            {
+                let z = 0;
+                for (let i =0; i < search.length;i++)
+                {
+                    if (search.charAt(i) != name.charAt(i))
+                    {
+
+                        z = 1;
+                    }
+                }
+                if (z == 0)
+                {
+                    sortArray[t] = user;
+                    t++
+                }
+            }
+        }
+        sortArray.sort(function(a,b){return b.name - a.name});
+        setCurrentUserDisplay(sortArray);
+    }
+    },[search, setSearch]);
+
+    useEffect(() => {
+        if (dateSort == "oldest")
+        {
+        const sortArray = [...currentUserDisplay].sort((a, b) => a.dateJoined - b.dateJoined);
+        
+        setCurrentUserDisplay(sortArray);
+        }
+        else
+        {
+        const sortArray = [...currentUserDisplay].sort((a, b) => b.dateJoined - a.dateJoined);
+        setCurrentUserDisplay(sortArray);
+
+        }
+    },[dateSort, setDateSort]);
+  
+    useEffect(() => {
+        const sortArray = [];
+        let i = 0;
+        if (role == "all")
+        {
+            setCurrentUserDisplay(users);
+        }
+        else 
+        {
+        for (const user of users)
+        {
+            if (user.role == role)
+            {
+                sortArray[i] = user;
+                i++
+            }
+
+        }
+
+        setCurrentUserDisplay(sortArray);
+        }
+    },[role, setRole]);
 
     return (
         <div className='manage-users'>
@@ -64,7 +150,7 @@ function ManageUsers() {
                 </div>
             </div>
             <div className='users-filters'>
-                <input type='text' placeholder='Search username...' />
+                <input type='text' onChange={(e) => setSearch(e.target.value)} placeholder='Search username...' />
                 <select
                     value={role}
                     onChange={(e) => setRole(e.target.value)}
@@ -97,7 +183,7 @@ function ManageUsers() {
                             </div>
                         </div>
                         <div className='thin-grey-line'></div>
-                        {users.map((item, index) => (
+                        {currentUserDisplay.map((item, index) => (
                             <UserManageCard name={item.name} email={item.email} date={item.dateJoined} firstn={item.firstn} lastn={item.lastn} role={item.role} pfp={item.pfp} uid={item.uid} />
                         ))}
                     </div>

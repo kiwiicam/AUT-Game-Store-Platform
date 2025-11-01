@@ -17,7 +17,7 @@ function StudentProfile() {
     const [portfolioLink, setPortfolioLink] = useState('');
     const [studentName, setStudentName] = useState('');
     const [studentAge, setStudentAge] = useState('');
-
+    const [studentPfp, setStudentPfp] = useState('');
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -40,6 +40,14 @@ function StudentProfile() {
                 setStudentName(response.data.correctData.studentName || "Name not set");
                 setStudentAge(response.data.correctData.studentAge || "Age not set");
                 console.log(response.data.correctData.skills);
+
+                      const image = await axios.post(`${backend_url}/storage/getpfp`,
+                {
+                    type: 'uid',
+                    id: uid
+                });
+                const pfp = image.data.imageUrl || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
+                setStudentPfp(pfp)
             } catch (error) {
                 toast.error("Failed to load user data");
             }
@@ -194,7 +202,7 @@ function StudentProfile() {
                     <Developercard
                         name={studentName === '' ? 'Name not set' : studentName}
                         age={studentAge === '' ? 'Age not set' : studentAge}
-                        picture={"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}
+                        picture={studentPfp}
                         about={aboutMe === '' ? 'About me section not set' : aboutMe}
                         projects={[]}
                         email={contactEmail === '' ? 'Email not set' : contactEmail}
