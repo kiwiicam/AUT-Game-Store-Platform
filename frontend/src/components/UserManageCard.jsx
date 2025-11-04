@@ -66,7 +66,6 @@ function UserManageCard({ name, email, date, firstn, lastn, role, pfp, uid }) {
         payload.uid = uid
         // eslint-disable-next-line no-undef
         const response = await axios.post(`${backend_url}/database/adminupdaterole`, payload)
-        toast.success("User information updated successfully!");
       }
       else {
         return;
@@ -79,7 +78,6 @@ function UserManageCard({ name, email, date, firstn, lastn, role, pfp, uid }) {
 
   return (
     <div>
-      <ToastContainer />
       <div className='inner-user'>
         {selected ?
           <div className='user-change-box'>
