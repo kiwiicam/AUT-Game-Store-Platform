@@ -67,7 +67,7 @@ function Signin() {
     <div className='outer-background'>
       <ToastContainer />
       <div className='inner-container'>
-        <img src="http://localhost:3000/aut_logo.jpg" alt="aut logo" />
+        <img src="https://deployment-test.d2mwlph9qkry2s.amplifyapp.com/aut_logo.jpg" alt="aut logo" />
         <label className='title'>Log In</label>
         <div className='email'>
           <label>Email Address</label>
