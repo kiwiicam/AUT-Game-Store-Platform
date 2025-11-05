@@ -27,7 +27,6 @@ function Signin() {
         password: password
       })
       localStorage.setItem('email', email);
-      localStorage.setItem('password', password);
       if (response.data.error === "UserNotConfirmed") {
         const verify = await axios.post(`${backend_url}/auth/resend`, {
           email: email,
