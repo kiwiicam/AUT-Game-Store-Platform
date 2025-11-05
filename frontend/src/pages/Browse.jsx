@@ -219,7 +219,7 @@ function Browse() {
                       <div className={theSelectedGenre === item ? 'genre-item-browse-selected' : 'genre-item-browse'} onClick={() => genreSelection(item)}>
                         <h2 className='genre-h2'>{item}</h2>
                         <div className="genre-icon">
-                          <img src={'http://localhost:3000/genre_icons/' + item.toLowerCase().toString().replace(/\s+/g, '') + '.png'} />
+                          <img src={'https://deployment-test.d2mwlph9qkry2s.amplifyapp.com/genre_icons/' + item.toLowerCase().toString().replace(/\s+/g, '') + '.png'} />
                         </div>
                       </div>
                     ))}
